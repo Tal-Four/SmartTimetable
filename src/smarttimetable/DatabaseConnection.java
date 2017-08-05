@@ -20,15 +20,11 @@ public class DatabaseConnection {
 
     public void connect() {
 
-        
-
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-
             connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
             System.out.println("Database succesfully connected.");
         } catch (Exception e) {
-            System.out.println("Database connection failed: " + e);
+            System.err.println("Database connection failed: " + e);
         }
     }
 
