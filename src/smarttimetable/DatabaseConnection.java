@@ -19,7 +19,7 @@ public class DatabaseConnection {
     }
 
     public void connect() {
-
+        //Method to connect to the database
         try {
             connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
             System.out.println("Database succesfully connected.");
@@ -27,5 +27,5 @@ public class DatabaseConnection {
             System.err.println("Database connection failed: " + e);
         }
     }
-
+    
 }
