@@ -13,7 +13,6 @@ public class SmartTimetable {
 
         //Connects to the database
         DatabaseConnection dbConnect = new DatabaseConnection();
-        dbConnect.connect(); 
         
         
     }

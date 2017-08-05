@@ -13,13 +13,8 @@ public class DatabaseConnection {
     private static final String PASSWORD = "root";
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb";
 
-    //Constructor
+    //Constructor connects to the database
     public DatabaseConnection() {
-
-    }
-
-    public void connect() {
-        //Method to connect to the database
         try {
             connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
             System.out.println("Database succesfully connected.");
@@ -27,5 +22,6 @@ public class DatabaseConnection {
             System.err.println("Database connection failed: " + e);
         }
     }
-    
+
+
 }
