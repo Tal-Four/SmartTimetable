@@ -5,7 +5,6 @@
  */
 package smarttimetable;
 
-import static smarttimetable.SmartTimetable.dbHandle;
 
 /**
  *
@@ -277,14 +276,16 @@ public class Login extends javax.swing.JFrame {
     private void CreateAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateAccountButtonActionPerformed
         // TODO add your handling code here:
 
-        
         String Username, Password, PasswordConfirm;
 
-        Username = NewUsernameField.getText();
+        Username = NewUsernameField.getText().toLowerCase();
         Password = NewPasswordField.getText();
         PasswordConfirm = NewPasswordConfirmField.getText();
+        boolean valid = false;
+        valid = DatabaseHandle.createAccount(Username, Password, PasswordConfirm);
 
-        dbHandle.createAccount(Username, Password, PasswordConfirm);
+        this.setVisible(!valid);
+        new Menu().setVisible(valid);
 
     }//GEN-LAST:event_CreateAccountButtonActionPerformed
 

@@ -8,18 +8,18 @@ import java.sql.*;
  */
 public class DatabaseHandle {
 
-    private Connection connection;
+    private static Connection connection;
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb";
 
     //Constructor
-    public DatabaseHandle() {
+    private DatabaseHandle() {
 
     }
 
     //Connects the program to the database
-    public void connect() {
+    public static void connect() {
         try {
             connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
             System.out.println("Database succesfully connected.");
@@ -29,7 +29,7 @@ public class DatabaseHandle {
     }
 
     //Method called when an account is created
-    public void createAccount(String username, String password, String passwordConfirm) {
+    public static boolean createAccount(String username, String password, String passwordConfirm) {
 
         if (password.equals(passwordConfirm)) {
             
@@ -39,7 +39,7 @@ public class DatabaseHandle {
             String UsernameCheck = null;
             try {
                 rs.next();
-                UsernameCheck = rs.getString("Username");
+                UsernameCheck = rs.getString("Username").toLowerCase();
             } catch (SQLException e) {
                 System.err.println(e);
             }
@@ -66,16 +66,19 @@ public class DatabaseHandle {
                 
                 update(sql);
                 
+                return true;
             } else {
                 //Username taken
+                System.err.println("Username taken");
             }
         } else {
             //Passwords don't match
+            System.err.println("Passwords do not match");
         }
-
+        return false;
     }
 
-    public ResultSet query(String sql) {
+    public static ResultSet query(String sql) {
 
         try {
             Statement stmt = connection.createStatement();
@@ -87,7 +90,7 @@ public class DatabaseHandle {
         return null;
     }
     
-    public int update(String sql) {
+    public static int update(String sql) {
 
         try {
             Statement stmt = connection.createStatement();
