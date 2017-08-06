@@ -15,7 +15,6 @@ public class DatabaseHandle {
 
     //Constructor
     private DatabaseHandle() {
-
     }
 
     //Connects the program to the database
