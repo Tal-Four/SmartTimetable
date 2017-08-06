@@ -3,7 +3,7 @@ package smarttimetable;
 import java.sql.*;
 
 /**
- *
+ *z
  * @author Adam-PC
  */
 public class DatabaseHandle {
