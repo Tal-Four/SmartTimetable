@@ -5,6 +5,8 @@
  */
 package smarttimetable;
 
+import static smarttimetable.SmartTimetable.dbHandle;
+
 /**
  *
  * @author Adam-PC
@@ -266,12 +268,24 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitButtonActionPerformed
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-        this.setVisible(false);
-        new Menu().setVisible(true);
+
+        /**
+         * this.setVisible(false); new Menu().setVisible(true);
+         */
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void CreateAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateAccountButtonActionPerformed
         // TODO add your handling code here:
+
+        
+        String Username, Password, PasswordConfirm;
+
+        Username = NewUsernameField.getText();
+        Password = NewPasswordField.getText();
+        PasswordConfirm = NewPasswordConfirmField.getText();
+
+        dbHandle.createAccount(Username, Password, PasswordConfirm);
+
     }//GEN-LAST:event_CreateAccountButtonActionPerformed
 
     private void ExistingPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExistingPasswordFieldActionPerformed
@@ -279,7 +293,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_ExistingPasswordFieldActionPerformed
 
     private void ExistingUsernameFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExistingUsernameFieldMouseClicked
-        System.out.println("gnsoli");
+        // TODO add your handling code here:
     }//GEN-LAST:event_ExistingUsernameFieldMouseClicked
 
     /**
