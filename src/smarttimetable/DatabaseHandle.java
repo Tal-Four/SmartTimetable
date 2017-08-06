@@ -64,7 +64,7 @@ public class DatabaseHandle {
                     sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`,`Password`) VALUES(" + id + ", '" + username + "'  , '" + password + "')";
                 }
                 
-                query(sql);
+                update(sql);
                 
             } else {
                 //Username taken
@@ -75,15 +75,27 @@ public class DatabaseHandle {
 
     }
 
-    public ResultSet query(String query) {
+    public ResultSet query(String sql) {
 
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(sql);
             return rs;
         } catch (SQLException e) {
             System.err.println("Query failed: " + e);
         }
         return null;
+    }
+    
+    public int update(String sql) {
+
+        try {
+            Statement stmt = connection.createStatement();
+            int rows = stmt.executeUpdate(sql);
+            return rows;
+        } catch (SQLException e) {
+            System.err.println("Update failed: " + e);
+        }
+        return 0;
     }
 }
