@@ -15,8 +15,11 @@ public class SmartTimetable {
         //Connects to the database
         DatabaseHandle.connect();
 
+        //Brings up the first GUI element
         new Login().setVisible(true);
-
+        
+        
+        System.out.println("yes");
     }
 
 }
