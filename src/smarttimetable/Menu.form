@@ -26,13 +26,13 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="MainMenuPanel" max="32767" attributes="0"/>
+                  <Component id="mainMenuPanel" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="LogoutButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="168" max="-2" attributes="0"/>
-                      <Component id="UserLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="logoutButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="userLabel" min="-2" pref="359" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="ExitButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="exitButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -42,13 +42,13 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="26" max="32767" attributes="0"/>
-              <Component id="MainMenuPanel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <Component id="mainMenuPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="LogoutButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="UserLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ExitButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="logoutButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="exitButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="userLabel" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -56,29 +56,30 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="ExitButton">
+    <Component class="javax.swing.JButton" name="exitButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Exit"/>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="Exit the program"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ExitButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="LogoutButton">
+    <Component class="javax.swing.JButton" name="logoutButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Logout"/>
+        <Property name="toolTipText" type="java.lang.String" value="Logout and return to the login screen"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LogoutButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logoutButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="UserLabel">
+    <Component class="javax.swing.JLabel" name="userLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="[USER]"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JPanel" name="MainMenuPanel">
+    <Container class="javax.swing.JPanel" name="mainMenuPanel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -98,18 +99,18 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Group type="102" alignment="2" attributes="0">
-                          <Component id="ViewEditTasks" pref="155" max="32767" attributes="0"/>
+                          <Component id="viewEditTasks" pref="155" max="32767" attributes="0"/>
                           <EmptySpace min="18" pref="18" max="18" attributes="0"/>
-                          <Component id="ViewEditEvents" min="-2" pref="155" max="-2" attributes="0"/>
+                          <Component id="viewEditEvents" min="-2" pref="155" max="-2" attributes="0"/>
                           <EmptySpace min="18" pref="18" max="18" attributes="0"/>
-                          <Component id="ViewEditTimetable" min="-2" pref="155" max="-2" attributes="0"/>
+                          <Component id="viewEditTimetable" min="-2" pref="155" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="2" attributes="0">
-                          <Component id="CreateTaskButton" max="32767" attributes="0"/>
+                          <Component id="createTaskButton" max="32767" attributes="0"/>
                           <EmptySpace min="18" pref="18" max="18" attributes="0"/>
-                          <Component id="CreateEventsButton" min="-2" pref="155" max="-2" attributes="0"/>
+                          <Component id="createEventsButton" min="-2" pref="155" max="-2" attributes="0"/>
                           <EmptySpace min="18" pref="18" max="18" attributes="0"/>
-                          <Component id="GenerateTimetableButton" min="-2" pref="155" max="-2" attributes="0"/>
+                          <Component id="generateTimetableButton" min="-2" pref="155" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="0" pref="13" max="32767" attributes="0"/>
@@ -121,15 +122,15 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="GenerateTimetableButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="CreateEventsButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="CreateTaskButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="generateTimetableButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="createEventsButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="createTaskButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="15" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="ViewEditTasks" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="ViewEditEvents" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="ViewEditTimetable" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="viewEditTasks" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="viewEditEvents" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="viewEditTimetable" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               </Group>
@@ -137,52 +138,52 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="CreateEventsButton">
+        <Component class="javax.swing.JButton" name="createEventsButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Events"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CreateEventsButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createEventsButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="ViewEditEvents">
+        <Component class="javax.swing.JButton" name="viewEditEvents">
           <Properties>
             <Property name="text" type="java.lang.String" value="View/Edit Events"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ViewEditEventsActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditEventsActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="GenerateTimetableButton">
+        <Component class="javax.swing.JButton" name="generateTimetableButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Generate Timetable"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GenerateTimetableButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateTimetableButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="ViewEditTimetable">
+        <Component class="javax.swing.JButton" name="viewEditTimetable">
           <Properties>
             <Property name="text" type="java.lang.String" value="View/Edit Timetable"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ViewEditTimetableActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditTimetableActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="CreateTaskButton">
+        <Component class="javax.swing.JButton" name="createTaskButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Task"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CreateTaskButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createTaskButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="ViewEditTasks">
+        <Component class="javax.swing.JButton" name="viewEditTasks">
           <Properties>
             <Property name="text" type="java.lang.String" value="View/Edit Tasks"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ViewEditTasksActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditTasksActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

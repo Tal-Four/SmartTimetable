@@ -16,6 +16,7 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        userLabel.setText("Logged in as: " + User.getUsername());
     }
 
     /**
@@ -27,113 +28,114 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ExitButton = new javax.swing.JButton();
-        LogoutButton = new javax.swing.JButton();
-        UserLabel = new javax.swing.JLabel();
-        MainMenuPanel = new javax.swing.JPanel();
-        CreateEventsButton = new javax.swing.JButton();
-        ViewEditEvents = new javax.swing.JButton();
-        GenerateTimetableButton = new javax.swing.JButton();
-        ViewEditTimetable = new javax.swing.JButton();
-        CreateTaskButton = new javax.swing.JButton();
-        ViewEditTasks = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
+        logoutButton = new javax.swing.JButton();
+        userLabel = new javax.swing.JLabel();
+        mainMenuPanel = new javax.swing.JPanel();
+        createEventsButton = new javax.swing.JButton();
+        viewEditEvents = new javax.swing.JButton();
+        generateTimetableButton = new javax.swing.JButton();
+        viewEditTimetable = new javax.swing.JButton();
+        createTaskButton = new javax.swing.JButton();
+        viewEditTasks = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        ExitButton.setText("Exit");
-        ExitButton.setToolTipText("");
-        ExitButton.addActionListener(new java.awt.event.ActionListener() {
+        exitButton.setText("Exit");
+        exitButton.setToolTipText("Exit the program");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitButtonActionPerformed(evt);
+                exitButtonActionPerformed(evt);
             }
         });
 
-        LogoutButton.setText("Logout");
-        LogoutButton.addActionListener(new java.awt.event.ActionListener() {
+        logoutButton.setText("Logout");
+        logoutButton.setToolTipText("Logout and return to the login screen");
+        logoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LogoutButtonActionPerformed(evt);
+                logoutButtonActionPerformed(evt);
             }
         });
 
-        UserLabel.setText("[USER]");
+        userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        MainMenuPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Main Menu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
+        mainMenuPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Main Menu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
-        CreateEventsButton.setText("Create Events");
-        CreateEventsButton.addActionListener(new java.awt.event.ActionListener() {
+        createEventsButton.setText("Create Events");
+        createEventsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CreateEventsButtonActionPerformed(evt);
+                createEventsButtonActionPerformed(evt);
             }
         });
 
-        ViewEditEvents.setText("View/Edit Events");
-        ViewEditEvents.addActionListener(new java.awt.event.ActionListener() {
+        viewEditEvents.setText("View/Edit Events");
+        viewEditEvents.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ViewEditEventsActionPerformed(evt);
+                viewEditEventsActionPerformed(evt);
             }
         });
 
-        GenerateTimetableButton.setText("Generate Timetable");
-        GenerateTimetableButton.addActionListener(new java.awt.event.ActionListener() {
+        generateTimetableButton.setText("Generate Timetable");
+        generateTimetableButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GenerateTimetableButtonActionPerformed(evt);
+                generateTimetableButtonActionPerformed(evt);
             }
         });
 
-        ViewEditTimetable.setText("View/Edit Timetable");
-        ViewEditTimetable.addActionListener(new java.awt.event.ActionListener() {
+        viewEditTimetable.setText("View/Edit Timetable");
+        viewEditTimetable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ViewEditTimetableActionPerformed(evt);
+                viewEditTimetableActionPerformed(evt);
             }
         });
 
-        CreateTaskButton.setText("Create Task");
-        CreateTaskButton.addActionListener(new java.awt.event.ActionListener() {
+        createTaskButton.setText("Create Task");
+        createTaskButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CreateTaskButtonActionPerformed(evt);
+                createTaskButtonActionPerformed(evt);
             }
         });
 
-        ViewEditTasks.setText("View/Edit Tasks");
-        ViewEditTasks.addActionListener(new java.awt.event.ActionListener() {
+        viewEditTasks.setText("View/Edit Tasks");
+        viewEditTasks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ViewEditTasksActionPerformed(evt);
+                viewEditTasksActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout MainMenuPanelLayout = new javax.swing.GroupLayout(MainMenuPanel);
-        MainMenuPanel.setLayout(MainMenuPanelLayout);
-        MainMenuPanelLayout.setHorizontalGroup(
-            MainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MainMenuPanelLayout.createSequentialGroup()
-                .addGroup(MainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addGroup(MainMenuPanelLayout.createSequentialGroup()
-                        .addComponent(ViewEditTasks, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+        javax.swing.GroupLayout mainMenuPanelLayout = new javax.swing.GroupLayout(mainMenuPanel);
+        mainMenuPanel.setLayout(mainMenuPanelLayout);
+        mainMenuPanelLayout.setHorizontalGroup(
+            mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainMenuPanelLayout.createSequentialGroup()
+                .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addGroup(mainMenuPanelLayout.createSequentialGroup()
+                        .addComponent(viewEditTasks, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(ViewEditEvents, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(viewEditEvents, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(ViewEditTimetable, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(MainMenuPanelLayout.createSequentialGroup()
-                        .addComponent(CreateTaskButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(viewEditTimetable, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainMenuPanelLayout.createSequentialGroup()
+                        .addComponent(createTaskButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(CreateEventsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(createEventsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(GenerateTimetableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(generateTimetableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 13, Short.MAX_VALUE))
         );
-        MainMenuPanelLayout.setVerticalGroup(
-            MainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MainMenuPanelLayout.createSequentialGroup()
+        mainMenuPanelLayout.setVerticalGroup(
+            mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainMenuPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(MainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(GenerateTimetableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CreateEventsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CreateTaskButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(generateTimetableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(createEventsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(createTaskButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addGroup(MainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ViewEditTasks, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ViewEditEvents, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ViewEditTimetable, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(viewEditTasks, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(viewEditEvents, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(viewEditTimetable, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
 
@@ -144,67 +146,75 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MainMenuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mainMenuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(LogoutButton)
-                        .addGap(168, 168, 168)
-                        .addComponent(UserLabel)
+                        .addComponent(logoutButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ExitButton)))
+                        .addComponent(exitButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
-                .addComponent(MainMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(mainMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LogoutButton)
-                    .addComponent(UserLabel)
-                    .addComponent(ExitButton))
+                    .addComponent(logoutButton)
+                    .addComponent(exitButton)
+                    .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        //Stops the program
+        User.logoutUser();
         System.exit(0);
-    }//GEN-LAST:event_ExitButtonActionPerformed
+    }//GEN-LAST:event_exitButtonActionPerformed
 
-    private void GenerateTimetableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateTimetableButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_GenerateTimetableButtonActionPerformed
+    private void generateTimetableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTimetableButtonActionPerformed
+        //Creates a timetable for the user
+    }//GEN-LAST:event_generateTimetableButtonActionPerformed
 
-    private void ViewEditTimetableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewEditTimetableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ViewEditTimetableActionPerformed
+    private void viewEditTimetableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditTimetableActionPerformed
+        //Shows the timetable screen
+    }//GEN-LAST:event_viewEditTimetableActionPerformed
 
-    private void ViewEditEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewEditEventsActionPerformed
+    private void viewEditEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditEventsActionPerformed
+        //Shows the event viewer screen
         this.setVisible(false);
         new EventViewer().setVisible(true);
-    }//GEN-LAST:event_ViewEditEventsActionPerformed
+    }//GEN-LAST:event_viewEditEventsActionPerformed
 
-    private void CreateEventsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateEventsButtonActionPerformed
+    private void createEventsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createEventsButtonActionPerformed
+        //Shows the event editor screen
         this.setVisible(false);
         new EventEditor().setVisible(true);
-    }//GEN-LAST:event_CreateEventsButtonActionPerformed
+    }//GEN-LAST:event_createEventsButtonActionPerformed
 
-    private void ViewEditTasksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewEditTasksActionPerformed
+    private void viewEditTasksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditTasksActionPerformed
+        //Shows the task viewer screen
         this.setVisible(false);
         new TaskViewer().setVisible(true);
-    }//GEN-LAST:event_ViewEditTasksActionPerformed
+    }//GEN-LAST:event_viewEditTasksActionPerformed
 
-    private void CreateTaskButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateTaskButtonActionPerformed
+    private void createTaskButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTaskButtonActionPerformed
+        //Shows the task editor screen
         this.setVisible(false);
         new TaskEditor().setVisible(true);
-    }//GEN-LAST:event_CreateTaskButtonActionPerformed
+    }//GEN-LAST:event_createTaskButtonActionPerformed
 
-    private void LogoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutButtonActionPerformed
+    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
+        //Logs out user and returns to login screen
+        User.logoutUser();
         this.setVisible(false);
         new Login().setVisible(true);
-    }//GEN-LAST:event_LogoutButtonActionPerformed
+    }//GEN-LAST:event_logoutButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -242,15 +252,15 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton CreateEventsButton;
-    private javax.swing.JButton CreateTaskButton;
-    private javax.swing.JButton ExitButton;
-    private javax.swing.JButton GenerateTimetableButton;
-    private javax.swing.JButton LogoutButton;
-    private javax.swing.JPanel MainMenuPanel;
-    private javax.swing.JLabel UserLabel;
-    private javax.swing.JButton ViewEditEvents;
-    private javax.swing.JButton ViewEditTasks;
-    private javax.swing.JButton ViewEditTimetable;
+    private javax.swing.JButton createEventsButton;
+    private javax.swing.JButton createTaskButton;
+    private javax.swing.JButton exitButton;
+    private javax.swing.JButton generateTimetableButton;
+    private javax.swing.JButton logoutButton;
+    private javax.swing.JPanel mainMenuPanel;
+    private javax.swing.JLabel userLabel;
+    private javax.swing.JButton viewEditEvents;
+    private javax.swing.JButton viewEditTasks;
+    private javax.swing.JButton viewEditTimetable;
     // End of variables declaration//GEN-END:variables
 }
