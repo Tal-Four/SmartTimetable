@@ -222,6 +222,7 @@ public class Login extends javax.swing.JFrame {
             }// </editor-fold>//GEN-END:initComponents
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        User.logoutUser();
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
@@ -233,15 +234,18 @@ public class Login extends javax.swing.JFrame {
         password = existingPasswordField.getText();
         boolean valid = false;
 
-        //Retrieving relevant data
+        //Retrieving user's record
         String sql = "SELECT * FROM user WHERE Username = '" + username + "'";
         ResultSet rs = DatabaseHandle.query(sql);
 
         String storedPassword = null;
+        int userID = 0;
 
+        //Fetching password and userID from database
         try {
             rs.next();
             storedPassword = rs.getString("Password");
+            userID = rs.getInt("UserID");
         } catch (SQLException e) {
             System.err.println(e);
         }
@@ -249,11 +253,15 @@ public class Login extends javax.swing.JFrame {
         //Checking to see if correct password entered
         if (password.equals(storedPassword)) {
             valid = true;
+
+            //Setting values of User to the user's values
+            User.newUser(userID, username, password);
         } else {
             System.err.println("Incorrect password entered");
             valid = false;
         }
 
+        //Showing next screen
         if (valid) {
             this.setVisible(false);
             new Menu().setVisible(true);
@@ -283,26 +291,32 @@ public class Login extends javax.swing.JFrame {
                     System.err.println(e);
                 }
 
+                //Checking to see if username is available
                 if (!username.equals(UsernameCheck)) {
-                    //Valid username
+
+                    //Looping through existing IDs until a ID without an record is found
                     sql = "SELECT * FROM user";
                     rs = DatabaseHandle.query(sql);
-                    int id = 0;
+                    int userID = 0;
                     try {
                         do {
-                            id++;
+                            userID++;
                             rs.next();
-                        } while (rs.getInt("UserID") == id);
+                        } while (rs.getInt("UserID") == userID);
                     } catch (SQLException e) {
                         System.err.println(e);
                     }
 
+                    //Setting values of User to relevant values
+                    User.newUser(userID, username, password);
+
                     if (password == null) {
-                        sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`, `Password`) VALUES(" + id + ", '" + username + "'  , NULL)";
+                        sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`, `Password`) VALUES(" + userID + ", '" + username + "'  , NULL)";
                     } else {
-                        sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`,`Password`) VALUES(" + id + ", '" + username + "'  , '" + password + "')";
+                        sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`,`Password`) VALUES(" + userID + ", '" + username + "'  , '" + password + "')";
                     }
 
+                    //Adding record to database
                     DatabaseHandle.update(sql);
                     valid = true;
 
@@ -322,6 +336,7 @@ public class Login extends javax.swing.JFrame {
             valid = false;
         }
 
+        //Displaying next screen
         if (valid) {
             this.setVisible(false);
             new Menu().setVisible(true);

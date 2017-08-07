@@ -27,7 +27,7 @@ public class DatabaseHandle {
         }
     }
     
-    //Runs an SQL query
+    //Runs an SQL query that returns a result set
     public static ResultSet query(String sql) {
 
         try {

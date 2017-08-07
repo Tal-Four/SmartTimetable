@@ -19,7 +19,6 @@ public class SmartTimetable {
         new Login().setVisible(true);
         
         
-        System.out.println("yes");
     }
 
 }
