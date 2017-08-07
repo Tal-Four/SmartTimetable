@@ -27,19 +27,19 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="BackButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="406" max="-2" attributes="0"/>
-                      <Component id="UserLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="SaveButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="backButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="userLabel" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="saveButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="TitleLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="MainPanel" min="-2" max="-2" attributes="0"/>
+                          <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="mainPanel" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="DescriptionPanel" max="32767" attributes="0"/>
+                      <Component id="descriptionPanel" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -52,22 +52,22 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="TitleLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="MainPanel" min="-2" max="-2" attributes="0"/>
+                      <Component id="mainPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                      <Component id="DescriptionPanel" min="-2" max="-2" attributes="0"/>
+                      <Component id="descriptionPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="57" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="BackButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="SaveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="backButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="UserLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="userLabel" alignment="1" min="-2" pref="26" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -75,15 +75,15 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="BackButton">
+    <Component class="javax.swing.JButton" name="backButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Back"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BackButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>
       </Events>
     </Component>
-    <Container class="javax.swing.JPanel" name="MainPanel">
+    <Container class="javax.swing.JPanel" name="mainPanel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -100,63 +100,73 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="TimeLabel" min="-2" max="-2" attributes="0"/>
-                              <Component id="NameLabel" min="-2" max="-2" attributes="0"/>
-                              <Component id="DeadlineLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="CategoryLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="DeadlineFormatLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="ColourLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="timeLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="nameLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="deadlineLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="categoryLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="deadlineFormatLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="colourLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="CategoryDropdown" alignment="0" pref="200" max="32767" attributes="0"/>
-                              <Component id="DeadlineField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="TimeField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="NameField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="categoryDropdown" alignment="0" pref="200" max="32767" attributes="0"/>
+                              <Component id="deadlineField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="timeField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="nameField" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="nameCharsUsed" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="ColourChooser" alignment="0" min="-2" pref="598" max="-2" attributes="0"/>
+                      <Component id="colourChooser" alignment="0" min="-2" pref="598" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="NameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="NameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nameCharsUsed" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="TimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="TimeField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="timeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="timeField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="DeadlineLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="DeadlineField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="deadlineLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="deadlineField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="DeadlineFormatLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="deadlineFormatLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="CategoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CategoryDropdown" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                      <Component id="categoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="categoryDropdown" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="ColourLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="colourLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="ColourChooser" min="-2" pref="373" max="-2" attributes="0"/>
+                  <Component id="colourChooser" min="-2" pref="373" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="NameLabel">
+        <Component class="javax.swing.JLabel" name="nameLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="1"/>
@@ -164,7 +174,7 @@
             <Property name="text" type="java.lang.String" value="Task Name:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="DeadlineLabel">
+        <Component class="javax.swing.JLabel" name="deadlineLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="1"/>
@@ -172,7 +182,7 @@
             <Property name="text" type="java.lang.String" value="Deadline:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="TimeLabel">
+        <Component class="javax.swing.JLabel" name="timeLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="1"/>
@@ -180,7 +190,7 @@
             <Property name="text" type="java.lang.String" value="Time Needed:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="ColourLabel">
+        <Component class="javax.swing.JLabel" name="colourLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="1"/>
@@ -188,7 +198,7 @@
             <Property name="text" type="java.lang.String" value="Colour:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="CategoryLabel">
+        <Component class="javax.swing.JLabel" name="categoryLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="1"/>
@@ -196,24 +206,25 @@
             <Property name="text" type="java.lang.String" value="Category:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JColorChooser" name="ColourChooser">
+        <Component class="javax.swing.JColorChooser" name="colourChooser">
         </Component>
-        <Component class="javax.swing.JLabel" name="DeadlineFormatLabel">
+        <Component class="javax.swing.JLabel" name="deadlineFormatLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="(dd/mm/yyyy)"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="NameField">
+        <Component class="javax.swing.JTextField" name="nameField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NameFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nameFieldActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="TimeField">
+        <Component class="javax.swing.JTextField" name="timeField">
         </Component>
-        <Component class="javax.swing.JTextField" name="DeadlineField">
+        <Component class="javax.swing.JTextField" name="deadlineField">
         </Component>
-        <Component class="javax.swing.JComboBox" name="CategoryDropdown">
+        <Component class="javax.swing.JComboBox" name="categoryDropdown">
           <Properties>
+            <Property name="editable" type="boolean" value="true"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
                 <StringItem index="0" value="Item 1"/>
@@ -224,15 +235,25 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CategoryDropdownActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="categoryDropdownActionPerformed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
+        <Component class="javax.swing.JLabel" name="nameCharsUsed">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="[CHARS USED]"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jLabel1"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="DescriptionPanel">
+    <Container class="javax.swing.JPanel" name="descriptionPanel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -261,7 +282,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="DescriptionBox">
+            <Component class="javax.swing.JTextArea" name="descriptionBox">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="lineWrap" type="boolean" value="true"/>
@@ -273,7 +294,7 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="TitleLabel">
+    <Component class="javax.swing.JLabel" name="titleLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dialog" size="18" style="1"/>
@@ -281,18 +302,18 @@
         <Property name="text" type="java.lang.String" value="Task Editor"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="SaveButton">
+    <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Save"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="UserLabel">
+    <Component class="javax.swing.JLabel" name="userLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="[USER]"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
     </Component>
   </SubComponents>

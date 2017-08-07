@@ -16,6 +16,7 @@ public class TaskEditor extends javax.swing.JFrame {
      */
     public TaskEditor() {
         initComponents();
+        userLabel.setText("Logged in as: " + User.getUsername());
     }
 
     /**
@@ -27,150 +28,165 @@ public class TaskEditor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BackButton = new javax.swing.JButton();
-        MainPanel = new javax.swing.JPanel();
-        NameLabel = new javax.swing.JLabel();
-        DeadlineLabel = new javax.swing.JLabel();
-        TimeLabel = new javax.swing.JLabel();
-        ColourLabel = new javax.swing.JLabel();
-        CategoryLabel = new javax.swing.JLabel();
-        ColourChooser = new javax.swing.JColorChooser();
-        DeadlineFormatLabel = new javax.swing.JLabel();
-        NameField = new javax.swing.JTextField();
-        TimeField = new javax.swing.JTextField();
-        DeadlineField = new javax.swing.JTextField();
-        CategoryDropdown = new javax.swing.JComboBox<>();
-        DescriptionPanel = new javax.swing.JPanel();
+        backButton = new javax.swing.JButton();
+        mainPanel = new javax.swing.JPanel();
+        nameLabel = new javax.swing.JLabel();
+        deadlineLabel = new javax.swing.JLabel();
+        timeLabel = new javax.swing.JLabel();
+        colourLabel = new javax.swing.JLabel();
+        categoryLabel = new javax.swing.JLabel();
+        colourChooser = new javax.swing.JColorChooser();
+        deadlineFormatLabel = new javax.swing.JLabel();
+        nameField = new javax.swing.JTextField();
+        timeField = new javax.swing.JTextField();
+        deadlineField = new javax.swing.JTextField();
+        categoryDropdown = new javax.swing.JComboBox<>();
+        nameCharsUsed = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        descriptionPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        DescriptionBox = new javax.swing.JTextArea();
-        TitleLabel = new javax.swing.JLabel();
-        SaveButton = new javax.swing.JButton();
-        UserLabel = new javax.swing.JLabel();
+        descriptionBox = new javax.swing.JTextArea();
+        titleLabel = new javax.swing.JLabel();
+        saveButton = new javax.swing.JButton();
+        userLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        BackButton.setText("Back");
-        BackButton.addActionListener(new java.awt.event.ActionListener() {
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackButtonActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
 
-        MainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        NameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        NameLabel.setText("Task Name:");
+        nameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        nameLabel.setText("Task Name:");
 
-        DeadlineLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        DeadlineLabel.setText("Deadline:");
+        deadlineLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        deadlineLabel.setText("Deadline:");
 
-        TimeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        TimeLabel.setText("Time Needed:");
+        timeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        timeLabel.setText("Time Needed:");
 
-        ColourLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        ColourLabel.setText("Colour:");
+        colourLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        colourLabel.setText("Colour:");
 
-        CategoryLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        CategoryLabel.setText("Category:");
+        categoryLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        categoryLabel.setText("Category:");
 
-        DeadlineFormatLabel.setText("(dd/mm/yyyy)");
+        deadlineFormatLabel.setText("(dd/mm/yyyy)");
 
-        NameField.addActionListener(new java.awt.event.ActionListener() {
+        nameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameFieldActionPerformed(evt);
+                nameFieldActionPerformed(evt);
             }
         });
 
-        CategoryDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        CategoryDropdown.addActionListener(new java.awt.event.ActionListener() {
+        categoryDropdown.setEditable(true);
+        categoryDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        categoryDropdown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CategoryDropdownActionPerformed(evt);
+                categoryDropdownActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
-        MainPanel.setLayout(MainPanelLayout);
-        MainPanelLayout.setHorizontalGroup(
-            MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MainPanelLayout.createSequentialGroup()
+        nameCharsUsed.setText("[CHARS USED]");
+
+        jLabel1.setText("jLabel1");
+
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TimeLabel)
-                            .addComponent(NameLabel)
-                            .addComponent(DeadlineLabel)
-                            .addComponent(CategoryLabel)
-                            .addComponent(DeadlineFormatLabel)
-                            .addComponent(ColourLabel))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(timeLabel)
+                            .addComponent(nameLabel)
+                            .addComponent(deadlineLabel)
+                            .addComponent(categoryLabel)
+                            .addComponent(deadlineFormatLabel)
+                            .addComponent(colourLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(CategoryDropdown, 0, 200, Short.MAX_VALUE)
-                            .addComponent(DeadlineField)
-                            .addComponent(TimeField)
-                            .addComponent(NameField)))
-                    .addComponent(ColourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(categoryDropdown, 0, 200, Short.MAX_VALUE)
+                            .addComponent(deadlineField)
+                            .addComponent(timeField)
+                            .addComponent(nameField))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
-        MainPanelLayout.setVerticalGroup(
-            MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MainPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NameLabel)
-                    .addComponent(NameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameLabel)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TimeLabel)
-                    .addComponent(TimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(timeLabel)
+                    .addComponent(timeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DeadlineLabel)
-                    .addComponent(DeadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deadlineLabel)
+                    .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(DeadlineFormatLabel)
+                .addComponent(deadlineFormatLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CategoryLabel)
-                    .addComponent(CategoryDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(categoryLabel)
+                    .addComponent(categoryDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(ColourLabel)
+                .addComponent(colourLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ColourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        DescriptionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Description"));
+        descriptionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Description"));
 
-        DescriptionBox.setColumns(20);
-        DescriptionBox.setLineWrap(true);
-        DescriptionBox.setRows(5);
-        DescriptionBox.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(DescriptionBox);
+        descriptionBox.setColumns(20);
+        descriptionBox.setLineWrap(true);
+        descriptionBox.setRows(5);
+        descriptionBox.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(descriptionBox);
 
-        javax.swing.GroupLayout DescriptionPanelLayout = new javax.swing.GroupLayout(DescriptionPanel);
-        DescriptionPanel.setLayout(DescriptionPanelLayout);
-        DescriptionPanelLayout.setHorizontalGroup(
-            DescriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout descriptionPanelLayout = new javax.swing.GroupLayout(descriptionPanel);
+        descriptionPanel.setLayout(descriptionPanelLayout);
+        descriptionPanelLayout.setHorizontalGroup(
+            descriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
         );
-        DescriptionPanelLayout.setVerticalGroup(
-            DescriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        descriptionPanelLayout.setVerticalGroup(
+            descriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
         );
 
-        TitleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        TitleLabel.setText("Task Editor");
+        titleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        titleLabel.setText("Task Editor");
 
-        SaveButton.setText("Save");
-        SaveButton.setToolTipText("");
-        SaveButton.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setText("Save");
+        saveButton.setToolTipText("");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SaveButtonActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
 
-        UserLabel.setText("[USER]");
+        userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,17 +196,17 @@ public class TaskEditor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BackButton)
-                        .addGap(406, 406, 406)
-                        .addComponent(UserLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(SaveButton))
+                        .addComponent(backButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TitleLabel)
-                            .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(titleLabel)
+                            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DescriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -199,40 +215,40 @@ public class TaskEditor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(TitleLabel)
+                        .addComponent(titleLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(DescriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(descriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(BackButton)
-                        .addComponent(SaveButton))
-                    .addComponent(UserLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(backButton)
+                        .addComponent(saveButton))
+                    .addComponent(userLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_SaveButtonActionPerformed
+    }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void NameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameFieldActionPerformed
+    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_NameFieldActionPerformed
+    }//GEN-LAST:event_nameFieldActionPerformed
 
-    private void CategoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategoryDropdownActionPerformed
+    private void categoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryDropdownActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CategoryDropdownActionPerformed
+    }//GEN-LAST:event_categoryDropdownActionPerformed
 
-    private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         new Menu().setVisible(true);
-    }//GEN-LAST:event_BackButtonActionPerformed
+    }//GEN-LAST:event_backButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -270,24 +286,26 @@ public class TaskEditor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BackButton;
-    private javax.swing.JComboBox<String> CategoryDropdown;
-    private javax.swing.JLabel CategoryLabel;
-    private javax.swing.JColorChooser ColourChooser;
-    private javax.swing.JLabel ColourLabel;
-    private javax.swing.JTextField DeadlineField;
-    private javax.swing.JLabel DeadlineFormatLabel;
-    private javax.swing.JLabel DeadlineLabel;
-    private javax.swing.JTextArea DescriptionBox;
-    private javax.swing.JPanel DescriptionPanel;
-    private javax.swing.JPanel MainPanel;
-    private javax.swing.JTextField NameField;
-    private javax.swing.JLabel NameLabel;
-    private javax.swing.JButton SaveButton;
-    private javax.swing.JTextField TimeField;
-    private javax.swing.JLabel TimeLabel;
-    private javax.swing.JLabel TitleLabel;
-    private javax.swing.JLabel UserLabel;
+    private javax.swing.JButton backButton;
+    private javax.swing.JComboBox<String> categoryDropdown;
+    private javax.swing.JLabel categoryLabel;
+    private javax.swing.JColorChooser colourChooser;
+    private javax.swing.JLabel colourLabel;
+    private javax.swing.JTextField deadlineField;
+    private javax.swing.JLabel deadlineFormatLabel;
+    private javax.swing.JLabel deadlineLabel;
+    private javax.swing.JTextArea descriptionBox;
+    private javax.swing.JPanel descriptionPanel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JLabel nameCharsUsed;
+    private javax.swing.JTextField nameField;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JTextField timeField;
+    private javax.swing.JLabel timeLabel;
+    private javax.swing.JLabel titleLabel;
+    private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
 }
