@@ -41,7 +41,7 @@ public class Login extends javax.swing.JFrame {
         newUsernameField = new javax.swing.JTextField();
         newUsernameLabel = new javax.swing.JLabel();
         newConfirmPasswordLabel = new javax.swing.JLabel();
-        newPasswordConfirmField = new javax.swing.JPasswordField();
+        newConfirmPasswordField = new javax.swing.JPasswordField();
         newPasswordLabel = new javax.swing.JLabel();
         exitButton = new javax.swing.JButton();
         loginLabel = new javax.swing.JLabel();
@@ -54,8 +54,14 @@ public class Login extends javax.swing.JFrame {
         existingUserPanel.setName("gdsg\\"); // NOI18N
 
             existingPasswordField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+            existingPasswordField.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    existingPasswordFieldActionPerformed(evt);
+                }
+            });
 
             loginButton.setText("Login");
+            loginButton.setToolTipText("Login with an existing account");
             loginButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     loginButtonActionPerformed(evt);
@@ -63,11 +69,13 @@ public class Login extends javax.swing.JFrame {
             });
 
             existingUsernameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+            existingUsernameLabel.setLabelFor(existingUsernameField);
             existingUsernameLabel.setText("Username");
 
             existingUsernameField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
             exisitingPasswordLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+            exisitingPasswordLabel.setLabelFor(existingPasswordField);
             exisitingPasswordLabel.setText("Password");
 
             javax.swing.GroupLayout existingUserPanelLayout = new javax.swing.GroupLayout(existingUserPanel);
@@ -113,6 +121,7 @@ public class Login extends javax.swing.JFrame {
             newUserPanel.setName("gdsg\\"); // NOI18N
 
                 createAccountButton.setText("Create Acount");
+                createAccountButton.setToolTipText("Creates a new account");
                 createAccountButton.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         createAccountButtonActionPerformed(evt);
@@ -124,14 +133,23 @@ public class Login extends javax.swing.JFrame {
                 newUsernameField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
                 newUsernameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+                newUsernameLabel.setLabelFor(newUsernameField);
                 newUsernameLabel.setText("Username");
 
                 newConfirmPasswordLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+                newConfirmPasswordLabel.setLabelFor(newConfirmPasswordField);
                 newConfirmPasswordLabel.setText("Confirm Password");
+                newConfirmPasswordLabel.setToolTipText("");
 
-                newPasswordConfirmField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+                newConfirmPasswordField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+                newConfirmPasswordField.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        newConfirmPasswordFieldActionPerformed(evt);
+                    }
+                });
 
                 newPasswordLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+                newPasswordLabel.setLabelFor(newPasswordField);
                 newPasswordLabel.setText("Password");
 
                 javax.swing.GroupLayout newUserPanelLayout = new javax.swing.GroupLayout(newUserPanel);
@@ -154,7 +172,7 @@ public class Login extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(newUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(newConfirmPasswordLabel)
-                            .addComponent(newPasswordConfirmField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(newConfirmPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
                 newUserPanelLayout.setVerticalGroup(
@@ -170,14 +188,14 @@ public class Login extends javax.swing.JFrame {
                         .addGroup(newUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(newUsernameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(newPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(newPasswordConfirmField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(newConfirmPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(createAccountButton)
                         .addContainerGap())
                 );
 
                 exitButton.setText("Exit");
-                exitButton.setToolTipText("");
+                exitButton.setToolTipText("Exit the program");
                 exitButton.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         exitButtonActionPerformed(evt);
@@ -274,7 +292,7 @@ public class Login extends javax.swing.JFrame {
 
         username = newUsernameField.getText().toLowerCase();
         password = newPasswordField.getText();
-        passwordConfirm = newPasswordConfirmField.getText();
+        passwordConfirm = newConfirmPasswordField.getText();
         boolean valid = false;
 
         if (!username.equals("")) {
@@ -343,6 +361,14 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
+    private void existingPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_existingPasswordFieldActionPerformed
+        loginButtonActionPerformed(evt);
+    }//GEN-LAST:event_existingPasswordFieldActionPerformed
+
+    private void newConfirmPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newConfirmPasswordFieldActionPerformed
+        createAccountButtonActionPerformed(evt);
+    }//GEN-LAST:event_newConfirmPasswordFieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -357,16 +383,24 @@ public class Login extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -389,8 +423,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton exitButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel loginLabel;
+    private javax.swing.JPasswordField newConfirmPasswordField;
     private javax.swing.JLabel newConfirmPasswordLabel;
-    private javax.swing.JPasswordField newPasswordConfirmField;
     private javax.swing.JPasswordField newPasswordField;
     private javax.swing.JLabel newPasswordLabel;
     private javax.swing.JPanel newUserPanel;
