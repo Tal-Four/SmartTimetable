@@ -5,6 +5,15 @@
  */
 package smarttimetable;
 
+import java.awt.Color;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author Adam-PC
@@ -17,6 +26,18 @@ public class TaskEditor extends javax.swing.JFrame {
     public TaskEditor() {
         initComponents();
         userLabel.setText("Logged in as: " + User.getUsername());
+
+        //Setting the combo box up
+        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            while (rs != null) {
+                rs.next();
+                categoryDropdown.addItem(rs.getString("Name"));
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
     }
 
     /**
@@ -36,13 +57,13 @@ public class TaskEditor extends javax.swing.JFrame {
         colourLabel = new javax.swing.JLabel();
         categoryLabel = new javax.swing.JLabel();
         colourChooser = new javax.swing.JColorChooser();
-        deadlineFormatLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         timeField = new javax.swing.JTextField();
         deadlineField = new javax.swing.JTextField();
         categoryDropdown = new javax.swing.JComboBox<>();
         nameCharsUsed = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         descriptionPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         descriptionBox = new javax.swing.JTextArea();
@@ -76,25 +97,30 @@ public class TaskEditor extends javax.swing.JFrame {
         categoryLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         categoryLabel.setText("Category:");
 
-        deadlineFormatLabel.setText("(dd/mm/yyyy)");
+        nameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nameFieldKeyReleased(evt);
+            }
+        });
 
-        nameField.addActionListener(new java.awt.event.ActionListener() {
+        deadlineField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameFieldActionPerformed(evt);
+                deadlineFieldActionPerformed(evt);
             }
         });
 
         categoryDropdown.setEditable(true);
-        categoryDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         categoryDropdown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryDropdownActionPerformed(evt);
             }
         });
 
-        nameCharsUsed.setText("[CHARS USED]");
+        nameCharsUsed.setText("0 out of 20 characters used");
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Enter time in hours");
+
+        jLabel2.setText("(DD/MM/YYYY) format");
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -109,20 +135,21 @@ public class TaskEditor extends javax.swing.JFrame {
                             .addComponent(nameLabel)
                             .addComponent(deadlineLabel)
                             .addComponent(categoryLabel)
-                            .addComponent(deadlineFormatLabel)
                             .addComponent(colourLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(categoryDropdown, 0, 200, Short.MAX_VALUE)
                             .addComponent(deadlineField)
                             .addComponent(timeField)
-                            .addComponent(nameField))
+                            .addComponent(nameField, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -130,10 +157,10 @@ public class TaskEditor extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nameLabel)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(timeLabel)
@@ -142,10 +169,9 @@ public class TaskEditor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deadlineLabel)
-                    .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deadlineFormatLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(categoryLabel)
                     .addComponent(categoryDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -153,7 +179,7 @@ public class TaskEditor extends javax.swing.JFrame {
                 .addComponent(colourLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(22, 22, 22))
         );
 
         descriptionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Description"));
@@ -221,7 +247,7 @@ public class TaskEditor extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(descriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(backButton)
@@ -234,21 +260,106 @@ public class TaskEditor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
+        //Attempts to create a task with given variables        
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+        float timeModified;
+
+        String taskName = nameField.getText();
+        String description = descriptionBox.getText();
+        String category = categoryDropdown.getSelectedItem().toString();
+        int colourCode = colourChooser.getColor().getRGB();
+        float timeSet = Float.parseFloat(timeField.getText());
+        Date currentDate = new Date();
+
+        Date dateDue = null;
+        try {
+            dateDue = df.parse(deadlineField.getText());
+        } catch (ParseException e) {
+            System.err.println(e);
+        }
+
+        //Looking to see if the category from the combo box is in the database and if not adding it
+        boolean categoryExists = false;
+        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
+        ResultSet rs = DatabaseHandle.query(sql);
+        int categoryID = 0;
+        try {
+            while (rs != null && !categoryExists) {
+                categoryID++;
+                rs.next();
+                if (category.equals(rs.getString("Name"))) {
+                    categoryExists = true;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        if (!categoryExists) {
+            sql = "INSERT INTO smarttimetabledb.`category` (`CategoryID`, `UserID`, `Name`) VALUES(" + categoryID + ", " + User.getUserID() + ", '" + category + "')";
+            DatabaseHandle.update(sql);
+        }
+
+        //Retrieving category modifier
+        float categoryModifier = 1;
+        sql = "SELECT Modifier FROM category WHERE CategoryID = " + categoryID + " AND UserID = " + User.getUserID();
+        rs = DatabaseHandle.query(sql);
+        try {
+            rs.next();
+            categoryModifier = rs.getFloat("Modifier");
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        timeModified = timeSet * categoryModifier;
+
+        int taskID = 0;
+        sql = "SELECT TaskID FROM task WHERE UserID = " + User.getUserID();
+        rs = DatabaseHandle.query(sql);
+        try {
+            do {
+                taskID++;
+                rs.next();
+            } while (rs.getInt("TaskID") == taskID);
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        String currentDateString = (currentDate.getYear() + 1900) + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+        String dateDueString = (dateDue.getYear() + 1900) + "-" + (dateDue.getMonth() + 1) + "-" + dateDue.getDate();
+
+        sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`) "
+                + "VALUES (" + taskID + ", '" + taskName + "', '" + description + "', " + User.getUserID() + ", " + categoryID + ", '" + currentDateString + "', '" + dateDueString + "', " + colourCode + ", " + timeSet + ", " + timeModified + ")";
+
+        DatabaseHandle.update(sql);
+        
+        this.setVisible(false);
+        new Menu().setVisible(true);
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameFieldActionPerformed
-
-    private void categoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryDropdownActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_categoryDropdownActionPerformed
-
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        //Returns back to menu screen, nothing is saved
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void nameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyReleased
+        //Telling the user how many characters they can use and restricts taskName to 20 characters
+        int length = nameField.getText().length();
+        if (length > 20) {
+            nameField.setText(nameField.getText().substring(0, 20));
+            length = nameField.getText().length();
+        }
+        nameCharsUsed.setText(length + " out of 20 characters used");
+    }//GEN-LAST:event_nameFieldKeyReleased
+
+    private void categoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryDropdownActionPerformed
+
+    }//GEN-LAST:event_categoryDropdownActionPerformed
+
+    private void deadlineFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deadlineFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deadlineFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -292,11 +403,11 @@ public class TaskEditor extends javax.swing.JFrame {
     private javax.swing.JColorChooser colourChooser;
     private javax.swing.JLabel colourLabel;
     private javax.swing.JTextField deadlineField;
-    private javax.swing.JLabel deadlineFormatLabel;
     private javax.swing.JLabel deadlineLabel;
     private javax.swing.JTextArea descriptionBox;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel nameCharsUsed;

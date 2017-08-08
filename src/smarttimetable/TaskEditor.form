@@ -61,7 +61,7 @@
                       <Component id="descriptionPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="57" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                       <Component id="backButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -104,7 +104,6 @@
                               <Component id="nameLabel" min="-2" max="-2" attributes="0"/>
                               <Component id="deadlineLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="categoryLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="deadlineFormatLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="colourLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -112,15 +111,18 @@
                               <Component id="categoryDropdown" alignment="0" pref="200" max="32767" attributes="0"/>
                               <Component id="deadlineField" alignment="0" max="32767" attributes="0"/>
                               <Component id="timeField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="nameField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="nameField" alignment="1" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="nameCharsUsed" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="nameCharsUsed" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="colourChooser" alignment="0" min="-2" pref="598" max="-2" attributes="0"/>
@@ -133,10 +135,10 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="nameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="nameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="nameCharsUsed" alignment="0" max="32767" attributes="0"/>
+                      <Component id="nameLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="nameField" alignment="0" min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -148,10 +150,9 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="deadlineLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="deadlineField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="deadlineFormatLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="categoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="categoryDropdown" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
@@ -160,7 +161,7 @@
                   <Component id="colourLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="colourChooser" min="-2" pref="373" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -208,30 +209,23 @@
         </Component>
         <Component class="javax.swing.JColorChooser" name="colourChooser">
         </Component>
-        <Component class="javax.swing.JLabel" name="deadlineFormatLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="(dd/mm/yyyy)"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JTextField" name="nameField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nameFieldActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nameFieldKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="timeField">
         </Component>
         <Component class="javax.swing.JTextField" name="deadlineField">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deadlineFieldActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="categoryDropdown">
           <Properties>
             <Property name="editable" type="boolean" value="true"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
@@ -243,12 +237,17 @@
         </Component>
         <Component class="javax.swing.JLabel" name="nameCharsUsed">
           <Properties>
-            <Property name="text" type="java.lang.String" value="[CHARS USED]"/>
+            <Property name="text" type="java.lang.String" value="0 out of 20 characters used"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel1"/>
+            <Property name="text" type="java.lang.String" value="Enter time in hours"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="(DD/MM/YYYY) format"/>
           </Properties>
         </Component>
       </SubComponents>
