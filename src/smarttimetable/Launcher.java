@@ -4,7 +4,7 @@ package smarttimetable;
  *
  * @author Adam-PC
  */
-public class SmartTimetable {
+public class Launcher {
 
     /**
      * @param args the command line arguments
@@ -17,8 +17,6 @@ public class SmartTimetable {
 
         //Brings up the first GUI element
         new Login().setVisible(true);
-        
-        
     }
 
 }
