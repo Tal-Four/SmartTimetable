@@ -24,6 +24,8 @@ public class DatabaseHandle {
             System.out.println("Database succesfully connected.");
         } catch (SQLException e) {
             System.err.println("Database connection failed: " + e);
+            System.err.println("Stopping program");
+            System.exit(0);
         }
     }
     
