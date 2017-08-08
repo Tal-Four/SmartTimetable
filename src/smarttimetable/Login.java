@@ -313,7 +313,7 @@ public class Login extends javax.swing.JFrame {
                 if (!username.equals(UsernameCheck)) {
 
                     //Looping through existing IDs until a ID without an record is found
-                    sql = "SELECT * FROM user";
+                    sql = "SELECT * FROM user ORDER BY UserID";
                     rs = DatabaseHandle.query(sql);
                     int userID = 0;
                     try {
