@@ -277,6 +277,7 @@ public class Login extends javax.swing.JFrame {
         } else {
             System.err.println("Incorrect password entered");
             valid = false;
+            new Popup("Incorrect password entered").setVisible(true);
         }
 
         //Showing next screen
@@ -342,16 +343,19 @@ public class Login extends javax.swing.JFrame {
                     //Username taken
                     System.err.println("Username taken");
                     valid = false;
+                    new Popup("Username taken").setVisible(true);
                 }
             } else {
                 //Passwords don't match
                 System.err.println("Passwords do not match");
                 valid = false;
+                new Popup("Passwords do not match").setVisible(true);
             }
         } else {
             //No username entered
             System.err.println("No username entered");
             valid = false;
+            new Popup("No username entered").setVisible(true);
         }
 
         //Displaying next screen
