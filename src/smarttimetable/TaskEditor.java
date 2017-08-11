@@ -5,13 +5,11 @@
  */
 package smarttimetable;
 
-import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -103,18 +101,7 @@ public class TaskEditor extends javax.swing.JFrame {
             }
         });
 
-        deadlineField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deadlineFieldActionPerformed(evt);
-            }
-        });
-
         categoryDropdown.setEditable(true);
-        categoryDropdown.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                categoryDropdownActionPerformed(evt);
-            }
-        });
 
         nameCharsUsed.setText("0 out of 20 characters used");
 
@@ -167,10 +154,11 @@ public class TaskEditor extends javax.swing.JFrame {
                     .addComponent(timeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deadlineLabel)
-                    .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deadlineLabel)
+                        .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(categoryLabel)
@@ -259,28 +247,35 @@ public class TaskEditor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Attempts to create a task with given variables 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        //Attempts to create a task with given variables        
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
         float timeModified;
 
+        //Retrieving variable values from GUI
         String taskName = nameField.getText();
         String description = descriptionBox.getText();
         String category = categoryDropdown.getSelectedItem().toString();
+        String dateDueText = deadlineField.getText();
         int colourCode = colourChooser.getColor().getRGB();
         float timeSet = Float.parseFloat(timeField.getText());
-        Date currentDate = new Date();
+        //Date currentDate = new Date();
 
+        Task newTask = new Task();
+        newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
+
+        //Converting text to date
+        /*
         Date dateDue = null;
         try {
             dateDue = df.parse(deadlineField.getText());
         } catch (ParseException e) {
             System.err.println(e);
         }
-
-        //Looking to see if the category from the combo box is in the database and if not adding it
+         */
+        //Looking to see if the category from the combo box is in the database and if not adding it and retrieving category modifier
         boolean categoryExists = false;
+        float categoryModifier = 1;
         String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
         int categoryID = 0;
@@ -289,6 +284,7 @@ public class TaskEditor extends javax.swing.JFrame {
                 categoryID++;
                 rs.next();
                 if (category.equals(rs.getString("Name"))) {
+                    categoryModifier = rs.getFloat("Modifier");
                     categoryExists = true;
                 }
             }
@@ -298,23 +294,14 @@ public class TaskEditor extends javax.swing.JFrame {
         if (!categoryExists) {
             sql = "INSERT INTO smarttimetabledb.`category` (`CategoryID`, `UserID`, `Name`) VALUES(" + categoryID + ", " + User.getUserID() + ", '" + category + "')";
             DatabaseHandle.update(sql);
-        }
-
-        //Retrieving category modifier
-        float categoryModifier = 1;
-        sql = "SELECT Modifier FROM category WHERE CategoryID = " + categoryID + " AND UserID = " + User.getUserID();
-        rs = DatabaseHandle.query(sql);
-        try {
-            rs.next();
-            categoryModifier = rs.getFloat("Modifier");
-        } catch (SQLException e) {
-            System.err.println(e);
+            new Popup("Category " + category + " created").setVisible(true);
         }
 
         timeModified = timeSet * categoryModifier;
 
+        //Finidng a free taskID
         int taskID = 0;
-        sql = "SELECT TaskID FROM task WHERE UserID = " + User.getUserID();
+        sql = "SELECT TaskID FROM task WHERE UserID = " + User.getUserID() + " ORDER BY TaskID";
         rs = DatabaseHandle.query(sql);
         try {
             do {
@@ -325,14 +312,17 @@ public class TaskEditor extends javax.swing.JFrame {
             System.err.println(e);
         }
 
+        /*
         String currentDateString = (currentDate.getYear() + 1900) + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
         String dateDueString = (dateDue.getYear() + 1900) + "-" + (dateDue.getMonth() + 1) + "-" + dateDue.getDate();
-
+        
         sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`) "
                 + "VALUES (" + taskID + ", '" + taskName + "', '" + description + "', " + User.getUserID() + ", " + categoryID + ", '" + currentDateString + "', '" + dateDueString + "', " + colourCode + ", " + timeSet + ", " + timeModified + ")";
-
-        DatabaseHandle.update(sql);
+        */
         
+        DatabaseHandle.update(sql);
+
+        new Popup("Task " + taskName + " created").setVisible(true);
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -352,14 +342,6 @@ public class TaskEditor extends javax.swing.JFrame {
         }
         nameCharsUsed.setText(length + " out of 20 characters used");
     }//GEN-LAST:event_nameFieldKeyReleased
-
-    private void categoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryDropdownActionPerformed
-
-    }//GEN-LAST:event_categoryDropdownActionPerformed
-
-    private void deadlineFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deadlineFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deadlineFieldActionPerformed
 
     /**
      * @param args the command line arguments
