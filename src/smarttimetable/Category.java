@@ -33,18 +33,10 @@ public class Category {
             System.err.println(e);
         }
         if (!categoryExists) {
-            sql = "SELECT CategoryID FROM category WHERE UserID = " + User.getUserID() + " ORDER BY CategoryID";
-            rs = DatabaseHandle.query(sql);
-            this.categoryID = 0;
-            try {
-                do {
-                    this.categoryID++;
-                    rs.next();
-                } while (rs.getInt("CategoryID") == this.categoryID);
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
 
+            this.categoryID = DatabaseHandle.createID("category", "CategoryID");
+            this.modifier = 1;
+            this.taskCount = 0;
             sql = "INSERT INTO smarttimetabledb.`category` (`CategoryID`, `UserID`, `Name`) VALUES(" + this.categoryID + ", " + User.getUserID() + ", '" + name + "')";
             DatabaseHandle.update(sql);
             new Popup("Category " + name + " created").setVisible(true);
@@ -53,7 +45,54 @@ public class Category {
     }
 
     public Category(int categoryID) {
-
+        this.categoryID = categoryID;
+        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            while (rs != null) {
+                rs.next();
+                if (this.categoryID == (rs.getInt("CategoryID"))) {
+                    this.name = rs.getString("Name");
+                    this.modifier = rs.getFloat("Modifier");
+                    this.taskCount = rs.getInt("TasksCompleted");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="Getters and setters">                          
+    public int getCategoryID() {
+        return this.categoryID;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public float getModifier() {
+        return this.modifier;
+    }
+
+    public int taskCount() {
+        return this.taskCount;
+    }
+
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setModifier(float modifier) {
+        this.modifier = modifier;
+    }
+
+    public void setTaskCount(int taskCount) {
+        this.taskCount = taskCount;
+    }
+    // </editor-fold>
 }
