@@ -6,8 +6,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -15,23 +13,37 @@ import java.util.logging.Logger;
  */
 public class Task {
 
-    private int taskID, userID, categoryID, colourCode;
+    private int taskID, categoryID, colourCode;
     private float timeSet, timeModified, timeUsed;
     private String description, name, dateSet, dateDue;
 
     public Task() {
-
     }
 
     public void createNewTask(String name, String description, String category, String dateDueText, int colourCode, float timeSet) {
+        Category selectedCategory = new Category(category);
+        this.categoryID = selectedCategory.getCategoryID();
         this.name = name;
         this.description = description;
-        this.categoryID = findCategoryID(category);
         this.dateDue = dateTextToSQLFormat(dateDueText);
         this.colourCode = colourCode;
         this.timeSet = timeSet;
+        this.taskID = DatabaseHandle.createID("task", "TaskID");
+        this.timeModified = this.timeSet * selectedCategory.getModifier();
+        Date currentDate = new Date();
+        this.dateSet = dateToSQLFormat(currentDate);
+        this.timeUsed = 0;
 
+        String sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`) "
+                + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.categoryID + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " +this.timeModified + ")";
+
+        DatabaseHandle.update(sql);
         
+        new Popup("Task " + this.name + " created.").setVisible(true); 
+    }
+    
+    public void readTaskFromDB(){
+        //IMPLEMENT
     }
 
     //Converting date object to SQL date format
@@ -49,32 +61,5 @@ public class Task {
             System.err.println(e);
         }
         return dateToSQLFormat(date);
-    }
-
-    private int findCategoryID(String category) {
-        int categoryID;
-        
-        boolean categoryExists = false;
-        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
-        ResultSet rs = DatabaseHandle.query(sql);
-        categoryID = 0;
-        try {
-            while (rs != null && !categoryExists) {
-                categoryID++;
-                rs.next();
-                if (category.equals(rs.getString("Name"))) {
-                    categoryExists = true;
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        if (!categoryExists) {
-            sql = "INSERT INTO smarttimetabledb.`category` (`CategoryID`, `UserID`, `Name`) VALUES(" + categoryID + ", " + User.getUserID() + ", '" + category + "')";
-            DatabaseHandle.update(sql);
-            new Popup("Category " + category + " created").setVisible(true);
-        }
-        
-        return categoryID;
     }
 }
