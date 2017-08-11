@@ -28,7 +28,7 @@ public class DatabaseHandle {
             System.exit(0);
         }
     }
-    
+
     //Runs an SQL query that returns a result set
     public static ResultSet query(String sql) {
 
@@ -53,5 +53,21 @@ public class DatabaseHandle {
             System.err.println("Update failed: " + e);
         }
         return 0;
+    }
+
+    //Creates an ID for the specified table
+    public static int createID(String table, String idColumnName) {
+        int newID = 0;
+        String sql = "SELECT " + idColumnName + " FROM " + table + " WHERE UserID = " + User.getUserID() + " ORDER BY " + idColumnName;
+        ResultSet rs = query(sql);
+        try {
+            do {
+                newID++;
+                rs.next();
+            } while (rs.getInt(idColumnName) == newID);
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return newID;
     }
 }
