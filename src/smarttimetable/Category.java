@@ -13,6 +13,7 @@ public class Category {
     private int categoryID, taskCount;
     private float modifier;
 
+    //Constructor when given a string name
     public Category(String name) {
         this.name = name;
 
@@ -44,6 +45,7 @@ public class Category {
 
     }
 
+    //Constructor when given a categoryID
     public Category(int categoryID) {
         this.categoryID = categoryID;
         String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
