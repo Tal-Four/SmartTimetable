@@ -23,15 +23,15 @@ public class DatabaseHandle {
             connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
             System.out.println("Database succesfully connected.");
         } catch (SQLException e) {
+            //Stops program as couldn't connect to database
             System.err.println("Database connection failed: " + e);
             System.err.println("Stopping program");
             System.exit(0);
         }
     }
 
-    //Runs an SQL query that returns a result set
+    //Runs an query with the given SQL that returns a result set
     public static ResultSet query(String sql) {
-
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -42,9 +42,8 @@ public class DatabaseHandle {
         return null;
     }
 
-    //Runs an SQL update
+    //Runs an update with the given SQL that returns a result set
     public static int update(String sql) {
-
         try {
             Statement stmt = connection.createStatement();
             int rows = stmt.executeUpdate(sql);
