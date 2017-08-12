@@ -118,8 +118,8 @@
                               <Component id="nameCharsUsed" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="timeNeededFormatLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="deadlineFormatLabel" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
@@ -144,11 +144,11 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="timeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="timeField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="timeNeededFormatLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="deadlineFormatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="deadlineLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="deadlineField" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -236,12 +236,12 @@
             <Property name="text" type="java.lang.String" value="0 out of 20 characters used"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="timeNeededFormatLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Enter time in hours"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="deadlineFormatLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="(DD/MM/YYYY) format"/>
           </Properties>

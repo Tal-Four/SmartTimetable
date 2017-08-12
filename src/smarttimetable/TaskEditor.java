@@ -5,6 +5,7 @@
  */
 package smarttimetable;
 
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,10 +15,45 @@ import java.sql.SQLException;
  */
 public class TaskEditor extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TaskEditor
-     */
+    boolean edit;
+    String oldTaskName;
+
+    // Creates new form TaskEditor
     public TaskEditor() {
+        initialise();
+        edit = false;
+    }
+
+    // Creates new form TaskEditor with given variables
+    public TaskEditor(String taskName) {
+        initialise();
+        edit = true;
+        oldTaskName = taskName;
+
+        //Setting the values of the GUI to the selected tasks values
+        Task task = new Task();
+        task.readTaskFromDB(taskName);
+        nameField.setText(taskName);
+
+        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID() + " AND CategoryID = " + task.getCategoryID();
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            rs.next();
+            categoryDropdown.setSelectedItem(rs.getString("Name"));
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        String dateText = task.getDateDue();
+        dateText = dateText.substring(8, 10) + "/" + dateText.substring(5, 7) + "/" + dateText.substring(0, 4);
+        deadlineField.setText(dateText);
+        descriptionBox.setText(task.getDescription());
+        timeField.setText(task.getTimeSet() + "");
+        colourChooser.setColor(new Color(task.getColourCode()));
+
+    }
+
+    private void initialise() {
         initComponents();
 
         //Displays the user logged in
@@ -58,8 +94,8 @@ public class TaskEditor extends javax.swing.JFrame {
         deadlineField = new javax.swing.JTextField();
         categoryDropdown = new javax.swing.JComboBox<>();
         nameCharsUsed = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        timeNeededFormatLabel = new javax.swing.JLabel();
+        deadlineFormatLabel = new javax.swing.JLabel();
         descriptionPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         descriptionBox = new javax.swing.JTextArea();
@@ -103,9 +139,9 @@ public class TaskEditor extends javax.swing.JFrame {
 
         nameCharsUsed.setText("0 out of 20 characters used");
 
-        jLabel1.setText("Enter time in hours");
+        timeNeededFormatLabel.setText("Enter time in hours");
 
-        jLabel2.setText("(DD/MM/YYYY) format");
+        deadlineFormatLabel.setText("(DD/MM/YYYY) format");
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -132,8 +168,8 @@ public class TaskEditor extends javax.swing.JFrame {
                             .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
+                                    .addComponent(timeNeededFormatLabel)
+                                    .addComponent(deadlineFormatLabel))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -150,10 +186,10 @@ public class TaskEditor extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(timeLabel)
                     .addComponent(timeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(timeNeededFormatLabel))
                 .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
+                    .addComponent(deadlineFormatLabel)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(deadlineLabel)
                         .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -248,6 +284,8 @@ public class TaskEditor extends javax.swing.JFrame {
     //Attempts to create a task with given variables 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
 
+        
+        
         //Retrieving variable values from GUI
         boolean valid = true;
         String taskName = nameField.getText();
@@ -256,6 +294,19 @@ public class TaskEditor extends javax.swing.JFrame {
         String dateDueText = deadlineField.getText();
         int colourCode = colourChooser.getColor().getRGB();
         float timeSet = 0;
+
+        //<editor-fold defaultstate="collapsed" desc=" Valid checks ">
+        //Checks to see if name is empty
+        if (taskName.equals("")) {
+            valid = false;
+            new Popup("No task name entered").setVisible(true);
+        }
+
+        //Checks to see if category is empty
+        if (category.equals("")) {
+            valid = false;
+            new Popup("No category entered").setVisible(true);
+        }
 
         //Attemps to read the float. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
         try {
@@ -267,15 +318,20 @@ public class TaskEditor extends javax.swing.JFrame {
         }
 
         //Checks to see if date entered is in the correct format (DD/MM/YYYY)
-        if(!(dateDueText.length() == 10 && dateDueText.charAt(2) == '/' && dateDueText.charAt(5) == '/')) {
+        if (!(dateDueText.length() == 10 && dateDueText.charAt(2) == '/' && dateDueText.charAt(5) == '/')) {
             valid = false;
             new Popup("Invalid date format").setVisible(true);
-        }
-        
+        }//</editor-fold>
+
         //Creates the task and changes screen back to the menu if the variables are valid
         if (valid) {
             Task newTask = new Task();
-            newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
+            if (edit) {
+                newTask.readTaskFromDB(oldTaskName);
+                newTask.editTask(taskName, description, category, dateDueText, colourCode, timeSet, newTask.getTaskID());
+            } else {
+                newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
+            }
             this.setVisible(false);
             new Menu().setVisible(true);
         }
@@ -332,7 +388,7 @@ public class TaskEditor extends javax.swing.JFrame {
         });
     }
 
-    //<editor-fold defaultstate="collapsed" desc=" jFrame variables">
+    //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JComboBox<String> categoryDropdown;
@@ -340,11 +396,10 @@ public class TaskEditor extends javax.swing.JFrame {
     private javax.swing.JColorChooser colourChooser;
     private javax.swing.JLabel colourLabel;
     private javax.swing.JTextField deadlineField;
+    private javax.swing.JLabel deadlineFormatLabel;
     private javax.swing.JLabel deadlineLabel;
     private javax.swing.JTextArea descriptionBox;
     private javax.swing.JPanel descriptionPanel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel nameCharsUsed;
@@ -353,6 +408,7 @@ public class TaskEditor extends javax.swing.JFrame {
     private javax.swing.JButton saveButton;
     private javax.swing.JTextField timeField;
     private javax.swing.JLabel timeLabel;
+    private javax.swing.JLabel timeNeededFormatLabel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
