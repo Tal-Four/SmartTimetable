@@ -244,6 +244,7 @@ public class Login extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
+    //Attempts to log in the user with the details provided
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
 
         String username, password;
@@ -287,6 +288,7 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
+    //Attemps to create a new account
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
 
         String username, password, passwordConfirm;
@@ -365,10 +367,12 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
+    //Runs login when enter is pressed in the existingPasswordField
     private void existingPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_existingPasswordFieldActionPerformed
         loginButtonActionPerformed(evt);
     }//GEN-LAST:event_existingPasswordFieldActionPerformed
 
+    //Runs createAccount when enter is pressed in the newConfirmPasswordField
     private void newConfirmPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newConfirmPasswordFieldActionPerformed
         createAccountButtonActionPerformed(evt);
     }//GEN-LAST:event_newConfirmPasswordFieldActionPerformed
