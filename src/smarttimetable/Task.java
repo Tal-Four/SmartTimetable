@@ -20,6 +20,7 @@ public class Task {
     public Task() {
     }
 
+    //Method when called adds a task to the database
     public void createNewTask(String name, String description, String category, String dateDueText, int colourCode, float timeSet) {
         Category selectedCategory = new Category(category);
         this.categoryID = selectedCategory.getCategoryID();
@@ -35,15 +36,32 @@ public class Task {
         this.timeUsed = 0;
 
         String sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`) "
-                + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.categoryID + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " +this.timeModified + ")";
+                + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.categoryID + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " + this.timeModified + ")";
 
         DatabaseHandle.update(sql);
-        
-        new Popup("Task " + this.name + " created.").setVisible(true); 
+
+        new Popup("Task " + this.name + " created.").setVisible(true);
     }
-    
-    public void readTaskFromDB(){
-        //IMPLEMENT
+
+    //Method that reads a task from the database
+    public void readTaskFromDB(int taskID) {
+        this.taskID = taskID;
+        String sql = "SELECT * FROM task WHERE TaskID = " + this.taskID + " AND UserID = " + User.getUserID();
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            rs.next();
+            this.categoryID = rs.getInt("CategoryID");
+            this.colourCode = rs.getInt("Colour");
+            this.timeSet = rs.getFloat("TimeSet");
+            this.timeModified = rs.getFloat("TimeModified");
+            this.timeUsed = rs.getFloat("timeUsed");
+            this.description = rs.getString("Description");
+            this.name = rs.getString("Name");
+            this.dateSet = rs.getString("DateSet");
+            this.dateDue = rs.getString("DateDue");
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
     }
 
     //Converting date object to SQL date format
@@ -62,4 +80,45 @@ public class Task {
         }
         return dateToSQLFormat(date);
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="Getters">                          
+    public int getTaskID(){
+        return this.taskID;
+    }
+    
+    public int getCategoryID(){
+        return this.categoryID;
+    }
+    
+    public int getColourCode(){
+        return this.colourCode;
+    }
+    
+    public float getTimeSet(){
+        return this.timeSet;
+    }
+    
+    public float getTimeModified(){
+        return this.timeModified;
+    }
+    
+    public float getTimeUsed(){
+        return this.timeUsed;
+    }
+    
+    public String getDescription(){
+        return this.description;
+    }
+    
+    public String getName(){
+        return this.name;
+    }
+    
+    public String getDateSet(){
+        return this.dateSet;
+    }
+    
+    public String getDateDue(){
+        return this.dateDue;
+    } // </editor-fold>
 }
