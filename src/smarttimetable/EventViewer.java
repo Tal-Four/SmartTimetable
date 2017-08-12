@@ -72,15 +72,8 @@ public class EventViewer extends javax.swing.JFrame {
 
         SortLabel.setText("Sort By:");
 
-        SortDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         EventPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Events"));
 
-        TaskList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(TaskList);
 
         javax.swing.GroupLayout EventPanelLayout = new javax.swing.GroupLayout(EventPanel);
@@ -225,7 +218,7 @@ public class EventViewer extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
     private javax.swing.JTextArea DescriptionBox;
