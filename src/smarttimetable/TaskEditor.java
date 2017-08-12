@@ -7,10 +7,6 @@ package smarttimetable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  *
@@ -250,8 +246,6 @@ public class TaskEditor extends javax.swing.JFrame {
     //Attempts to create a task with given variables 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
 
-        float timeModified;
-
         //Retrieving variable values from GUI
         String taskName = nameField.getText();
         String description = descriptionBox.getText();
@@ -259,72 +253,9 @@ public class TaskEditor extends javax.swing.JFrame {
         String dateDueText = deadlineField.getText();
         int colourCode = colourChooser.getColor().getRGB();
         float timeSet = Float.parseFloat(timeField.getText());
-        //Date currentDate = new Date();
 
         Task newTask = new Task();
         newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
-
-        //Converting text to date
-        /*
-        Date dateDue = null;
-        try {
-            dateDue = df.parse(deadlineField.getText());
-        } catch (ParseException e) {
-            System.err.println(e);
-        }
-         */
-        //Looking to see if the category from the combo box is in the database and if not adding it and retrieving category modifier
-        boolean categoryExists = false;
-        float categoryModifier = 1;
-        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
-        ResultSet rs = DatabaseHandle.query(sql);
-        int categoryID = 0;
-        try {
-            while (rs != null && !categoryExists) {
-                categoryID++;
-                rs.next();
-                if (category.equals(rs.getString("Name"))) {
-                    categoryModifier = rs.getFloat("Modifier");
-                    categoryExists = true;
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        if (!categoryExists) {
-            sql = "INSERT INTO smarttimetabledb.`category` (`CategoryID`, `UserID`, `Name`) VALUES(" + categoryID + ", " + User.getUserID() + ", '" + category + "')";
-            DatabaseHandle.update(sql);
-            new Popup("Category " + category + " created").setVisible(true);
-        }
-
-        timeModified = timeSet * categoryModifier;
-
-        //Finidng a free taskID
-        int taskID = 0;
-        sql = "SELECT TaskID FROM task WHERE UserID = " + User.getUserID() + " ORDER BY TaskID";
-        rs = DatabaseHandle.query(sql);
-        try {
-            do {
-                taskID++;
-                rs.next();
-            } while (rs.getInt("TaskID") == taskID);
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-
-        /*
-        String currentDateString = (currentDate.getYear() + 1900) + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
-        String dateDueString = (dateDue.getYear() + 1900) + "-" + (dateDue.getMonth() + 1) + "-" + dateDue.getDate();
-        
-        sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`) "
-                + "VALUES (" + taskID + ", '" + taskName + "', '" + description + "', " + User.getUserID() + ", " + categoryID + ", '" + currentDateString + "', '" + dateDueString + "', " + colourCode + ", " + timeSet + ", " + timeModified + ")";
-        */
-        
-        DatabaseHandle.update(sql);
-
-        new Popup("Task " + taskName + " created").setVisible(true);
-        this.setVisible(false);
-        new Menu().setVisible(true);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -332,9 +263,9 @@ public class TaskEditor extends javax.swing.JFrame {
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
-
+       
+    //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters
     private void nameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyReleased
-        //Telling the user how many characters they can use and restricts taskName to 20 characters
         int length = nameField.getText().length();
         if (length > 20) {
             nameField.setText(nameField.getText().substring(0, 20));
