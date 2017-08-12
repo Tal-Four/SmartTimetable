@@ -19,6 +19,8 @@ public class TaskEditor extends javax.swing.JFrame {
      */
     public TaskEditor() {
         initComponents();
+        
+        //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
 
         //Setting the combo box up
@@ -257,9 +259,9 @@ public class TaskEditor extends javax.swing.JFrame {
         Task newTask = new Task();
         newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
     }//GEN-LAST:event_saveButtonActionPerformed
-
+        
+    //Returns back to menu screen, nothing is saved
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        //Returns back to menu screen, nothing is saved
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
@@ -309,6 +311,7 @@ public class TaskEditor extends javax.swing.JFrame {
         });
     }
 
+    //<editor-fold defaultstate="collapsed" desc=" jFrame variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JComboBox<String> categoryDropdown;
@@ -332,4 +335,5 @@ public class TaskEditor extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
+    //</editor-fold>
 }
