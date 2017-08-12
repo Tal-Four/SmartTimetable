@@ -64,7 +64,7 @@ public class Category {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Getters and setters">                          
+    // <editor-fold defaultstate="collapsed" desc=" Getters and setters ">                          
     public int getCategoryID() {
         return this.categoryID;
     }
