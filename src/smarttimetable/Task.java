@@ -81,7 +81,7 @@ public class Task {
         return dateToSQLFormat(date);
     }
     
-    // <editor-fold defaultstate="collapsed" desc="Getters">                          
+    // <editor-fold defaultstate="collapsed" desc=" Getters ">                          
     public int getTaskID(){
         return this.taskID;
     }
