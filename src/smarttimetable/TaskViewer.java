@@ -5,6 +5,10 @@
  */
 package smarttimetable;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author Adam-PC
@@ -17,6 +21,7 @@ public class TaskViewer extends javax.swing.JFrame {
     public TaskViewer() {
         initComponents();
         userLabel.setText("Logged in as: " + User.getUsername());
+        loadTasks("Name");
     }
 
     /**
@@ -64,7 +69,7 @@ public class TaskViewer extends javax.swing.JFrame {
         loginLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         loginLabel.setText("Task Viewer");
 
-        editButton.setText("Edit");
+        editButton.setText("Edit Selected");
         editButton.setToolTipText("Edit the selected task");
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,7 +145,7 @@ public class TaskViewer extends javax.swing.JFrame {
                         .addComponent(sortLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(editButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -163,10 +168,11 @@ public class TaskViewer extends javax.swing.JFrame {
                     .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(taskPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backButton)
-                    .addComponent(exitButton)
-                    .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(userLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(backButton)
+                        .addComponent(exitButton)))
                 .addContainerGap())
         );
 
@@ -186,6 +192,23 @@ public class TaskViewer extends javax.swing.JFrame {
         this.setVisible(false);
         new TaskEditor().setVisible(true);
     }//GEN-LAST:event_editButtonActionPerformed
+
+    //Sets the taskList to the user's tasks given an order (eg. alphabetical)
+    public void loadTasks(String order) {
+        DefaultListModel dlm = new DefaultListModel();
+        String sql = "SELECT Name FROM task WHERE UserID = " + User.getUserID() + " ORDER BY " + order;
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            do {
+                rs.next();
+                dlm.addElement(rs.getString("Name"));
+            } while (rs != null);
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        taskList.setModel(dlm);
+    }
 
     /**
      * @param args the command line arguments
@@ -222,6 +245,7 @@ public class TaskViewer extends javax.swing.JFrame {
         });
     }
 
+    //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JTextArea descriptionBox;
@@ -237,4 +261,5 @@ public class TaskViewer extends javax.swing.JFrame {
     private javax.swing.JPanel taskPanel;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
+    //</editor-fold>
 }
