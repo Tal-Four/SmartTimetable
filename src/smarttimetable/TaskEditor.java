@@ -19,7 +19,7 @@ public class TaskEditor extends javax.swing.JFrame {
      */
     public TaskEditor() {
         initComponents();
-        
+
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
 
@@ -249,23 +249,44 @@ public class TaskEditor extends javax.swing.JFrame {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
 
         //Retrieving variable values from GUI
+        boolean valid = true;
         String taskName = nameField.getText();
         String description = descriptionBox.getText();
         String category = categoryDropdown.getSelectedItem().toString();
         String dateDueText = deadlineField.getText();
         int colourCode = colourChooser.getColor().getRGB();
-        float timeSet = Float.parseFloat(timeField.getText());
+        float timeSet = 0;
 
-        Task newTask = new Task();
-        newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
-    }//GEN-LAST:event_saveButtonActionPerformed
+        //Attemps to read the float. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
+        try {
+            timeSet = Float.parseFloat(timeField.getText());
+        } catch (Exception e) {
+            System.err.println(e);
+            valid = false;
+            new Popup("Invalid time set").setVisible(true);
+        }
+
+        //Checks to see if date entered is in the correct format (DD/MM/YYYY)
+        if(!(dateDueText.length() == 10 && dateDueText.charAt(2) == '/' && dateDueText.charAt(5) == '/')) {
+            valid = false;
+            new Popup("Invalid date format").setVisible(true);
+        }
         
+        //Creates the task and changes screen back to the menu if the variables are valid
+        if (valid) {
+            Task newTask = new Task();
+            newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
+            this.setVisible(false);
+            new Menu().setVisible(true);
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
     //Returns back to menu screen, nothing is saved
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
-       
+
     //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters
     private void nameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyReleased
         int length = nameField.getText().length();
