@@ -8,6 +8,7 @@ package smarttimetable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -47,11 +48,12 @@ public class TaskViewer extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         descriptionBox = new javax.swing.JTextArea();
         deleteButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        categoryLabel = new javax.swing.JLabel();
+        dateSetLabel = new javax.swing.JLabel();
+        dateDueLabel = new javax.swing.JLabel();
+        timeAllottedLabel = new javax.swing.JLabel();
+        timeUsedLabel = new javax.swing.JLabel();
+        completeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -149,15 +151,17 @@ public class TaskViewer extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Category:");
+        categoryLabel.setText("Category:");
 
-        jLabel2.setText("Date Set:");
+        dateSetLabel.setText("Date Set:");
 
-        jLabel3.setText("Date Due:");
+        dateDueLabel.setText("Date Due:");
 
-        jLabel4.setText("Time Allotted:");
+        timeAllottedLabel.setText("Time Allotted:");
 
-        jLabel5.setText("Time Used:");
+        timeUsedLabel.setText("Time Used:");
+
+        completeButton.setText("Complete");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -170,7 +174,7 @@ public class TaskViewer extends javax.swing.JFrame {
                         .addComponent(backButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(21, 21, 21)
                         .addComponent(exitButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(loginLabel)
@@ -182,17 +186,24 @@ public class TaskViewer extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(taskPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addComponent(completeButton)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(editButton)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(deleteButton)))
+                                            .addComponent(categoryLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(dateSetLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(dateDueLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(timeAllottedLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(timeUsedLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -209,19 +220,20 @@ public class TaskViewer extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)
+                        .addComponent(categoryLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
+                        .addComponent(dateSetLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
+                        .addComponent(dateDueLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
+                        .addComponent(timeAllottedLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
+                        .addComponent(timeUsedLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(editButton)
-                            .addComponent(deleteButton))))
+                            .addComponent(deleteButton)
+                            .addComponent(completeButton)
+                            .addComponent(editButton))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(userLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -255,12 +267,30 @@ public class TaskViewer extends javax.swing.JFrame {
         loadTasks(sortDropdown.getSelectedItem().toString());
     }//GEN-LAST:event_sortDropdownActionPerformed
 
+    //Deletes the selected task if the user confirms the choice
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int yesNo = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + taskList.getSelectedValue(), "Delete task", JOptionPane.YES_NO_OPTION);
+        if (yesNo == 0) {
+            Task task = new Task();
+            task.readTaskFromDB(taskList.getSelectedValue());
+            String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + task.getTaskID();
+            DatabaseHandle.update(sql);
+            loadTasks(sortDropdown.getSelectedItem().toString());
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    //Displays relevant details when the user selects a task
     private void taskListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taskListMouseClicked
-        // TODO add your handling code here:
+        Task selectedTask = new Task();
+        selectedTask.readTaskFromDB(taskList.getSelectedValue());
+        Category category = new Category(selectedTask.getCategoryID());
+
+        categoryLabel.setText("Category: " + category.getName());
+        dateDueLabel.setText("Date Due: " + selectedTask.sqlDateToTextFormat(selectedTask.getDateDue()));
+        dateSetLabel.setText("Date Set: " + selectedTask.sqlDateToTextFormat(selectedTask.getDateSet()));
+        timeAllottedLabel.setText("Time Allotted: " + selectedTask.getTimeModified());
+        timeUsedLabel.setText("Time Used: " + selectedTask.getTimeUsed());
+        descriptionBox.setText(selectedTask.getDescription());
     }//GEN-LAST:event_taskListMouseClicked
 
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
@@ -318,16 +348,15 @@ public class TaskViewer extends javax.swing.JFrame {
     //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
+    private javax.swing.JLabel categoryLabel;
+    private javax.swing.JButton completeButton;
+    private javax.swing.JLabel dateDueLabel;
+    private javax.swing.JLabel dateSetLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextArea descriptionBox;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JButton editButton;
     private javax.swing.JButton exitButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel loginLabel;
@@ -335,6 +364,8 @@ public class TaskViewer extends javax.swing.JFrame {
     private javax.swing.JLabel sortLabel;
     private javax.swing.JList<String> taskList;
     private javax.swing.JPanel taskPanel;
+    private javax.swing.JLabel timeAllottedLabel;
+    private javax.swing.JLabel timeUsedLabel;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
     //</editor-fold>
