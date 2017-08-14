@@ -44,9 +44,7 @@ public class TaskEditor extends javax.swing.JFrame {
             System.err.println(e);
         }
 
-        String dateText = task.getDateDue();
-        dateText = dateText.substring(8, 10) + "/" + dateText.substring(5, 7) + "/" + dateText.substring(0, 4);
-        deadlineField.setText(dateText);
+        deadlineField.setText(task.sqlDateToTextFormat(task.getDateDue()));
         descriptionBox.setText(task.getDescription());
         timeField.setText(task.getTimeSet() + "");
         colourChooser.setColor(new Color(task.getColourCode()));
