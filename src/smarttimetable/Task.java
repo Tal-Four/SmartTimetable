@@ -117,6 +117,11 @@ public class Task {
         return dateToSQLFormat(date);
     }
 
+    //Formats the string from YYYY-MM-DD to DD/MM/YYYY
+    public String sqlDateToTextFormat(String sqlDate) {
+        return sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4);
+    }
+
     // <editor-fold defaultstate="collapsed" desc=" Getters ">                          
     public int getTaskID() {
         return this.taskID;
