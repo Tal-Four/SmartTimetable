@@ -87,7 +87,7 @@ public class TaskViewer extends javax.swing.JFrame {
 
         sortLabel.setText("Sort By:");
 
-        sortDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Date set", "Date due" }));
+        sortDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Date set", "Date due", "Category", "Time allotted", "Time used" }));
         sortDropdown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sortDropdownActionPerformed(evt);
@@ -237,9 +237,9 @@ public class TaskViewer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(userLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(backButton)
-                        .addComponent(exitButton)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(exitButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(backButton)))
                 .addContainerGap())
         );
 
@@ -296,7 +296,33 @@ public class TaskViewer extends javax.swing.JFrame {
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
     private void loadTasks(String order) {
         DefaultListModel dlm = new DefaultListModel();
-        String sql = "SELECT Name FROM task WHERE UserID = " + User.getUserID() + " ORDER BY " + order;
+        String sql = null;
+        if (!order.equals("Category")) {
+
+            switch (order) {
+                case ("Name"):
+                    order = "Name";
+                    break;
+                case ("Date set"):
+                    order = "DateSet";
+                    break;
+                case ("Date due"):
+                    order = "DateDue";
+                    break;
+                case ("Time allotted"):
+                    order = "TimeModified";
+                    break;
+                case ("Time used"):
+                    order = "TimeUsed";
+                    break;
+                default:
+                    order = "Name";
+                    break;
+            }
+            sql = "SELECT Name FROM task WHERE UserID = " + User.getUserID() + " ORDER BY " + order;
+        } else {
+            sql = "SELECT task.Name FROM task, category WHERE task.UserID = " + User.getUserID() + " AND category.UserID = task.UserID AND category.CategoryID = task.CategoryID ORDER BY category.Name";
+        }
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             do {
