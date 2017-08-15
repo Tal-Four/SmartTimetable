@@ -63,8 +63,7 @@ public class DatabaseHandle {
         try {
             do {
                 newID++;
-                rs.next();
-            } while (rs.getInt(idColumnName) == newID);
+            } while (rs.next() && rs.getInt(idColumnName) == newID);
         } catch (SQLException e) {
             System.err.println(e);
         }

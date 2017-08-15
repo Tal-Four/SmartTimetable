@@ -64,16 +64,17 @@ public class Task {
         String sql = "SELECT * FROM task WHERE TaskID = " + this.taskID + " AND UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
         try {
-            rs.next();
-            this.categoryID = rs.getInt("CategoryID");
-            this.colourCode = rs.getInt("Colour");
-            this.timeSet = rs.getFloat("TimeSet");
-            this.timeModified = rs.getFloat("TimeModified");
-            this.timeUsed = rs.getFloat("timeUsed");
-            this.description = rs.getString("Description");
-            this.name = rs.getString("Name");
-            this.dateSet = rs.getString("DateSet");
-            this.dateDue = rs.getString("DateDue");
+            if (rs.next()) {
+                this.categoryID = rs.getInt("CategoryID");
+                this.colourCode = rs.getInt("Colour");
+                this.timeSet = rs.getFloat("TimeSet");
+                this.timeModified = rs.getFloat("TimeModified");
+                this.timeUsed = rs.getFloat("timeUsed");
+                this.description = rs.getString("Description");
+                this.name = rs.getString("Name");
+                this.dateSet = rs.getString("DateSet");
+                this.dateDue = rs.getString("DateDue");
+            }
         } catch (SQLException e) {
             System.err.println(e);
         }
@@ -85,16 +86,17 @@ public class Task {
         String sql = "SELECT * FROM task WHERE Name = '" + this.name + "' AND UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
         try {
-            rs.next();
-            this.categoryID = rs.getInt("CategoryID");
-            this.colourCode = rs.getInt("Colour");
-            this.timeSet = rs.getFloat("TimeSet");
-            this.timeModified = rs.getFloat("TimeModified");
-            this.timeUsed = rs.getFloat("timeUsed");
-            this.description = rs.getString("Description");
-            this.taskID = rs.getInt("TaskID");
-            this.dateSet = rs.getString("DateSet");
-            this.dateDue = rs.getString("DateDue");
+            if (rs.next()) {
+                this.categoryID = rs.getInt("CategoryID");
+                this.colourCode = rs.getInt("Colour");
+                this.timeSet = rs.getFloat("TimeSet");
+                this.timeModified = rs.getFloat("TimeModified");
+                this.timeUsed = rs.getFloat("timeUsed");
+                this.description = rs.getString("Description");
+                this.taskID = rs.getInt("TaskID");
+                this.dateSet = rs.getString("DateSet");
+                this.dateDue = rs.getString("DateDue");
+            }
         } catch (SQLException e) {
             System.err.println(e);
         }

@@ -21,8 +21,7 @@ public class Category {
         String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
         try {
-            while (rs != null && !categoryExists) {
-                rs.next();
+            while (rs.next() && !categoryExists) {
                 if (name.equals(rs.getString("Name"))) {
                     categoryExists = true;
                     this.categoryID = rs.getInt("CategoryID");
@@ -51,8 +50,7 @@ public class Category {
         String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
         try {
-            while (rs != null) {
-                rs.next();
+            while (rs.next()) {
                 if (this.categoryID == (rs.getInt("CategoryID"))) {
                     this.name = rs.getString("Name");
                     this.modifier = rs.getFloat("Modifier");

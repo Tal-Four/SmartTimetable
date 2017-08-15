@@ -269,7 +269,7 @@ public class TaskViewer extends javax.swing.JFrame {
 
     //Deletes the selected task if the user confirms the choice
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int yesNo = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + taskList.getSelectedValue(), "Delete task", JOptionPane.YES_NO_OPTION);
+        int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + taskList.getSelectedValue(), "Delete task", JOptionPane.YES_NO_OPTION);
         if (yesNo == 0) {
             Task task = new Task();
             task.readTaskFromDB(taskList.getSelectedValue());
@@ -325,10 +325,9 @@ public class TaskViewer extends javax.swing.JFrame {
         }
         ResultSet rs = DatabaseHandle.query(sql);
         try {
-            do {
-                rs.next();
+            while (rs.next()) {
                 dlm.addElement(rs.getString("Name"));
-            } while (rs != null);
+            }
         } catch (SQLException e) {
             System.err.println(e);
         }

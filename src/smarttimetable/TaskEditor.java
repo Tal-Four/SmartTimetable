@@ -35,11 +35,12 @@ public class TaskEditor extends javax.swing.JFrame {
         task.readTaskFromDB(taskName);
         nameField.setText(taskName);
 
-        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID() + " AND CategoryID = " + task.getCategoryID();
+        String sql = "SELECT Name FROM category WHERE UserID = " + User.getUserID() + " AND CategoryID = " + task.getCategoryID();
         ResultSet rs = DatabaseHandle.query(sql);
         try {
-            rs.next();
-            categoryDropdown.setSelectedItem(rs.getString("Name"));
+            if (rs.next()) {
+                categoryDropdown.setSelectedItem(rs.getString("Name"));
+            }
         } catch (SQLException e) {
             System.err.println(e);
         }
@@ -282,8 +283,6 @@ public class TaskEditor extends javax.swing.JFrame {
     //Attempts to create a task with given variables 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
 
-        
-        
         //Retrieving variable values from GUI
         boolean valid = true;
         String taskName = nameField.getText();

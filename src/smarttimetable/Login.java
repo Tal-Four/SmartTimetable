@@ -262,9 +262,10 @@ public class Login extends javax.swing.JFrame {
 
         //Fetching password and userID from database
         try {
-            rs.next();
-            storedPassword = rs.getString("Password");
-            userID = rs.getInt("UserID");
+            if (rs.next()) {
+                storedPassword = rs.getString("Password");
+                userID = rs.getInt("UserID");
+            }
         } catch (SQLException e) {
             System.err.println(e);
         }
@@ -306,8 +307,9 @@ public class Login extends javax.swing.JFrame {
                 ResultSet rs = DatabaseHandle.query(sql);
                 String UsernameCheck = null;
                 try {
-                    rs.next();
-                    UsernameCheck = rs.getString("Username").toLowerCase();
+                    if (rs.next()) {
+                        UsernameCheck = rs.getString("Username").toLowerCase();
+                    }
                 } catch (SQLException e) {
                     System.err.println(e);
                 }
@@ -322,8 +324,7 @@ public class Login extends javax.swing.JFrame {
                     try {
                         do {
                             userID++;
-                            rs.next();
-                        } while (rs.getInt("UserID") == userID);
+                        } while (rs.next() && rs.getInt("UserID") == userID);
                     } catch (SQLException e) {
                         System.err.println(e);
                     }
