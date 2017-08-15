@@ -8,6 +8,7 @@ import java.sql.*;
  */
 public class DatabaseHandle {
 
+    //Sets variables for connection
     private static Connection connection;
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
