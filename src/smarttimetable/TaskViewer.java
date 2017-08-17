@@ -162,6 +162,11 @@ public class TaskViewer extends javax.swing.JFrame {
         timeUsedLabel.setText("Time Used:");
 
         completeButton.setText("Complete");
+        completeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                completeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -292,6 +297,28 @@ public class TaskViewer extends javax.swing.JFrame {
         timeUsedLabel.setText("Time Used: " + selectedTask.getTimeUsed());
         descriptionBox.setText(selectedTask.getDescription());
     }//GEN-LAST:event_taskListMouseClicked
+
+    //Removes the task from the database and recalculates the category modifier
+    private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
+        //Task task = new Task();
+        //task.readTaskFromDB(taskList.getSelectedValue());
+        String sql = "SELECT * FROM category, task WHERE task.CategoryID = category.CategoryID AND task.UserID = " + User.getUserID() + " AND task.Name = " + taskList.getSelectedValue();
+        ResultSet rs = DatabaseHandle.query(sql);
+        int tasksCompleted = 0;
+        int categoryID = 0;
+        try {
+            if (rs.next()) {
+                tasksCompleted = rs.getInt("TasksCompleted");
+                categoryID = rs.getInt("CategoryID");
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        sql = "UPDATE smarttimetabledb.category SET TasksCompleted = " + tasksCompleted++ + " WHERE task.CategoryID = category.CategoryID AND task.UserID = " + User.getUserID() + " AND task.Name = " + taskList.getSelectedValue();
+        DatabaseHandle.update(sql);
+        Category cat = new Category(categoryID);
+        cat.calculateModifier();
+    }//GEN-LAST:event_completeButtonActionPerformed
 
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
     private void loadTasks(String order) {
