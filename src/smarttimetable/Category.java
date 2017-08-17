@@ -95,4 +95,8 @@ public class Category {
         this.taskCount = taskCount;
     }
     // </editor-fold>
+
+    void calculateModifier() {
+        //Write this
+    }
 }
