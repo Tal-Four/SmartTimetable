@@ -62,6 +62,19 @@ public class Category {
         }
     }
 
+    public void taskComplete(Task task) {
+        calculateModifier(task);
+        String sql = "UPDATE smarttimetabledb.category SET TasksCompleted = " + taskCount++ + ", Modifier = " + this.modifier + " WHERE CategoryID = " + categoryID + " AND UserID = " + User.getUserID();
+        DatabaseHandle.update(sql);
+        task.deleteTask();
+    }
+
+    public void calculateModifier(Task task) {
+        float timeMultiplier = task.getTimeUsed() / task.getTimeModified();
+        float oldMeanTotal = this.modifier * (this.taskCount - 1);
+        this.modifier = (oldMeanTotal + timeMultiplier) / this.taskCount;
+    }
+
     // <editor-fold defaultstate="collapsed" desc=" Getters and setters ">                          
     public int getCategoryID() {
         return this.categoryID;
@@ -75,7 +88,7 @@ public class Category {
         return this.modifier;
     }
 
-    public int taskCount() {
+    public int getTaskCount() {
         return this.taskCount;
     }
 

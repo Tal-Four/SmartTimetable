@@ -13,7 +13,8 @@ import java.util.Date;
  */
 public class Task {
 
-    private int taskID, categoryID, colourCode;
+    private Category category;
+    private int taskID, colourCode;
     private float timeSet, timeModified, timeUsed;
     private String description, name, dateSet, dateDue;
 
@@ -23,7 +24,6 @@ public class Task {
     //Method when called adds a task to the database
     public void createNewTask(String name, String description, String category, String dateDueText, int colourCode, float timeSet) {
         Category selectedCategory = new Category(category);
-        this.categoryID = selectedCategory.getCategoryID();
         this.name = name;
         this.description = description;
         this.dateDue = dateTextToSQLFormat(dateDueText);
@@ -36,24 +36,23 @@ public class Task {
         this.timeUsed = 0;
 
         String sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`) "
-                + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.categoryID + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " + this.timeModified + ")";
+                + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.category.getCategoryID() + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " + this.timeModified + ")";
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " created.").setVisible(true);
     }
 
     //Method when called edits a task already in the database
     public void editTask(String name, String description, String category, String dateDueText, int colourCode, float timeSet, int taskID) {
-        Category selectedCategory = new Category(category);
+        this.category = new Category(category);
         this.taskID = taskID;
         this.name = name;
         this.description = description;
-        this.categoryID = selectedCategory.getCategoryID();
         this.dateDue = dateTextToSQLFormat(dateDueText);
         this.colourCode = colourCode;
         this.timeSet = timeSet;
-        this.timeModified = this.timeSet * selectedCategory.getModifier();
+        this.timeModified = this.timeSet * this.category.getModifier();
 
-        String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.categoryID + ", TimeSet = " + this.timeSet + " WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
+        String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + " WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " edited.").setVisible(true);
     }
@@ -65,7 +64,7 @@ public class Task {
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
-                this.categoryID = rs.getInt("CategoryID");
+                this.category = new Category(rs.getInt("CategoryID"));
                 this.colourCode = rs.getInt("Colour");
                 this.timeSet = rs.getFloat("TimeSet");
                 this.timeModified = rs.getFloat("TimeModified");
@@ -87,7 +86,7 @@ public class Task {
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
-                this.categoryID = rs.getInt("CategoryID");
+                this.category = new Category(rs.getInt("CategoryID"));
                 this.colourCode = rs.getInt("Colour");
                 this.timeSet = rs.getFloat("TimeSet");
                 this.timeModified = rs.getFloat("TimeModified");
@@ -124,13 +123,18 @@ public class Task {
         return sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4);
     }
 
+    public void deleteTask() {
+        String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + taskID;
+        DatabaseHandle.update(sql);
+    }
+
     // <editor-fold defaultstate="collapsed" desc=" Getters ">                          
     public int getTaskID() {
         return this.taskID;
     }
 
-    public int getCategoryID() {
-        return this.categoryID;
+    public Category getCategory() {
+        return this.category;
     }
 
     public int getColourCode() {

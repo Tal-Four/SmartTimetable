@@ -35,7 +35,7 @@ public class TaskEditor extends javax.swing.JFrame {
         task.readTaskFromDB(taskName);
         nameField.setText(taskName);
 
-        String sql = "SELECT Name FROM category WHERE UserID = " + User.getUserID() + " AND CategoryID = " + task.getCategoryID();
+        String sql = "SELECT Name FROM category WHERE UserID = " + User.getUserID() + " AND CategoryID = " + task.getCategory().getCategoryID();
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
