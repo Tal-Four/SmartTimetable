@@ -278,8 +278,7 @@ public class TaskViewer extends javax.swing.JFrame {
         if (yesNo == 0) {
             Task task = new Task();
             task.readTaskFromDB(taskList.getSelectedValue());
-            String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + task.getTaskID();
-            DatabaseHandle.update(sql);
+            task.deleteTask();
             loadTasks(sortDropdown.getSelectedItem().toString());
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -300,13 +299,12 @@ public class TaskViewer extends javax.swing.JFrame {
 
     //Removes the task from the database and recalculates the category modifier
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
-        Task task = new Task();
-        task.readTaskFromDB(taskList.getSelectedValue());
-        
-        task.getCategory().taskComplete();
-        task.getCategory().calculateModifier();
-        String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + task.getTaskID();
-        DatabaseHandle.update(sql);
+        if (taskList.getSelectedValue() != null) {
+            Task task = new Task();
+            task.readTaskFromDB(taskList.getSelectedValue());
+            task.getCategory().taskComplete(task);
+            loadTasks(sortDropdown.getSelectedItem().toString());
+        }
     }//GEN-LAST:event_completeButtonActionPerformed
 
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)

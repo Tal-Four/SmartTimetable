@@ -123,6 +123,11 @@ public class Task {
         return sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4);
     }
 
+    public void deleteTask() {
+        String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + taskID;
+        DatabaseHandle.update(sql);
+    }
+
     // <editor-fold defaultstate="collapsed" desc=" Getters ">                          
     public int getTaskID() {
         return this.taskID;
