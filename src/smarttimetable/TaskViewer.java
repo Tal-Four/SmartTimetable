@@ -274,12 +274,14 @@ public class TaskViewer extends javax.swing.JFrame {
 
     //Deletes the selected task if the user confirms the choice
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + taskList.getSelectedValue(), "Delete task", JOptionPane.YES_NO_OPTION);
-        if (yesNo == 0) {
-            Task task = new Task();
-            task.readTaskFromDB(taskList.getSelectedValue());
-            task.deleteTask();
-            loadTasks(sortDropdown.getSelectedItem().toString());
+        if (taskList.getSelectedValue() != null) {
+            int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + taskList.getSelectedValue(), "Delete task", JOptionPane.YES_NO_OPTION);
+            if (yesNo == 0) {
+                Task task = new Task();
+                task.readTaskFromDB(taskList.getSelectedValue());
+                task.deleteTask();
+                loadTasks(sortDropdown.getSelectedItem().toString());
+            }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -300,10 +302,13 @@ public class TaskViewer extends javax.swing.JFrame {
     //Removes the task from the database and recalculates the category modifier
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
         if (taskList.getSelectedValue() != null) {
-            Task task = new Task();
-            task.readTaskFromDB(taskList.getSelectedValue());
-            task.getCategory().taskComplete(task);
-            loadTasks(sortDropdown.getSelectedItem().toString());
+            int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to complete " + taskList.getSelectedValue(), "Complete task", JOptionPane.YES_NO_OPTION);
+            if (yesNo == 0) {
+                Task task = new Task();
+                task.readTaskFromDB(taskList.getSelectedValue());
+                task.getCategory().taskComplete(task);
+                loadTasks(sortDropdown.getSelectedItem().toString());
+            }
         }
     }//GEN-LAST:event_completeButtonActionPerformed
 
