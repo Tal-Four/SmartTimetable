@@ -52,6 +52,7 @@ public class TaskEditor extends javax.swing.JFrame {
 
     }
 
+    //Initialises components and sets some text box values
     private void initialise() {
         initComponents();
 
