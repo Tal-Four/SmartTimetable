@@ -23,14 +23,14 @@ public class Task {
 
     //Method when called adds a task to the database
     public void createNewTask(String name, String description, String category, String dateDueText, int colourCode, float timeSet) {
-        Category selectedCategory = new Category(category);
+        this.category = new Category(category);
         this.name = name;
         this.description = description;
         this.dateDue = dateTextToSQLFormat(dateDueText);
         this.colourCode = colourCode;
         this.timeSet = timeSet;
         this.taskID = DatabaseHandle.createID("task", "TaskID");
-        this.timeModified = this.timeSet * selectedCategory.getModifier();
+        this.timeModified = calcModifiedTime();
         Date currentDate = new Date();
         this.dateSet = dateToSQLFormat(currentDate);
         this.timeUsed = 0;
@@ -50,7 +50,7 @@ public class Task {
         this.dateDue = dateTextToSQLFormat(dateDueText);
         this.colourCode = colourCode;
         this.timeSet = timeSet;
-        this.timeModified = this.timeSet * this.category.getModifier();
+        this.timeModified = calcModifiedTime();
 
         String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + " WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
         DatabaseHandle.update(sql);
@@ -123,12 +123,64 @@ public class Task {
         return sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4);
     }
 
+    //Deletes this task from the DB
     public void deleteTask() {
         String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + taskID;
         DatabaseHandle.update(sql);
     }
 
-    // <editor-fold defaultstate="collapsed" desc=" Getters ">                          
+    //Calculates the modified time
+    private float calcModifiedTime(){
+        float timeModded = this.timeSet * this.category.getModifier();
+        timeModded = roundToHalf(timeModded);
+        return timeModded;
+    }
+    
+    private float roundToHalf(float number){
+        return (float) (Math.round(number * 2) / 2.0);
+    }
+
+    // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setTaskID(int taskID) {
+        this.taskID = taskID;
+    }
+
+    public void setColourCode(int colourCode) {
+        this.colourCode = colourCode;
+    }
+
+    public void setTimeSet(float timeSet) {
+        this.timeSet = timeSet;
+    }
+
+    public void setTimeModified(float timeModified) {
+        this.timeModified = timeModified;
+    }
+
+    public void setTimeUsed(float timeUsed) {
+        this.timeUsed = timeUsed;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDateSet(String dateSet) {
+        this.dateSet = dateSet;
+    }
+
+    public void setDateDue(String dateDue) {
+        this.dateDue = dateDue;
+    }
+    
     public int getTaskID() {
         return this.taskID;
     }
