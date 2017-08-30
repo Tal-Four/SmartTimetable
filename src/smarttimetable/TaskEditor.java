@@ -62,8 +62,7 @@ public class TaskEditor extends javax.swing.JFrame {
         String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
         try {
-            while (rs != null) {
-                rs.next();
+            while (rs.next()) {
                 categoryDropdown.addItem(rs.getString("Name"));
             }
         } catch (SQLException e) {
