@@ -142,7 +142,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="createEventsButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Create Events"/>
+            <Property name="text" type="java.lang.String" value="Create Event"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createEventsButtonActionPerformed"/>

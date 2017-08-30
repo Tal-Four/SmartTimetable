@@ -61,7 +61,7 @@ public class Menu extends javax.swing.JFrame {
 
         mainMenuPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Main Menu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
-        createEventsButton.setText("Create Events");
+        createEventsButton.setText("Create Event");
         createEventsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createEventsButtonActionPerformed(evt);
