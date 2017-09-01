@@ -20,7 +20,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -305,8 +305,9 @@ public class Login extends javax.swing.JFrame {
         passwordConfirm = newConfirmPasswordField.getText();
         boolean valid = false;
 
-        if (!username.equals("")) {
-            if (password.equals(passwordConfirm)) {
+        if (!username.equals("") && username.length() <= 15) {
+
+            if (!password.equals(passwordConfirm) && password.length() <= 15) {
 
                 //Checking to see if record in database has the same username
                 String sql = "SELECT * FROM user WHERE Username = '" + username + "'";
@@ -355,16 +356,16 @@ public class Login extends javax.swing.JFrame {
                     new Popup("Username taken").setVisible(true);
                 }
             } else {
-                //Passwords don't match
-                System.err.println("Passwords do not match");
+                //Passwords don't match or are too long
+                System.err.println("Passwords do not match or are too long");
                 valid = false;
-                new Popup("Passwords do not match").setVisible(true);
+                new Popup("Passwords do not match or are over 15 characters").setVisible(true);
             }
         } else {
-            //No username entered
-            System.err.println("No username entered");
+            //No username entered or username too long
+            System.err.println("No username entered or username too long");
             valid = false;
-            new Popup("No username entered").setVisible(true);
+            new Popup("Username must be 15 characters or less and not blank").setVisible(true);
         }
 
         //Displaying next screen
