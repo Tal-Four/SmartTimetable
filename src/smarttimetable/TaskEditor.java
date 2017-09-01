@@ -6,6 +6,8 @@
 package smarttimetable;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -55,6 +57,10 @@ public class TaskEditor extends javax.swing.JFrame {
     //Initialises components and sets some text box values
     private void initialise() {
         initComponents();
+        
+        //Centers the frame to the centre of the monitor
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());

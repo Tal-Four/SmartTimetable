@@ -5,6 +5,8 @@
  */
 package smarttimetable;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.DefaultListModel;
@@ -21,6 +23,11 @@ public class TaskViewer extends javax.swing.JFrame {
      */
     public TaskViewer() {
         initComponents();
+        
+        //Centers the frame to the centre of the monitor
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        
         userLabel.setText("Logged in as: " + User.getUsername());
         loadTasks("Name");
     }
