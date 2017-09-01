@@ -5,6 +5,9 @@
  */
 package smarttimetable;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 /**
  *
  * @author Adam-PC
@@ -16,6 +19,13 @@ public class EventEditor extends javax.swing.JFrame {
      */
     public EventEditor() {
         initComponents();
+
+        //Centers the frame to the centre of the monitor 
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+
+        //Displays the user logged in
+        userLabel.setText("Logged in as: " + User.getUsername());
     }
 
     /**
@@ -27,147 +37,160 @@ public class EventEditor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        MainDetailsPanel = new javax.swing.JPanel();
-        EventNameLabel = new javax.swing.JLabel();
-        StartTimeLabel = new javax.swing.JLabel();
-        DayLabel = new javax.swing.JLabel();
-        ColourLabel = new javax.swing.JLabel();
-        EndTimeLabel = new javax.swing.JLabel();
-        ColourChooser = new javax.swing.JColorChooser();
-        EventNameText = new javax.swing.JTextField();
-        DaySelection = new javax.swing.JComboBox<>();
-        StartHour = new javax.swing.JComboBox<>();
-        StartMinute = new javax.swing.JComboBox<>();
-        EndHour = new javax.swing.JComboBox<>();
-        EndMinute = new javax.swing.JComboBox<>();
-        DescriptionPanel = new javax.swing.JPanel();
-        DescriptionScrollPane = new javax.swing.JScrollPane();
-        DescriptionText = new javax.swing.JTextArea();
-        JframeTitle = new javax.swing.JLabel();
-        SaveButton = new javax.swing.JButton();
-        UserLabel = new javax.swing.JLabel();
-        BackButton = new javax.swing.JButton();
+        mainDetailsPanel = new javax.swing.JPanel();
+        eventNameLabel = new javax.swing.JLabel();
+        startTimeLabel = new javax.swing.JLabel();
+        dayLabel = new javax.swing.JLabel();
+        colourLabel = new javax.swing.JLabel();
+        endTimeLabel = new javax.swing.JLabel();
+        colourChooser = new javax.swing.JColorChooser();
+        eventNameField = new javax.swing.JTextField();
+        daySelection = new javax.swing.JComboBox<>();
+        startHour = new javax.swing.JComboBox<>();
+        startMinute = new javax.swing.JComboBox<>();
+        endHour = new javax.swing.JComboBox<>();
+        endMinute = new javax.swing.JComboBox<>();
+        eventNameCharsUsed = new javax.swing.JLabel();
+        descriptionPanel = new javax.swing.JPanel();
+        descriptionScrollPane = new javax.swing.JScrollPane();
+        descriptionText = new javax.swing.JTextArea();
+        jFrameTitle = new javax.swing.JLabel();
+        saveButton = new javax.swing.JButton();
+        userLabel = new javax.swing.JLabel();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        MainDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        mainDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        EventNameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        EventNameLabel.setText("Event Name:");
+        eventNameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        eventNameLabel.setText("Event Name:");
 
-        StartTimeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        StartTimeLabel.setText("Start Time:");
+        startTimeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        startTimeLabel.setText("Start Time:");
 
-        DayLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        DayLabel.setText("Day:");
+        dayLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        dayLabel.setText("Day:");
 
-        ColourLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        ColourLabel.setText("Colour:");
+        colourLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        colourLabel.setText("Colour:");
 
-        EndTimeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        EndTimeLabel.setText("End Time:");
+        endTimeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        endTimeLabel.setText("End Time:");
 
-        DaySelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        StartHour.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        StartMinute.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        EndHour.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        EndMinute.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        javax.swing.GroupLayout MainDetailsPanelLayout = new javax.swing.GroupLayout(MainDetailsPanel);
-        MainDetailsPanel.setLayout(MainDetailsPanelLayout);
-        MainDetailsPanelLayout.setHorizontalGroup(
-            MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MainDetailsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(MainDetailsPanelLayout.createSequentialGroup()
-                        .addGroup(MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(DayLabel)
-                            .addComponent(EventNameLabel)
-                            .addComponent(StartTimeLabel)
-                            .addComponent(EndTimeLabel)
-                            .addComponent(ColourLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(EventNameText)
-                            .addComponent(DaySelection, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainDetailsPanelLayout.createSequentialGroup()
-                                .addComponent(StartHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(StartMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(MainDetailsPanelLayout.createSequentialGroup()
-                                .addComponent(EndHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(EndMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(ColourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        MainDetailsPanelLayout.setVerticalGroup(
-            MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MainDetailsPanelLayout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
-                .addGroup(MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(EventNameLabel)
-                    .addComponent(EventNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DayLabel)
-                    .addComponent(DaySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(StartTimeLabel)
-                    .addComponent(StartHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(StartMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(MainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(EndTimeLabel)
-                    .addComponent(EndHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EndMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(ColourLabel)
-                .addGap(4, 4, 4)
-                .addComponent(ColourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-        );
-
-        DescriptionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Description"));
-
-        DescriptionText.setColumns(20);
-        DescriptionText.setRows(5);
-        DescriptionScrollPane.setViewportView(DescriptionText);
-
-        javax.swing.GroupLayout DescriptionPanelLayout = new javax.swing.GroupLayout(DescriptionPanel);
-        DescriptionPanel.setLayout(DescriptionPanelLayout);
-        DescriptionPanelLayout.setHorizontalGroup(
-            DescriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(DescriptionScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
-        );
-        DescriptionPanelLayout.setVerticalGroup(
-            DescriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(DescriptionScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
-        );
-
-        JframeTitle.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        JframeTitle.setText("Event Editor");
-
-        SaveButton.setText("Save");
-        SaveButton.setToolTipText("");
-        SaveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SaveButtonActionPerformed(evt);
+        eventNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                eventNameFieldKeyReleased(evt);
             }
         });
 
-        UserLabel.setText("[USER]");
+        daySelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
 
-        BackButton.setText("Back");
-        BackButton.addActionListener(new java.awt.event.ActionListener() {
+        startHour.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+
+        startMinute.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
+
+        endHour.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+
+        endMinute.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
+
+        eventNameCharsUsed.setText("0 out of 20 characters used");
+
+        javax.swing.GroupLayout mainDetailsPanelLayout = new javax.swing.GroupLayout(mainDetailsPanel);
+        mainDetailsPanel.setLayout(mainDetailsPanelLayout);
+        mainDetailsPanelLayout.setHorizontalGroup(
+            mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainDetailsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainDetailsPanelLayout.createSequentialGroup()
+                        .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(dayLabel)
+                            .addComponent(eventNameLabel)
+                            .addComponent(startTimeLabel)
+                            .addComponent(endTimeLabel)
+                            .addComponent(colourLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(mainDetailsPanelLayout.createSequentialGroup()
+                                .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(startHour, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(endHour, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(endMinute, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(startMinute, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(mainDetailsPanelLayout.createSequentialGroup()
+                                .addComponent(eventNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(eventNameCharsUsed))
+                            .addComponent(daySelection, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        mainDetailsPanelLayout.setVerticalGroup(
+            mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainDetailsPanelLayout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(eventNameLabel)
+                    .addComponent(eventNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(eventNameCharsUsed))
+                .addGap(18, 18, 18)
+                .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dayLabel)
+                    .addComponent(daySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startTimeLabel)
+                    .addComponent(startHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(startMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(endTimeLabel)
+                    .addComponent(endHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(endMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(colourLabel)
+                .addGap(4, 4, 4)
+                .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+        );
+
+        descriptionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Description"));
+
+        descriptionText.setColumns(20);
+        descriptionText.setRows(5);
+        descriptionScrollPane.setViewportView(descriptionText);
+
+        javax.swing.GroupLayout descriptionPanelLayout = new javax.swing.GroupLayout(descriptionPanel);
+        descriptionPanel.setLayout(descriptionPanelLayout);
+        descriptionPanelLayout.setHorizontalGroup(
+            descriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(descriptionScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+        );
+        descriptionPanelLayout.setVerticalGroup(
+            descriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(descriptionScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+        );
+
+        jFrameTitle.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jFrameTitle.setText("Event Editor");
+
+        saveButton.setText("Save");
+        saveButton.setToolTipText("");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackButtonActionPerformed(evt);
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -179,17 +202,17 @@ public class EventEditor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BackButton)
-                        .addGap(388, 388, 388)
-                        .addComponent(UserLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(SaveButton))
+                        .addComponent(backButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JframeTitle)
-                            .addComponent(MainDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jFrameTitle)
+                            .addComponent(mainDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DescriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -198,32 +221,52 @@ public class EventEditor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(JframeTitle)
+                        .addComponent(jFrameTitle)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(MainDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(DescriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(mainDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(descriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SaveButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(UserLabel)
-                        .addComponent(BackButton)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(backButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         
-    }//GEN-LAST:event_SaveButtonActionPerformed
+        //Checking to see if the name is valid
+        if (eventNameField.getText().equals("") || eventNameField.getText().length() > 20) {
+            new Popup("Name over 20 characters or blank").setVisible(true);
+        } else {
+            Event event = new Event();
 
-    private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
+            //Assigning the value of day based on the dropdown
+            int day = event.dayStringToInt(daySelection.getSelectedItem().toString());
+
+            //Entering the event into the database
+            event.createEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, TOP_ALIGNMENT, TOP_ALIGNMENT);
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    //Returns the user to the menu screen
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         new Menu().setVisible(true);
-    }//GEN-LAST:event_BackButtonActionPerformed
-    
-     
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters    
+    private void eventNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eventNameFieldKeyReleased
+        int length = eventNameField.getText().length();
+        if (length > 20) {
+            eventNameField.setText(eventNameField.getText().substring(0, 20));
+            length = eventNameField.getText().length();
+        }
+        eventNameCharsUsed.setText(length + " out of 20 characters used");
+    }//GEN-LAST:event_eventNameFieldKeyReleased
 
     /**
      * @param args the command line arguments
@@ -262,25 +305,26 @@ public class EventEditor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BackButton;
-    private javax.swing.JColorChooser ColourChooser;
-    private javax.swing.JLabel ColourLabel;
-    private javax.swing.JLabel DayLabel;
-    private javax.swing.JComboBox<String> DaySelection;
-    private javax.swing.JPanel DescriptionPanel;
-    private javax.swing.JScrollPane DescriptionScrollPane;
-    private javax.swing.JTextArea DescriptionText;
-    private javax.swing.JComboBox<String> EndHour;
-    private javax.swing.JComboBox<String> EndMinute;
-    private javax.swing.JLabel EndTimeLabel;
-    private javax.swing.JLabel EventNameLabel;
-    private javax.swing.JTextField EventNameText;
-    private javax.swing.JLabel JframeTitle;
-    private javax.swing.JPanel MainDetailsPanel;
-    private javax.swing.JButton SaveButton;
-    private javax.swing.JComboBox<String> StartHour;
-    private javax.swing.JComboBox<String> StartMinute;
-    private javax.swing.JLabel StartTimeLabel;
-    private javax.swing.JLabel UserLabel;
+    private javax.swing.JButton backButton;
+    private javax.swing.JColorChooser colourChooser;
+    private javax.swing.JLabel colourLabel;
+    private javax.swing.JLabel dayLabel;
+    private javax.swing.JComboBox<String> daySelection;
+    private javax.swing.JPanel descriptionPanel;
+    private javax.swing.JScrollPane descriptionScrollPane;
+    private javax.swing.JTextArea descriptionText;
+    private javax.swing.JComboBox<String> endHour;
+    private javax.swing.JComboBox<String> endMinute;
+    private javax.swing.JLabel endTimeLabel;
+    private javax.swing.JLabel eventNameCharsUsed;
+    private javax.swing.JTextField eventNameField;
+    private javax.swing.JLabel eventNameLabel;
+    private javax.swing.JLabel jFrameTitle;
+    private javax.swing.JPanel mainDetailsPanel;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JComboBox<String> startHour;
+    private javax.swing.JComboBox<String> startMinute;
+    private javax.swing.JLabel startTimeLabel;
+    private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
 }
