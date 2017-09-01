@@ -314,10 +314,16 @@ public class TaskEditor extends javax.swing.JFrame {
         //Attemps to read the float. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
         try {
             timeSet = Float.parseFloat(timeField.getText());
-        } catch (Exception e) {
-            System.err.println(e);
+        } catch (Exception ex) {
+            System.err.println(ex);
             valid = false;
             new Popup("Invalid time set").setVisible(true);
+        }
+        
+        //Checks to see if the entered name is longer than 20 characters
+        if (nameField.getText().length() > 20) {
+           new Popup("Name is over 20 characters").setVisible(true);
+            valid = false;
         }
 
         //Checks to see if date entered is in the correct format (DD/MM/YYYY)
