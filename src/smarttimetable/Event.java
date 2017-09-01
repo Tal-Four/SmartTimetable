@@ -11,6 +11,7 @@ public class Event {
     private String eventName, description;
     private int day, colourCode, eventID;
     private float startTime, endTime;
+    public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7;
 
     public Event() {
 
@@ -50,6 +51,64 @@ public class Event {
         String sql = "INSERT INTO smarttimetabledb.event (`EventID`, `UserID`, `EventName`, `Description`, `Day`, `Colour`, `StartTime`, `EndTime`) "
                 + "VALUES (" + this.eventID + ", " + User.getUserID() + ", '" + this.eventName + "', '" + this.description + "', " + this.day + ", " + this.colourCode + ", " + this.startTime + ", " + this.endTime + ")";
         DatabaseHandle.update(sql);
+    }
+
+    //Converts the String of a day, eg. Monday, into a representive number, eg. Monday --> 1
+    public int dayStringToInt(String dayString) {
+        int dayInt = 0;
+        switch (dayString) {
+            case ("Monday"):
+                day = MON;
+                break;
+            case ("Tuesday"):
+                day = TUE;
+                break;
+            case ("Wednesday"):
+                day = WED;
+                break;
+            case ("Thursday"):
+                day = THU;
+                break;
+            case ("Friday"):
+                day = FRI;
+                break;
+            case ("Saturday"):
+                day = SAT;
+                break;
+            case ("Sunday"):
+                day = SUN;
+                break;
+        }
+        return dayInt;
+    }
+
+    //Converts the int of a day, eg. 1, into the represented String, eg. 1 --> Monday
+    public String dayIntToString(int dayInt) {
+        String dayString = "";
+        switch (dayInt) {
+            case (MON):
+                dayString = "Monday";
+                break;
+            case (TUE):
+                dayString = "Tuesday";
+                break;
+            case (WED):
+                dayString = "Wednesday";
+                break;
+            case (THU):
+                dayString = "Thursday";
+                break;
+            case (FRI):
+                dayString = "Friday";
+                break;
+            case (SAT):
+                dayString = "Saturday";
+                break;
+            case (SUN):
+                dayString = "Sunday";
+                break;
+        }
+        return dayString;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 
