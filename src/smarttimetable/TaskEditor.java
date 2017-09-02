@@ -17,8 +17,8 @@ import java.sql.SQLException;
  */
 public class TaskEditor extends javax.swing.JFrame {
 
-    boolean edit;
-    String oldTaskName;
+    private boolean edit;
+    private String oldTaskName;
 
     // Creates new form TaskEditor
     public TaskEditor() {
