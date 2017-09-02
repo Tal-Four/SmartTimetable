@@ -23,14 +23,14 @@ public class TaskEditor extends javax.swing.JFrame {
     // Creates new form TaskEditor
     public TaskEditor() {
         initialise();
-        edit = false;
+        this.edit = false;
     }
 
     // Creates new form TaskEditor with given variables
     public TaskEditor(String taskName) {
         initialise();
-        edit = true;
-        oldTaskName = taskName;
+        this.edit = true;
+        this.oldTaskName = taskName;
 
         //Setting the values of the GUI to the selected tasks values
         Task task = new Task();
@@ -336,7 +336,7 @@ public class TaskEditor extends javax.swing.JFrame {
         if (valid) {
             Task newTask = new Task();
             if (edit) {
-                newTask.readTaskFromDB(oldTaskName);
+                newTask.readTaskFromDB(this.oldTaskName);
                 newTask.editTask(taskName, description, category, dateDueText, colourCode, timeSet, newTask.getTaskID());
             } else {
                 newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
