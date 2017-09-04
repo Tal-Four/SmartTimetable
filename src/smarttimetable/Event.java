@@ -17,7 +17,7 @@ public class Event {
 
     }
 
-    //Method to retrieve event details from the database
+    //Method to retrieve event details from the database given an ID
     public void readFromDB(int eventID) {
         this.eventID = eventID;
 
@@ -27,6 +27,27 @@ public class Event {
         try {
             if (rs.next()) {
                 this.eventName = rs.getString("EventName");
+                this.description = rs.getString("Description");
+                this.colourCode = rs.getInt("Colour");
+                this.day = rs.getInt("Day");
+                this.startTime = rs.getFloat("StartTime");
+                this.endTime = rs.getFloat("EndTime");
+            }
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+    }
+
+    //Method to retrieve event details from the database given a name
+    public void readFromDB(String eventName) {
+        this.eventName = eventName;
+
+        String sql = "SELECT * from event where EventName == " + this.eventName + " AND UserID = " + User.getUserID();
+        ResultSet rs = DatabaseHandle.query(sql);
+
+        try {
+            if (rs.next()) {
+                this.eventID = rs.getInt("EventID");
                 this.description = rs.getString("Description");
                 this.colourCode = rs.getInt("Colour");
                 this.day = rs.getInt("Day");
@@ -51,6 +72,23 @@ public class Event {
         String sql = "INSERT INTO smarttimetabledb.event (`EventID`, `UserID`, `EventName`, `Description`, `Day`, `Colour`, `StartTime`, `EndTime`) "
                 + "VALUES (" + this.eventID + ", " + User.getUserID() + ", '" + this.eventName + "', '" + this.description + "', " + this.day + ", " + this.colourCode + ", " + this.startTime + ", " + this.endTime + ")";
         DatabaseHandle.update(sql);
+        
+        new Popup("Event " + this.eventName + " created.").setVisible(true);
+    }
+
+    //Updates an existing record with new values
+    public void editEvent(String eventName, String description, int colour, int day, double endTime, double startTime) {
+        this.eventName = eventName;
+        this.description = description;
+        this.colourCode = colour;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+
+        String sql = "UPDATE smarttimetabledb.event SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = " + this.day + ", StartTime = " + this.startTime + ", EndTime  = " + this.endTime + " WHERE EventID = " + this.eventID + " AND UserID = " + User.getUserID();
+        DatabaseHandle.update(sql);
+
+        new Popup("Event " + this.eventName + " edited.").setVisible(true);
     }
 
     //Converts the String of a day, eg. Monday, into a representive number, eg. Monday --> 1
