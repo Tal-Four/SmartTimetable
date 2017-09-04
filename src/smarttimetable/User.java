@@ -10,14 +10,14 @@ public class User {
     }
 
     //Changes the variables to the variables provided
-    static public void newUser(int userID, String username, String password) {
+    public static void newUser(int userID, String username, String password) {
         User.userID = userID;
         User.username = username;
         User.password = password;
     }
 
     //Changes the variables to null
-    static public void logoutUser() {
+    public static void logoutUser() {
         User.userID = 0;
         User.username = null;
         User.password = null;
