@@ -149,6 +149,12 @@ public class Event {
         return dayString;
     }
 
+    //Deletes this event from the DB
+    public void deleteEvent() {
+        String sql = "DELETE FROM smarttimetabledb.`event` WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
+        DatabaseHandle.update(sql);
+    }
+    
     // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 
     public String getEventName() {
         return eventName;
