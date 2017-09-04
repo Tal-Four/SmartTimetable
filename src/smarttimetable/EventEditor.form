@@ -97,13 +97,13 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="startHour" max="32767" attributes="0"/>
-                                      <Component id="endHour" max="32767" attributes="0"/>
+                                      <Component id="startHourDropdown" max="32767" attributes="0"/>
+                                      <Component id="endHourDropdown" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="endMinute" max="32767" attributes="0"/>
-                                      <Component id="startMinute" max="32767" attributes="0"/>
+                                      <Component id="endMinuteDropdown" max="32767" attributes="0"/>
+                                      <Component id="startMinuteDropdown" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -137,14 +137,14 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="startTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="startHour" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="startMinute" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="startHourDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="startMinuteDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="endTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="endHour" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="endMinute" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="endHourDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="endMinuteDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="colourLabel" min="-2" max="-2" attributes="0"/>
@@ -221,7 +221,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="startHour">
+        <Component class="javax.swing.JComboBox" name="startHourDropdown">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="24">
@@ -256,7 +256,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="startMinute">
+        <Component class="javax.swing.JComboBox" name="startMinuteDropdown">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">
@@ -269,7 +269,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="endHour">
+        <Component class="javax.swing.JComboBox" name="endHourDropdown">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="24">
@@ -304,7 +304,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="endMinute">
+        <Component class="javax.swing.JComboBox" name="endMinuteDropdown">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">

@@ -5,8 +5,10 @@
  */
 package smarttimetable;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -14,10 +16,32 @@ import java.awt.Toolkit;
  */
 public class EventEditor extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TaskEditor
-     */
+    private boolean edit;
+    private String oldEventName;
+
+    //Creates a blank EventEditor form
     public EventEditor() {
+        initialise();
+        this.edit = false;
+    }
+
+    //Creates a prefilled EventEditor form
+    public EventEditor(String oldEventName) {
+        initialise();
+        this.edit = true;
+        this.oldEventName = oldEventName;
+
+        //Setting values of fields
+        Event event = new Event();
+        event.readFromDB(this.oldEventName);
+        eventNameField.setText(event.getEventName());
+        descriptionText.setText(event.getDescription());
+        daySelection.setSelectedItem(event.dayIntToString(event.getDay()));
+        startHourDropdown.setSelectedItem((int) event.getStartTime());
+        colourChooser.setColor(new Color(event.getColourCode()));
+    }
+
+    private void initialise() {
         initComponents();
 
         //Centers the frame to the centre of the monitor 
@@ -46,10 +70,10 @@ public class EventEditor extends javax.swing.JFrame {
         colourChooser = new javax.swing.JColorChooser();
         eventNameField = new javax.swing.JTextField();
         daySelection = new javax.swing.JComboBox<>();
-        startHour = new javax.swing.JComboBox<>();
-        startMinute = new javax.swing.JComboBox<>();
-        endHour = new javax.swing.JComboBox<>();
-        endMinute = new javax.swing.JComboBox<>();
+        startHourDropdown = new javax.swing.JComboBox<>();
+        startMinuteDropdown = new javax.swing.JComboBox<>();
+        endHourDropdown = new javax.swing.JComboBox<>();
+        endMinuteDropdown = new javax.swing.JComboBox<>();
         eventNameCharsUsed = new javax.swing.JLabel();
         descriptionPanel = new javax.swing.JPanel();
         descriptionScrollPane = new javax.swing.JScrollPane();
@@ -86,13 +110,13 @@ public class EventEditor extends javax.swing.JFrame {
 
         daySelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
 
-        startHour.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        startHourDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
 
-        startMinute.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
+        startMinuteDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
 
-        endHour.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        endHourDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
 
-        endMinute.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
+        endMinuteDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
 
         eventNameCharsUsed.setText("0 out of 20 characters used");
 
@@ -114,12 +138,12 @@ public class EventEditor extends javax.swing.JFrame {
                         .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainDetailsPanelLayout.createSequentialGroup()
                                 .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(startHour, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(endHour, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(startHourDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(endHourDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(endMinute, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(startMinute, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(endMinuteDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(startMinuteDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(mainDetailsPanelLayout.createSequentialGroup()
                                 .addComponent(eventNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -143,13 +167,13 @@ public class EventEditor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(startTimeLabel)
-                    .addComponent(startHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(startHourDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(startMinuteDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(endTimeLabel)
-                    .addComponent(endHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(endMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(endHourDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(endMinuteDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(colourLabel)
                 .addGap(4, 4, 4)
@@ -237,7 +261,7 @@ public class EventEditor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        
+
         //Checking to see if the name is valid
         if (eventNameField.getText().equals("") || eventNameField.getText().length() > 20) {
             new Popup("Name over 20 characters or blank").setVisible(true);
@@ -247,10 +271,43 @@ public class EventEditor extends javax.swing.JFrame {
             //Assigning the value of day based on the dropdown
             int day = event.dayStringToInt(daySelection.getSelectedItem().toString());
 
-            //Entering the event into the database
-            event.createEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, TOP_ALIGNMENT, TOP_ALIGNMENT);
+            //Changing the start and end times to the needed format based off the dropdowns
+            double endTime, startTime;
+            startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
+            endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
+            
+            if (edit) {
+                //Edits an existing record
+                event.readFromDB(this.oldEventName);
+                event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
+            } else {
+                //Entering the event into the database
+                event.createEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
+            }
+
+            //Returning to menu screen
+            this.setVisible(false);
+            new Menu().setVisible(true);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    //Converts the dropdown options to a time
+    private double dropdownsToDecimal(JComboBox hour, JComboBox minute) {
+        double decimalTime = Integer.parseInt(hour.getSelectedItem().toString()) + minutesToDecimal(minute.getSelectedItem().toString());
+        return decimalTime;
+    }
+
+    //Changes minutes to decimal
+    private double minutesToDecimal(String numberString) {
+        double numberDouble = 0;
+        //Attempts to parse the String to an int and then divides it by 60
+        try {
+            numberDouble = Double.parseDouble(numberString) / 60;
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+        return numberDouble;
+    }
 
     //Returns the user to the menu screen
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -304,6 +361,7 @@ public class EventEditor extends javax.swing.JFrame {
         });
     }
 
+    //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JColorChooser colourChooser;
@@ -313,8 +371,8 @@ public class EventEditor extends javax.swing.JFrame {
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JScrollPane descriptionScrollPane;
     private javax.swing.JTextArea descriptionText;
-    private javax.swing.JComboBox<String> endHour;
-    private javax.swing.JComboBox<String> endMinute;
+    private javax.swing.JComboBox<String> endHourDropdown;
+    private javax.swing.JComboBox<String> endMinuteDropdown;
     private javax.swing.JLabel endTimeLabel;
     private javax.swing.JLabel eventNameCharsUsed;
     private javax.swing.JTextField eventNameField;
@@ -322,9 +380,10 @@ public class EventEditor extends javax.swing.JFrame {
     private javax.swing.JLabel jFrameTitle;
     private javax.swing.JPanel mainDetailsPanel;
     private javax.swing.JButton saveButton;
-    private javax.swing.JComboBox<String> startHour;
-    private javax.swing.JComboBox<String> startMinute;
+    private javax.swing.JComboBox<String> startHourDropdown;
+    private javax.swing.JComboBox<String> startMinuteDropdown;
     private javax.swing.JLabel startTimeLabel;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
+    //</editor-fold>
 }
