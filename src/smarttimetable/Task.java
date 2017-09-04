@@ -15,14 +15,14 @@ public class Task {
 
     private Category category;
     private int taskID, colourCode;
-    private float timeSet, timeModified, timeUsed;
+    private double timeSet, timeModified, timeUsed;
     private String description, name, dateSet, dateDue;
 
     public Task() {
     }
 
     //Method when called adds a task to the database
-    public void createNewTask(String name, String description, String category, String dateDueText, int colourCode, float timeSet) {
+    public void createNewTask(String name, String description, String category, String dateDueText, int colourCode, double timeSet) {
         this.category = new Category(category);
         this.name = name;
         this.description = description;
@@ -42,7 +42,7 @@ public class Task {
     }
 
     //Method when called edits a task already in the database
-    public void editTask(String name, String description, String category, String dateDueText, int colourCode, float timeSet, int taskID) {
+    public void editTask(String name, String description, String category, String dateDueText, int colourCode, double timeSet, int taskID) {
         this.category = new Category(category);
         this.taskID = taskID;
         this.name = name;
@@ -130,14 +130,14 @@ public class Task {
     }
 
     //Calculates the modified time
-    private float calcModifiedTime(){
-        float timeModded = this.timeSet * this.category.getModifier();
+    private double calcModifiedTime(){
+        double timeModded = this.timeSet * this.category.getModifier();
         timeModded = roundToHalf(timeModded);
         return timeModded;
     }
     
-    private float roundToHalf(float number){
-        return (float) (Math.round(number * 2) / 2.0);
+    private double roundToHalf(double number){
+        return (Math.round(number * 2) / 2.0);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 
@@ -153,15 +153,15 @@ public class Task {
         this.colourCode = colourCode;
     }
 
-    public void setTimeSet(float timeSet) {
+    public void setTimeSet(double timeSet) {
         this.timeSet = timeSet;
     }
 
-    public void setTimeModified(float timeModified) {
+    public void setTimeModified(double timeModified) {
         this.timeModified = timeModified;
     }
 
-    public void setTimeUsed(float timeUsed) {
+    public void setTimeUsed(double timeUsed) {
         this.timeUsed = timeUsed;
     }
 
@@ -193,15 +193,15 @@ public class Task {
         return this.colourCode;
     }
 
-    public float getTimeSet() {
+    public double getTimeSet() {
         return this.timeSet;
     }
 
-    public float getTimeModified() {
+    public double getTimeModified() {
         return this.timeModified;
     }
 
-    public float getTimeUsed() {
+    public double getTimeUsed() {
         return this.timeUsed;
     }
 

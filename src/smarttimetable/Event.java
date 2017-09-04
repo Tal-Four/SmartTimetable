@@ -10,7 +10,7 @@ public class Event {
 
     private String eventName, description;
     private int day, colourCode, eventID;
-    private float startTime, endTime;
+    private double startTime, endTime;
     public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7;
 
     public Event() {
@@ -39,7 +39,7 @@ public class Event {
     }
 
     //Creates an event and inserts into a database given variables
-    public void createEvent(String eventName, String description, int colour, int day, float endTime, float startTime) {
+    public void createEvent(String eventName, String description, int colour, int day, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
         this.colourCode = colour;
@@ -132,11 +132,11 @@ public class Event {
         return eventID;
     }
 
-    public float getStartTime() {
+    public double getStartTime() {
         return startTime;
     }
 
-    public float getEndTime() {
+    public double getEndTime() {
         return endTime;
     }
 
@@ -160,11 +160,11 @@ public class Event {
         this.eventID = eventID;
     }
 
-    public void setStartTime(float startTime) {
+    public void setStartTime(double startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(float endTime) {
+    public void setEndTime(double endTime) {
         this.endTime = endTime;
     }//</editor-fold>
 

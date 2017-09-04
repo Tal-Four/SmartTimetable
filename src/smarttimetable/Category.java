@@ -11,7 +11,7 @@ public class Category {
 
     private String name;
     private int categoryID, taskCount;
-    private float modifier;
+    private double modifier;
 
     //Constructor when given a string name
     public Category(String name) {
@@ -71,8 +71,8 @@ public class Category {
     }
 
     public void calculateModifier(Task task) {
-        float timeMultiplier = task.getTimeUsed() / task.getTimeSet();
-        float oldMeanTotal = this.modifier * (this.taskCount - 1);
+        double timeMultiplier = task.getTimeUsed() / task.getTimeSet();
+        double oldMeanTotal = this.modifier * (this.taskCount - 1);
         this.modifier = (oldMeanTotal + timeMultiplier) / this.taskCount;
     }
 
@@ -85,7 +85,7 @@ public class Category {
         return this.name;
     }
 
-    public float getModifier() {
+    public double getModifier() {
         return this.modifier;
     }
 
@@ -101,7 +101,7 @@ public class Category {
         this.name = name;
     }
 
-    public void setModifier(float modifier) {
+    public void setModifier(double modifier) {
         this.modifier = modifier;
     }
 

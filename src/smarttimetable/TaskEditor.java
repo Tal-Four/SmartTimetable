@@ -36,17 +36,7 @@ public class TaskEditor extends javax.swing.JFrame {
         Task task = new Task();
         task.readTaskFromDB(taskName);
         nameField.setText(taskName);
-
-        String sql = "SELECT Name FROM category WHERE UserID = " + User.getUserID() + " AND CategoryID = " + task.getCategory().getCategoryID();
-        ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            if (rs.next()) {
-                categoryDropdown.setSelectedItem(rs.getString("Name"));
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-
+        categoryDropdown.setSelectedItem(task.getCategory().getName());
         deadlineField.setText(task.sqlDateToTextFormat(task.getDateDue()));
         descriptionBox.setText(task.getDescription());
         timeField.setText(task.getTimeSet() + "");
@@ -57,7 +47,7 @@ public class TaskEditor extends javax.swing.JFrame {
     //Initialises components and sets some text box values
     private void initialise() {
         initComponents();
-        
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -66,7 +56,7 @@ public class TaskEditor extends javax.swing.JFrame {
         userLabel.setText("Logged in as: " + User.getUsername());
 
         //Setting the combo box up
-        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
+        String sql = "SELECT Name FROM category WHERE UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
@@ -296,7 +286,7 @@ public class TaskEditor extends javax.swing.JFrame {
         String category = categoryDropdown.getSelectedItem().toString();
         String dateDueText = deadlineField.getText();
         int colourCode = colourChooser.getColor().getRGB();
-        float timeSet = 0;
+        double timeSet = 0;
 
         //<editor-fold defaultstate="collapsed" desc=" Valid checks ">
         //Checks to see if name is empty
@@ -311,18 +301,18 @@ public class TaskEditor extends javax.swing.JFrame {
             new Popup("No category entered").setVisible(true);
         }
 
-        //Attemps to read the float. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
+        //Attemps to read the double. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
         try {
-            timeSet = Float.parseFloat(timeField.getText());
+            timeSet = Double.parseDouble(timeField.getText());
         } catch (Exception ex) {
             System.err.println(ex);
             valid = false;
             new Popup("Invalid time set").setVisible(true);
         }
-        
+
         //Checks to see if the entered name is longer than 20 characters
         if (nameField.getText().length() > 20) {
-           new Popup("Name is over 20 characters").setVisible(true);
+            new Popup("Name is over 20 characters").setVisible(true);
             valid = false;
         }
 
