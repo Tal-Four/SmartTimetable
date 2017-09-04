@@ -37,8 +37,11 @@ public class EventEditor extends javax.swing.JFrame {
         eventNameField.setText(event.getEventName());
         descriptionText.setText(event.getDescription());
         daySelection.setSelectedItem(event.dayIntToString(event.getDay()));
-        startHourDropdown.setSelectedItem((int) event.getStartTime());
         colourChooser.setColor(new Color(event.getColourCode()));
+        startHourDropdown.setSelectedItem(event.timeToString(0)[0]);
+        startMinuteDropdown.setSelectedItem(event.timeToString(0)[1]);
+        endHourDropdown.setSelectedItem(event.timeToString(1)[0]);
+        endMinuteDropdown.setSelectedItem(event.timeToString(1)[1]);
     }
 
     private void initialise() {
@@ -275,7 +278,7 @@ public class EventEditor extends javax.swing.JFrame {
             double endTime, startTime;
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
-            
+
             if (edit) {
                 //Edits an existing record
                 event.readFromDB(this.oldEventName);
