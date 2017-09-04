@@ -125,7 +125,7 @@ public class Task {
 
     //Deletes this task from the DB
     public void deleteTask() {
-        String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + taskID;
+        String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
         DatabaseHandle.update(sql);
     }
 
