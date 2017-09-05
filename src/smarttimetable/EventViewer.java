@@ -5,8 +5,13 @@
  */
 package smarttimetable;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +24,10 @@ public class EventViewer extends javax.swing.JFrame {
      */
     public EventViewer() {
         initComponents();
+
+        //Sets the user's name on screen and loads the list of events
+        userLabel.setText("Logged in as: " + User.getUsername());
+        loadTasks("Name");
         
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -37,12 +46,12 @@ public class EventViewer extends javax.swing.JFrame {
         backButton = new javax.swing.JButton();
         userLabel = new javax.swing.JLabel();
         exitButton = new javax.swing.JButton();
-        loginLabel = new javax.swing.JLabel();
+        jFrameTitleLabel = new javax.swing.JLabel();
         sortLabel = new javax.swing.JLabel();
         sortDropdown = new javax.swing.JComboBox<>();
         eventPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        taskList = new javax.swing.JList<>();
+        eventList = new javax.swing.JList<>();
         descriptionPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descriptionBox = new javax.swing.JTextArea();
@@ -51,6 +60,7 @@ public class EventViewer extends javax.swing.JFrame {
         dayLabel = new javax.swing.JLabel();
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        colourPreview = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,16 +81,26 @@ public class EventViewer extends javax.swing.JFrame {
             }
         });
 
-        loginLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        loginLabel.setText("Event Viewer");
+        jFrameTitleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jFrameTitleLabel.setText("Event Viewer");
 
         sortLabel.setText("Sort By:");
 
         sortDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Day", "Start time", "End time" }));
+        sortDropdown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortDropdownActionPerformed(evt);
+            }
+        });
 
         eventPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Events"));
 
-        jScrollPane1.setViewportView(taskList);
+        eventList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eventListMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(eventList);
 
         javax.swing.GroupLayout eventPanelLayout = new javax.swing.GroupLayout(eventPanel);
         eventPanel.setLayout(eventPanelLayout);
@@ -131,8 +151,31 @@ public class EventViewer extends javax.swing.JFrame {
 
         editButton.setText("Edit Selected");
         editButton.setToolTipText("Edit the selected task");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
+        colourPreview.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
+        javax.swing.GroupLayout colourPreviewLayout = new javax.swing.GroupLayout(colourPreview);
+        colourPreview.setLayout(colourPreviewLayout);
+        colourPreviewLayout.setHorizontalGroup(
+            colourPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 48, Short.MAX_VALUE)
+        );
+        colourPreviewLayout.setVerticalGroup(
+            colourPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,28 +191,33 @@ public class EventViewer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(exitButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(loginLabel)
+                        .addComponent(jFrameTitleLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(sortLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 2, Short.MAX_VALUE)
                         .addComponent(eventPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(descriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(dayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(49, 49, 49))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(38, 38, 38)
-                                        .addComponent(dayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(startTimeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(endTimeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(endTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(startTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(38, 38, 38)))
+                                .addComponent(colourPreview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(descriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -177,7 +225,7 @@ public class EventViewer extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loginLabel)
+                    .addComponent(jFrameTitleLabel)
                     .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sortLabel))
                 .addGap(18, 18, 18)
@@ -188,20 +236,24 @@ public class EventViewer extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dayLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(startTimeLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(endTimeLabel)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(dayLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(startTimeLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(endTimeLabel))
+                            .addComponent(colourPreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(deleteButton)
                             .addComponent(editButton))
                         .addGap(26, 26, 26)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backButton)
-                    .addComponent(exitButton)
-                    .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(userLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(backButton)
+                        .addComponent(exitButton)))
                 .addContainerGap())
         );
 
@@ -216,6 +268,75 @@ public class EventViewer extends javax.swing.JFrame {
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void eventListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eventListMouseClicked
+        Event selectedEvent = new Event();
+        selectedEvent.readFromDB(eventList.getSelectedValue());
+        
+        descriptionBox.setText(selectedEvent.getDescription());
+        dayLabel.setText("Day: " + selectedEvent.dayIntToString(selectedEvent.getDay()));
+        startTimeLabel.setText("Start Time: " + selectedEvent.timeToString(0)[0] + ":" + selectedEvent.timeToString(0)[1]);
+        endTimeLabel.setText("End Time: " + selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
+        colourPreview.setBackground(new Color(selectedEvent.getColourCode()));
+    }//GEN-LAST:event_eventListMouseClicked
+
+    private void sortDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortDropdownActionPerformed
+        loadTasks(sortDropdown.getSelectedItem().toString());
+    }//GEN-LAST:event_sortDropdownActionPerformed
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        new EventEditor(eventList.getSelectedValue()).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if (eventList.getSelectedValue() != null) {
+            int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + eventList.getSelectedValue(), "Delete event", JOptionPane.YES_NO_OPTION);
+            if (yesNo == 0) {
+                Event event = new Event();
+                event.readFromDB(eventList.getSelectedValue());
+                event.deleteEvent();
+                loadTasks(sortDropdown.getSelectedItem().toString());
+            }
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void loadTasks(String order) {
+        DefaultListModel dlm = new DefaultListModel();
+        String sql = null;
+        
+        //Setting the correct SQL
+        switch (order) {
+            case ("Name"):
+                order = "EventName";
+                break;
+            case ("Day"):
+                order = "Day";
+                break;
+            case ("Start time"):
+                order = "StartTime";
+                break;
+            case ("End time"):
+                order = "EndTime";
+                break;
+            default:
+                order = "EventName";
+                break;
+        }
+        sql = "SELECT EventName FROM event WHERE UserID = " + User.getUserID() + " ORDER BY " + order;
+
+        //Retrieving the names
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            while (rs.next()) {
+                dlm.addElement(rs.getString("EventName"));
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        eventList.setModel(dlm);
+    }
 
     /**
      * @param args the command line arguments
@@ -252,24 +373,25 @@ public class EventViewer extends javax.swing.JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
+    private javax.swing.JPanel colourPreview;
     private javax.swing.JLabel dayLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextArea descriptionBox;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JButton editButton;
     private javax.swing.JLabel endTimeLabel;
+    private javax.swing.JList<String> eventList;
     private javax.swing.JPanel eventPanel;
     private javax.swing.JButton exitButton;
+    private javax.swing.JLabel jFrameTitleLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel loginLabel;
     private javax.swing.JComboBox<String> sortDropdown;
     private javax.swing.JLabel sortLabel;
     private javax.swing.JLabel startTimeLabel;
-    private javax.swing.JList<String> taskList;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
 }
