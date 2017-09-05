@@ -11,7 +11,7 @@ public class Event {
     private String eventName, description;
     private int day, colourCode, eventID;
     private double startTime, endTime;
-    public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7;
+    public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7, START = 0, END = 1;
 
     public Event() {
 
@@ -42,7 +42,7 @@ public class Event {
     public void readFromDB(String eventName) {
         this.eventName = eventName;
 
-        String sql = "SELECT * from event where EventName == " + this.eventName + " AND UserID = " + User.getUserID();
+        String sql = "SELECT * FROM event WHERE EventName = '" + this.eventName + "' AND UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
 
         try {
@@ -72,7 +72,7 @@ public class Event {
         String sql = "INSERT INTO smarttimetabledb.event (`EventID`, `UserID`, `EventName`, `Description`, `Day`, `Colour`, `StartTime`, `EndTime`) "
                 + "VALUES (" + this.eventID + ", " + User.getUserID() + ", '" + this.eventName + "', '" + this.description + "', " + this.day + ", " + this.colourCode + ", " + this.startTime + ", " + this.endTime + ")";
         DatabaseHandle.update(sql);
-        
+
         new Popup("Event " + this.eventName + " created.").setVisible(true);
     }
 
@@ -96,25 +96,25 @@ public class Event {
         int dayInt = 0;
         switch (dayString) {
             case ("Monday"):
-                day = MON;
+                dayInt = MON;
                 break;
             case ("Tuesday"):
-                day = TUE;
+                dayInt = TUE;
                 break;
             case ("Wednesday"):
-                day = WED;
+                dayInt = WED;
                 break;
             case ("Thursday"):
-                day = THU;
+                dayInt = THU;
                 break;
             case ("Friday"):
-                day = FRI;
+                dayInt = FRI;
                 break;
             case ("Saturday"):
-                day = SAT;
+                dayInt = SAT;
                 break;
             case ("Sunday"):
-                day = SUN;
+                dayInt = SUN;
                 break;
         }
         return dayInt;
@@ -154,7 +154,24 @@ public class Event {
         String sql = "DELETE FROM smarttimetabledb.`event` WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
         DatabaseHandle.update(sql);
     }
-    
+
+    public String[] timeToString(int mode) {
+        double time = 0;
+        if (mode == 0) {
+            time = this.startTime;
+        } else {
+            time = this.endTime;
+        }
+        String[] timeString = new String[2];
+        timeString[0] = (int) time + "";
+        if ((time * 2) % 2 == 0.0) {
+            timeString[1] = "00";
+        } else {
+            timeString[1] = "30";
+        }
+        return timeString;
+    }
+
     // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 
     public String getEventName() {
         return eventName;
