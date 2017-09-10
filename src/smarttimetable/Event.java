@@ -7,7 +7,7 @@ import java.sql.ResultSet;
  * @author Adam-PC
  */
 public class Event {
-
+    
     private String eventName, description;
     private int day, colourCode, eventID;
     private double startTime, endTime;
