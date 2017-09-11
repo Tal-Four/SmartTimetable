@@ -7,10 +7,10 @@ package smarttimetable;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.sql.ResultSet;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -23,8 +23,6 @@ public class Timetable extends javax.swing.JFrame {
      */
     public Timetable() {
         initComponents();
-        TimetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        TimetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
     }
 
     /**
@@ -110,14 +108,27 @@ public class Timetable extends javax.swing.JFrame {
             }
         });
         TimetableTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        TimetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        TimetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
+        TimetableTable.setDefaultRenderer(String.class, new CustomRenderer());
         TimetableTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TimetableTableMouseClicked(evt);
             }
         });
+        TimetableTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TimetableTableKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(TimetableTable);
 
         jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -125,18 +136,16 @@ public class Timetable extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
-                .addComponent(jButton1)
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jButton1))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -155,26 +164,49 @@ public class Timetable extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public class StatusColumnCellRenderer extends DefaultTableCellRenderer {
+    public class CustomRenderer extends DefaultTableCellRenderer {
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
 
             //Cells are by default rendered as a JLabel.
-            JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-
-            l.setBackground(Color.GREEN);
-
+            JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+            if (value != null && col != 0) {
+                String sql = "SELECT task.Colour FROM task WHERE task.Name = '" + value + "'";
+                ResultSet rs = DatabaseHandle.query(sql);
+                int colourCode = 0;
+                try {
+                    if (rs.next()) {
+                        colourCode = rs.getInt("task.Colour");
+                        cell.setBackground(new Color(colourCode));
+                    } else {
+                        cell.setBackground(Color.WHITE);
+                        cell.setForeground(Color.RED);
+                    }
+                } catch (Exception ex) {
+                    System.err.println(ex);
+                }
+            } else {
+                cell.setBackground(Color.WHITE);
+            }
             //Return the JLabel which renders the cell.
-            return l;
+            return cell;
 
         }
     }
 
     private void TimetableTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TimetableTableMouseClicked
-        TimetableTable.getColumnModel().getColumn(TimetableTable.getSelectedColumn()).setCellRenderer(new StatusColumnCellRenderer());
 
     }//GEN-LAST:event_TimetableTableMouseClicked
+
+    private void TimetableTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TimetableTableKeyPressed
+        //TimetableTable.getColumnModel().getColumn(TimetableTable.getSelectedColumn()).setCellRenderer(new ColumnCellRenderer());
+    }//GEN-LAST:event_TimetableTableKeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+        new Menu().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
