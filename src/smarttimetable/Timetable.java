@@ -5,6 +5,8 @@
  */
 package smarttimetable;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JTable;
 
 /**
@@ -18,6 +20,11 @@ public class Timetable extends javax.swing.JFrame {
      */
     public Timetable() {
         initComponents();
+
+        //Centers the frame to the centre of the monitor
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        this.setMaximumSize(dim);
     }
 
     /**
@@ -29,94 +36,33 @@ public class Timetable extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        timetablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TimetableTable = new javax.swing.JTable();
+        timetableTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Timetable", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
+        timetablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Timetable", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
-        TimetableTable.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        TimetableTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"00:00", null, null, null, null, null, null, null},
-                {"00:30", null, null, null, null, null, null, null},
-                {"01:00", null, null, null, null, null, null, null},
-                {"01:30", null, null, null, null, null, null, null},
-                {"02:00", null, null, null, null, null, null, null},
-                {"02:30", null, null, null, null, null, null, null},
-                {"03:00", null, null, null, null, null, null, null},
-                {"03:30", null, null, null, null, null, null, null},
-                {"04:00", null, null, null, null, null, null, null},
-                {"04:30", null, null, null, null, null, null, null},
-                {"05:00", null, null, null, null, null, null, null},
-                {"05:30", null, null, null, null, null, null, null},
-                {"06:00", null, null, null, null, null, null, null},
-                {"06:30", null, null, null, null, null, null, null},
-                {"07:00", null, null, null, null, null, null, null},
-                {"07:30", null, null, null, null, null, null, null},
-                {"08:00", null, null, null, null, null, null, null},
-                {"08:30", null, null, null, null, null, null, null},
-                {"09:00", null, null, null, null, null, null, null},
-                {"09:30", null, null, null, null, null, null, null},
-                {"10:00", null, null, null, null, null, null, null},
-                {"10:30", null, null, null, null, null, null, null},
-                {"11:00", null, null, null, null, null, null, null},
-                {"11:30", null, null, null, null, null, null, null},
-                {"12:00", null, null, null, null, null, null, null},
-                {"12:30", null, null, null, null, null, null, null},
-                {"13:00", null, null, null, null, null, null, null},
-                {"13:30", null, null, null, null, null, null, null},
-                {"14:00", null, null, null, null, null, null, null},
-                {"14:30", null, null, null, null, null, null, null},
-                {"15:00", null, null, null, null, null, null, null},
-                {"15:30", null, null, null, null, null, null, null},
-                {"16:00", null, null, null, null, null, null, null},
-                {"16:30", null, null, null, null, null, null, null},
-                {"17:00", null, null, null, null, null, null, null},
-                {"17:30", null, null, null, null, null, null, null},
-                {"18:00", null, null, null, null, null, null, null},
-                {"18:30", null, null, null, null, null, null, null},
-                {"19:00", null, null, null, null, null, null, null},
-                {"19:30", null, null, null, null, null, null, null},
-                {"20:00", null, null, null, null, null, null, null},
-                {"20:30", null, null, null, null, null, null, null},
-                {"21:00", null, null, null, null, null, null, null},
-                {"21:30", null, null, null, null, null, null, null},
-                {"22:00", null, null, null, null, null, null, null},
-                {"22:30", null, null, null, null, null, null, null},
-                {"23:00", null, null, null, null, null, null, null},
-                {"23:30", null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        TimetableTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        TimetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        TimetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
-        TimetableTable.setDefaultRenderer(String.class, new CustomRenderer());
-        TimetableTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        timetableTable.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        timetableTable.setModel(new CustomTableModel());
+        timetableTable.setToolTipText("");
+        timetableTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        timetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
+        timetableTable.setDefaultRenderer(String.class, new CustomRenderer());
+        timetableTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TimetableTableMouseClicked(evt);
+                timetableTableMouseClicked(evt);
             }
         });
-        TimetableTable.addKeyListener(new java.awt.event.KeyAdapter() {
+        timetableTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                TimetableTableKeyPressed(evt);
+                timetableTableKeyPressed(evt);
             }
         });
-        jScrollPane1.setViewportView(TimetableTable);
+        jScrollPane1.setViewportView(timetableTable);
 
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -125,49 +71,59 @@ public class Timetable extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout timetablePanelLayout = new javax.swing.GroupLayout(timetablePanel);
+        timetablePanel.setLayout(timetablePanelLayout);
+        timetablePanelLayout.setHorizontalGroup(
+            timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(timetablePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(jButton1))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        timetablePanelLayout.setVerticalGroup(
+            timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(timetablePanelLayout.createSequentialGroup()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(timetablePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(timetablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(timetablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
 
-    private void TimetableTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TimetableTableMouseClicked
+    private void timetableTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timetableTableMouseClicked
 
-    }//GEN-LAST:event_TimetableTableMouseClicked
+    }//GEN-LAST:event_timetableTableMouseClicked
 
-    private void TimetableTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TimetableTableKeyPressed
-        //TimetableTable.getColumnModel().getColumn(TimetableTable.getSelectedColumn()).setCellRenderer(new ColumnCellRenderer());
-    }//GEN-LAST:event_TimetableTableKeyPressed
+    private void timetableTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timetableTableKeyPressed
+        render();
+    }//GEN-LAST:event_timetableTableKeyPressed
+
+    private void render() {
+        timetableTable.getColumnModel().getColumn(timetableTable.getSelectedColumn()).setCellRenderer(new CustomRenderer());
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
@@ -210,9 +166,9 @@ public class Timetable extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TimetableTable;
     private javax.swing.JButton jButton1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel timetablePanel;
+    private javax.swing.JTable timetableTable;
     // End of variables declaration//GEN-END:variables
 }
