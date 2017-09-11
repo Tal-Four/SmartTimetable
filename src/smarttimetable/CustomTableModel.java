@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
  * @author crazy
  */
 public class CustomTableModel extends DefaultTableModel {
-
+    
     private Object[][] data;
     private String[] headers;
 
@@ -65,7 +65,27 @@ public class CustomTableModel extends DefaultTableModel {
             {"23:00", null, null, null, null, null, null, null},
             {"23:30", null, null, null, null, null, null, null}
         };
-
+        setDataVector(data, headers);
     }
     
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false;
+    }
+
+    public void setData(Object[][] data) {
+        this.data = data;
+    }
+
+    public void setHeaders(String[] headers) {
+        this.headers = headers;
+    }
+
+    public Object[][] getData() {
+        return data;
+    }
+
+    public String[] getHeaders() {
+        return headers;
+    }
 }
