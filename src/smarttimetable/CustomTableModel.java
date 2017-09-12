@@ -67,7 +67,8 @@ public class CustomTableModel extends DefaultTableModel {
         };
         setDataVector(data, headers);
     }
-    
+
+    //Sets the table to uneditable
     @Override
     public boolean isCellEditable(int row, int column) {
         return false;
@@ -76,6 +77,10 @@ public class CustomTableModel extends DefaultTableModel {
     public void setData(Object[][] data) {
         this.data = data;
     }
+    
+    public void setDataAt(Object data, int row, int column){
+        this.data[row][column] = data;
+    }
 
     public void setHeaders(String[] headers) {
         this.headers = headers;
@@ -83,6 +88,10 @@ public class CustomTableModel extends DefaultTableModel {
 
     public Object[][] getData() {
         return data;
+    }
+    
+    public Object getDataAt(int row, int column){
+        return data[row][column];
     }
 
     public String[] getHeaders() {
