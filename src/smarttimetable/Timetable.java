@@ -8,6 +8,7 @@ package smarttimetable;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -20,7 +21,7 @@ public class Timetable extends javax.swing.JFrame {
      */
     public Timetable() {
         initComponents();
-
+        
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -74,6 +75,8 @@ public class Timetable extends javax.swing.JFrame {
         timetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
         timetableTable.setDefaultRenderer(String.class, new CustomRenderer());
+        timetableTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        timetableTable.setColumnSelectionAllowed(true);
         timetableTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 timetableTableMouseClicked(evt);
@@ -240,7 +243,7 @@ public class Timetable extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -269,9 +272,8 @@ public class Timetable extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void timetableTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timetableTableMouseClicked
-
+        
     }//GEN-LAST:event_timetableTableMouseClicked
 
     private void timetableTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timetableTableKeyPressed
