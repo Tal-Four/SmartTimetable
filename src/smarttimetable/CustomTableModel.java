@@ -65,9 +65,9 @@ public class CustomTableModel extends DefaultTableModel {
             {"23:00", null, null, null, null, null, null, null},
             {"23:30", null, null, null, null, null, null, null}
         };
-        setDataVector(data, headers);
+        setDataVector(this.data, this.headers);
     }
-
+    
     //Sets the table to uneditable
     @Override
     public boolean isCellEditable(int row, int column) {
