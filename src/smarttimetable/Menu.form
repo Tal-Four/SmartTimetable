@@ -30,8 +30,8 @@
                   <Group type="102" attributes="0">
                       <Component id="logoutButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="userLabel" min="-2" pref="359" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="userLabel" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="exitButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -42,9 +42,9 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Component id="mainMenuPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="userLabel" alignment="0" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -98,24 +98,30 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="2" attributes="0">
-                      <Group type="102" alignment="2" attributes="0">
-                          <Component id="viewEditTasks" pref="155" max="32767" attributes="0"/>
-                          <EmptySpace min="18" pref="18" max="18" attributes="0"/>
-                          <Component id="viewEditEvents" min="-2" pref="155" max="-2" attributes="0"/>
-                          <EmptySpace min="18" pref="18" max="18" attributes="0"/>
-                          <Component id="viewEditTimetable" min="-2" pref="155" max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="createCategoryButton" max="32767" attributes="0"/>
+                      <Component id="viewEditCategoryButton" pref="145" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="createTaskButton" min="-2" pref="145" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="createEventsButton" min="-2" pref="145" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="generateTimetableButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="2" attributes="0">
-                          <Component id="createTaskButton" max="32767" attributes="0"/>
-                          <EmptySpace min="18" pref="18" max="18" attributes="0"/>
-                          <Component id="createEventsButton" min="-2" pref="155" max="-2" attributes="0"/>
-                          <EmptySpace min="18" pref="18" max="18" attributes="0"/>
-                          <Component id="generateTimetableButton" min="-2" pref="155" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="viewEditTasks" min="-2" pref="145" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="viewEditEvents" min="-2" pref="145" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="viewEditTimetable" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="13" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -127,14 +133,16 @@
                       <Component id="generateTimetableButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="createEventsButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="createTaskButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="createCategoryButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="15" max="32767" attributes="0"/>
+                  <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="viewEditCategoryButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="viewEditTasks" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="viewEditEvents" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="viewEditTimetable" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -186,6 +194,22 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditTasksActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="createCategoryButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Create Category"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createCategoryButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="viewEditCategoryButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="View/Edit Category"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditCategoryButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

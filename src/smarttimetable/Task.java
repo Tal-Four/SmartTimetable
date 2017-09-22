@@ -130,13 +130,13 @@ public class Task {
     }
 
     //Calculates the modified time
-    private double calcModifiedTime(){
+    private double calcModifiedTime() {
         double timeModded = this.timeSet * this.category.getModifier();
         timeModded = roundToHalf(timeModded);
         return timeModded;
     }
-    
-    private double roundToHalf(double number){
+
+    private double roundToHalf(double number) {
         return (Math.round(number * 2) / 2.0);
     }
 
@@ -180,7 +180,7 @@ public class Task {
     public void setDateDue(String dateDue) {
         this.dateDue = dateDue;
     }
-    
+
     public int getTaskID() {
         return this.taskID;
     }
