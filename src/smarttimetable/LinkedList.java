@@ -2,32 +2,31 @@ package smarttimetable;
 
 public class LinkedList {
 
-    // Attributes
     private Node rootNode;
 
-    // Constructor
+    //Sets the root node to nothing
     public LinkedList() {
         this.rootNode = null;
     }
 
-    // Methods
-    public void addNode(Object data) {
+    //Adds a node with user speciifed data to the list
+    public void addNode(int data) {
+        Node newNode = new Node(data, null);
+        //If no root node it makes this node the root node
         if (this.rootNode == null) {
-            Node newNode = new Node(data, null);
             this.rootNode = newNode;
         } else {
+            //Otherwise it is added to the end of the list
             Node currentNode = this.rootNode;
             while (currentNode.getNextNode() != null) {
                 currentNode = currentNode.getNextNode();
             }
-            Node newNode = new Node(data, null);
             currentNode.setNextNode(newNode);
         }
-        System.out.println("Adding " + data + " to the list:");
-
     }
 
-    public void deleteNode(Object dataToDelete) {
+    //Deletes a node with the specified data
+    public void deleteNode(int dataToDelete) {
         boolean deleted = false;
         Node currentNode = this.rootNode, nodeToDelete;
         if (currentNode.getData() == dataToDelete) {
@@ -51,6 +50,7 @@ public class LinkedList {
         }
     }
 
+    //Prints the entire list to the console
     public void printList() {
 
         if (this.rootNode == null) {
@@ -66,13 +66,42 @@ public class LinkedList {
             currentNode = currentNode.getNextNode();
 
             System.out.println(currentNode.getData());
-
         }
     }
-    
-    /*TODO
-    public Object getDataAt(int location){
-        
-    }*/
 
+    //Returns the number of nodes in the list
+    public int getLength() {
+        if (this.rootNode == null) {
+            System.out.println("List empty.");
+            return 0;
+        }
+
+        Node currentNode = this.rootNode;
+        int counter = 1;
+
+        while (currentNode.getNextNode() != null) {
+            currentNode = currentNode.getNextNode();
+            counter++;
+        }
+        return counter;
+    }
+
+    //Returns the data at a user specified location
+    public int getDataAt(int location) {
+        Node currentNode = this.rootNode;
+
+        if (currentNode == null || location >= getLength()) {
+            return 0;
+        }
+
+        for (int count = 0; count < location; count++) {
+            currentNode = currentNode.getNextNode();
+        }
+
+        return currentNode.getData();
+    }
+    
+    public void clear(){
+        this.rootNode = null;
+    }
 }

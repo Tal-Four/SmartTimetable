@@ -17,7 +17,7 @@ import javax.swing.JComboBox;
 public class EventEditor extends javax.swing.JFrame {
 
     private boolean edit;
-    private String oldEventName;
+    private int oldEventID;
 
     //Creates a blank EventEditor form
     public EventEditor() {
@@ -26,14 +26,13 @@ public class EventEditor extends javax.swing.JFrame {
     }
 
     //Creates a prefilled EventEditor form
-    public EventEditor(String oldEventName) {
+    public EventEditor(int oldEventID) {
         initialise();
         this.edit = true;
-        this.oldEventName = oldEventName;
+        this.oldEventID = oldEventID;
 
         //Setting values of fields
-        Event event = new Event();
-        event.readFromDB(this.oldEventName);
+        Event event = new Event(this.oldEventID);
         eventNameField.setText(event.getEventName());
         descriptionText.setText(event.getDescription());
         daySelection.setSelectedItem(event.dayIntToString(event.getDay()));
@@ -86,7 +85,7 @@ public class EventEditor extends javax.swing.JFrame {
         userLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         mainDetailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -281,11 +280,11 @@ public class EventEditor extends javax.swing.JFrame {
 
             if (edit) {
                 //Edits an existing record
-                event.readFromDB(this.oldEventName);
+                event = new Event(this.oldEventID);
                 event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
             } else {
                 //Entering the event into the database
-                event.createEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
+                event = new Event(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
             }
 
             //Returning to menu screen

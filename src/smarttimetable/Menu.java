@@ -50,7 +50,7 @@ public class Menu extends javax.swing.JFrame {
         createCategoryButton = new javax.swing.JButton();
         viewEditCategoryButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         exitButton.setText("Exit");
         exitButton.setToolTipText("Exit the program");
@@ -253,7 +253,8 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void createCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCategoryButtonActionPerformed
-        
+        this.setVisible(false);
+        new CategoryEditor().setVisible(true);
     }//GEN-LAST:event_createCategoryButtonActionPerformed
 
     private void viewEditCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditCategoryButtonActionPerformed

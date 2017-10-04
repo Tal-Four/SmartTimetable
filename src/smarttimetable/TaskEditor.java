@@ -18,24 +18,24 @@ import java.sql.SQLException;
 public class TaskEditor extends javax.swing.JFrame {
 
     private boolean edit;
-    private String oldTaskName;
+    private int oldTaskID;
+    private LinkedList categoryIDList = new LinkedList();
 
-    // Creates new form TaskEditor
+    //Creates new form TaskEditor
     public TaskEditor() {
         initialise();
         this.edit = false;
     }
 
-    // Creates new form TaskEditor with given variables
-    public TaskEditor(String taskName) {
+    //Creates new form TaskEditor with given variables
+    public TaskEditor(int taskID) {
         initialise();
         this.edit = true;
-        this.oldTaskName = taskName;
+        this.oldTaskID = taskID;
 
         //Setting the values of the GUI to the selected tasks values
-        Task task = new Task();
-        task.readTaskFromDB(taskName);
-        nameField.setText(taskName);
+        Task task = new Task(taskID);
+        nameField.setText(task.getName());
         categoryDropdown.setSelectedItem(task.getCategory().getName());
         deadlineField.setText(task.sqlDateToTextFormat(task.getDateDue()));
         descriptionBox.setText(task.getDescription());
@@ -56,10 +56,11 @@ public class TaskEditor extends javax.swing.JFrame {
         userLabel.setText("Logged in as: " + User.getUsername());
 
         //Setting the combo box up
-        String sql = "SELECT Name FROM category WHERE UserID = " + User.getUserID();
+        String sql = "SELECT Name, CategoryID FROM user, category WHERE user.UserID = category.UserID AND user.UserID = " + User.getUserID() + " ORDER BY Name";
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
+                categoryIDList.addNode(rs.getInt("CategoryID"));
                 categoryDropdown.addItem(rs.getString("Name"));
             }
         } catch (SQLException e) {
@@ -98,7 +99,7 @@ public class TaskEditor extends javax.swing.JFrame {
         saveButton = new javax.swing.JButton();
         userLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -129,8 +130,6 @@ public class TaskEditor extends javax.swing.JFrame {
                 nameFieldKeyReleased(evt);
             }
         });
-
-        categoryDropdown.setEditable(true);
 
         nameCharsUsed.setText("0 out of 20 characters used");
 
@@ -283,7 +282,7 @@ public class TaskEditor extends javax.swing.JFrame {
         boolean valid = true;
         String taskName = nameField.getText();
         String description = descriptionBox.getText();
-        String category = categoryDropdown.getSelectedItem().toString();
+        int categoryID = categoryIDList.getDataAt(categoryDropdown.getSelectedIndex());
         String dateDueText = deadlineField.getText();
         int colourCode = colourChooser.getColor().getRGB();
         double timeSet = 0;
@@ -293,12 +292,6 @@ public class TaskEditor extends javax.swing.JFrame {
         if (taskName.equals("")) {
             valid = false;
             new Popup("No task name entered").setVisible(true);
-        }
-
-        //Checks to see if category is empty
-        if (category.equals("")) {
-            valid = false;
-            new Popup("No category entered").setVisible(true);
         }
 
         //Attemps to read the double. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
@@ -324,12 +317,12 @@ public class TaskEditor extends javax.swing.JFrame {
 
         //Creates the task and changes screen back to the menu if the variables are valid
         if (valid) {
-            Task newTask = new Task();
+            
             if (edit) {
-                newTask.readTaskFromDB(this.oldTaskName);
-                newTask.editTask(taskName, description, category, dateDueText, colourCode, timeSet, newTask.getTaskID());
+                Task editedTask = new Task(this.oldTaskID);
+                editedTask.editTask(taskName, description, categoryID, dateDueText, colourCode, timeSet, editedTask.getTaskID());
             } else {
-                newTask.createNewTask(taskName, description, category, dateDueText, colourCode, timeSet);
+                Task newTask = new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet);
             }
             this.setVisible(false);
             new Menu().setVisible(true);

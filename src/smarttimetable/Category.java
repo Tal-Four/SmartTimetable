@@ -12,37 +12,7 @@ public class Category {
     private String name;
     private int categoryID, taskCount;
     private double modifier;
-
-    //Constructor when given a string name
-    public Category(String name) {
-        this.name = name;
-
-        boolean categoryExists = false;
-        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
-        ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            while (rs.next() && !categoryExists) {
-                if (name.equals(rs.getString("Name"))) {
-                    categoryExists = true;
-                    this.categoryID = rs.getInt("CategoryID");
-                    this.modifier = rs.getFloat("Modifier");
-                    this.taskCount = rs.getInt("TasksCompleted");
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        if (!categoryExists) {
-
-            this.categoryID = DatabaseHandle.createID("category", "CategoryID");
-            this.modifier = 1;
-            this.taskCount = 0;
-            sql = "INSERT INTO smarttimetabledb.`category` (`CategoryID`, `UserID`, `Name`) VALUES(" + this.categoryID + ", " + User.getUserID() + ", '" + name + "')";
-            DatabaseHandle.update(sql);
-            new Popup("Category " + name + " created").setVisible(true);
-        }
-
-    }
+    private int colourCode;
 
     //Constructor when given a categoryID
     public Category(int categoryID) {
@@ -60,6 +30,27 @@ public class Category {
         } catch (SQLException e) {
             System.err.println(e);
         }
+    }
+
+    public Category(String name, int colourCode) {
+        this.categoryID = DatabaseHandle.createID("category", "CategoryID");
+        this.modifier = 1;
+        this.taskCount = 0;
+        this.name = name;
+        this.colourCode = colourCode;
+        
+        String sql = "INSERT INTO smarttimetabledb.`category` (`CategoryID`, `UserID`, `Name`, `Colour`) VALUES(" + this.categoryID + ", " + User.getUserID() + ", '" + this.name + "', " + this.colourCode + ")";
+        DatabaseHandle.update(sql);
+        new Popup("Category " + this.name + " created").setVisible(true);
+    }
+    
+    public int editCategory(String name, int colourCode) {
+        this.colourCode = colourCode;
+        this.name = name;
+        
+        String sql = "UPDATE category SET Name = '" + this.name + "', Colour = " + this.colourCode + " WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
+        int linesChanged = DatabaseHandle.update(sql);
+        return linesChanged;
     }
 
     public void taskComplete(Task task) {

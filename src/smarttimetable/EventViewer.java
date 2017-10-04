@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
  */
 public class EventViewer extends javax.swing.JFrame {
 
+    private LinkedList eventIDList = new LinkedList();
+
     /**
      * Creates new form TaskViewer
      */
@@ -27,11 +29,68 @@ public class EventViewer extends javax.swing.JFrame {
 
         //Sets the user's name on screen and loads the list of events
         userLabel.setText("Logged in as: " + User.getUsername());
-        loadTasks("Name");
-        
+        setUpList();
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+    }
+
+    private void updateIDList() {
+        this.eventIDList.clear();
+
+        String selectedSort = sortDropdown.getSelectedItem().toString();
+        String sql = null;
+
+        //Setting the correct SQL
+        switch (selectedSort) {
+            case ("Name"):
+                selectedSort = "EventName";
+                break;
+            case ("Day"):
+                selectedSort = "Day";
+                break;
+            case ("Start time"):
+                selectedSort = "StartTime";
+                break;
+            case ("End time"):
+                selectedSort = "EndTime";
+                break;
+            default:
+                selectedSort = "EventName";
+                break;
+        }
+        sql = "SELECT EventName FROM event WHERE UserID = " + User.getUserID() + " ORDER BY " + selectedSort;
+
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            while (rs.next()) {
+                this.eventIDList.addNode(rs.getInt("EventID"));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+    }
+
+    //Sets the taskList to the user's tasks given an order (eg. alphabetical)
+    private void setUpList() {
+        updateIDList();
+        DefaultListModel dlm = new DefaultListModel();
+
+        for (int count = 0; count < this.eventIDList.getLength(); count++) {
+            String sql = "SELECT EventName FROM event, user WHERE event.UserID = user.UserID AND user.UserID = "
+                    + User.getUserID() + " AND EventID = " + this.eventIDList.getDataAt(count);
+            ResultSet rs = DatabaseHandle.query(sql);
+            try {
+                while (rs.next()) {
+                    dlm.addElement(rs.getString("EventName"));
+                }
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }
+
+        this.eventList.setModel(dlm);
     }
 
     /**
@@ -62,7 +121,7 @@ public class EventViewer extends javax.swing.JFrame {
         deleteButton = new javax.swing.JButton();
         colourPreview = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -95,9 +154,9 @@ public class EventViewer extends javax.swing.JFrame {
 
         eventPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Events"));
 
-        eventList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                eventListMouseClicked(evt);
+        eventList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                eventListValueChanged(evt);
             }
         });
         jScrollPane1.setViewportView(eventList);
@@ -269,23 +328,12 @@ public class EventViewer extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
-    private void eventListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eventListMouseClicked
-        Event selectedEvent = new Event();
-        selectedEvent.readFromDB(eventList.getSelectedValue());
-        
-        descriptionBox.setText(selectedEvent.getDescription());
-        dayLabel.setText("Day: " + selectedEvent.dayIntToString(selectedEvent.getDay()));
-        startTimeLabel.setText("Start Time: " + selectedEvent.timeToString(0)[0] + ":" + selectedEvent.timeToString(0)[1]);
-        endTimeLabel.setText("End Time: " + selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
-        colourPreview.setBackground(new Color(selectedEvent.getColourCode()));
-    }//GEN-LAST:event_eventListMouseClicked
-
     private void sortDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortDropdownActionPerformed
-        loadTasks(sortDropdown.getSelectedItem().toString());
+        setUpList();
     }//GEN-LAST:event_sortDropdownActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        new EventEditor(eventList.getSelectedValue()).setVisible(true);
+        new EventEditor(this.eventIDList.getDataAt(this.eventList.getSelectedIndex())).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -293,50 +341,21 @@ public class EventViewer extends javax.swing.JFrame {
         if (eventList.getSelectedValue() != null) {
             int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + eventList.getSelectedValue(), "Delete event", JOptionPane.YES_NO_OPTION);
             if (yesNo == 0) {
-                Event event = new Event();
-                event.readFromDB(eventList.getSelectedValue());
+                Event event = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
                 event.deleteEvent();
-                loadTasks(sortDropdown.getSelectedItem().toString());
+                setUpList();
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void loadTasks(String order) {
-        DefaultListModel dlm = new DefaultListModel();
-        String sql = null;
-        
-        //Setting the correct SQL
-        switch (order) {
-            case ("Name"):
-                order = "EventName";
-                break;
-            case ("Day"):
-                order = "Day";
-                break;
-            case ("Start time"):
-                order = "StartTime";
-                break;
-            case ("End time"):
-                order = "EndTime";
-                break;
-            default:
-                order = "EventName";
-                break;
-        }
-        sql = "SELECT EventName FROM event WHERE UserID = " + User.getUserID() + " ORDER BY " + order;
+    private void eventListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventListValueChanged
+        Event selectedEvent = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
 
-        //Retrieving the names
-        ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            while (rs.next()) {
-                dlm.addElement(rs.getString("EventName"));
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-
-        eventList.setModel(dlm);
-    }
+        descriptionBox.setText(selectedEvent.getDescription());
+        dayLabel.setText("Day: " + selectedEvent.dayIntToString(selectedEvent.getDay()));
+        startTimeLabel.setText("Start Time: " + selectedEvent.timeToString(0)[0] + ":" + selectedEvent.timeToString(0)[1]);
+        endTimeLabel.setText("End Time: " + selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
+        colourPreview.setBackground(new Color(selectedEvent.getColourCode()));    }//GEN-LAST:event_eventListValueChanged
 
     /**
      * @param args the command line arguments

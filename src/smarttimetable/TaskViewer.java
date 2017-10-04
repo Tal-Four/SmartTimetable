@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
  */
 public class TaskViewer extends javax.swing.JFrame {
 
+    LinkedList taskIDList = new LinkedList();    
+    
     /**
      * Creates new form TaskViewer
      */
@@ -28,12 +30,75 @@ public class TaskViewer extends javax.swing.JFrame {
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-              
+
         //Sets the user's name on screen and loads the list of events                
         userLabel.setText("Logged in as: " + User.getUsername());
-        loadTasks("Name");
+        setUpList();
     }
 
+    private void updateIDList() {
+        this.taskIDList.clear();
+
+        String selectedSort = sortDropdown.getSelectedItem().toString();
+        String sql = null;
+        if (!selectedSort.equals("Category")) {
+
+            switch (selectedSort) {
+                case ("Name"):
+                    selectedSort = "Name";
+                    break;
+                case ("Date set"):
+                    selectedSort = "DateSet";
+                    break;
+                case ("Date due"):
+                    selectedSort = "DateDue";
+                    break;
+                case ("Time allotted"):
+                    selectedSort = "TimeModified";
+                    break;
+                case ("Time used"):
+                    selectedSort = "TimeUsed";
+                    break;
+                default:
+                    selectedSort = "Name";
+                    break;
+            }
+            sql = "SELECT TaskID FROM task WHERE UserID = " + User.getUserID() + " ORDER BY " + selectedSort;
+        } else {
+            sql = "SELECT TaskID FROM task, category, user WHERE user.UserID = task.UserID AND user.UserID = " + User.getUserID() + " AND category.UserID = task.UserID AND category.CategoryID = task.CategoryID ORDER BY category.Name";
+        }
+        
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            while (rs.next()) {
+                this.taskIDList.addNode(rs.getInt("TaskID"));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+    }
+    
+    //Sets the taskList to the user's tasks given an order (eg. alphabetical)
+    private void setUpList() {
+        updateIDList();
+        DefaultListModel dlm = new DefaultListModel();
+
+        for (int count = 0; count < this.taskIDList.getLength(); count++) {
+            String sql = "SELECT Name FROM task, user WHERE task.UserID = user.UserID AND user.UserID = "
+                    + User.getUserID() + " AND TaskID = " + this.taskIDList.getDataAt(count);
+            ResultSet rs = DatabaseHandle.query(sql);
+            try {
+                while (rs.next()) {
+                    dlm.addElement(rs.getString("Name"));
+                }
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }
+
+        this.taskList.setModel(dlm);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,7 +130,7 @@ public class TaskViewer extends javax.swing.JFrame {
         completeButton = new javax.swing.JButton();
         colourPreview = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -106,9 +171,9 @@ public class TaskViewer extends javax.swing.JFrame {
 
         taskPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Tasks"));
 
-        taskList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                taskListMouseClicked(evt);
+        taskList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                taskListValueChanged(evt);
             }
         });
         jScrollPane1.setViewportView(taskList);
@@ -296,11 +361,11 @@ public class TaskViewer extends javax.swing.JFrame {
     //Edits the selected task
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         this.setVisible(false);
-        new TaskEditor(taskList.getSelectedValue()).setVisible(true);
+        new TaskEditor(this.taskIDList.getDataAt(this.taskList.getSelectedIndex())).setVisible(true);
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void sortDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortDropdownActionPerformed
-        loadTasks(sortDropdown.getSelectedItem().toString());
+        setUpList();
     }//GEN-LAST:event_sortDropdownActionPerformed
 
     //Deletes the selected task if the user confirms the choice
@@ -308,19 +373,29 @@ public class TaskViewer extends javax.swing.JFrame {
         if (taskList.getSelectedValue() != null) {
             int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + taskList.getSelectedValue(), "Delete task", JOptionPane.YES_NO_OPTION);
             if (yesNo == 0) {
-                Task task = new Task();
-                task.readTaskFromDB(taskList.getSelectedValue());
+                Task task = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
                 task.deleteTask();
-                loadTasks(sortDropdown.getSelectedItem().toString());
+                setUpList();
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    //Removes the task from the database and recalculates the category modifier
+    private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
+        if (taskList.getSelectedValue() != null) {
+            int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to complete " + taskList.getSelectedValue(), "Complete task", JOptionPane.YES_NO_OPTION);
+            if (yesNo == 0) {
+                Task task = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
+                task.getCategory().taskComplete(task);
+                setUpList();
+            }
+        }
+    }//GEN-LAST:event_completeButtonActionPerformed
+   
     //Displays relevant details when the user selects a task
-    private void taskListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taskListMouseClicked
-        Task selectedTask = new Task();
-        selectedTask.readTaskFromDB(taskList.getSelectedValue());
-
+    private void taskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_taskListValueChanged
+        Task selectedTask = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
+        
         //Setting the labels
         categoryLabel.setText("Category: " + selectedTask.getCategory().getName());
         dateDueLabel.setText("Date Due: " + selectedTask.sqlDateToTextFormat(selectedTask.getDateDue()));
@@ -328,63 +403,7 @@ public class TaskViewer extends javax.swing.JFrame {
         timeAllottedLabel.setText("Time Allotted: " + selectedTask.getTimeModified());
         timeUsedLabel.setText("Time Used: " + selectedTask.getTimeUsed());
         descriptionBox.setText(selectedTask.getDescription());
-        colourPreview.setBackground(new Color(selectedTask.getColourCode()));
-    }//GEN-LAST:event_taskListMouseClicked
-
-    //Removes the task from the database and recalculates the category modifier
-    private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
-        if (taskList.getSelectedValue() != null) {
-            int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to complete " + taskList.getSelectedValue(), "Complete task", JOptionPane.YES_NO_OPTION);
-            if (yesNo == 0) {
-                Task task = new Task();
-                task.readTaskFromDB(taskList.getSelectedValue());
-                task.getCategory().taskComplete(task);
-                loadTasks(sortDropdown.getSelectedItem().toString());
-            }
-        }
-    }//GEN-LAST:event_completeButtonActionPerformed
-
-    //Sets the taskList to the user's tasks given an order (eg. alphabetical)
-    private void loadTasks(String order) {
-        DefaultListModel dlm = new DefaultListModel();
-        String sql = null;
-        if (!order.equals("Category")) {
-
-            switch (order) {
-                case ("Name"):
-                    order = "Name";
-                    break;
-                case ("Date set"):
-                    order = "DateSet";
-                    break;
-                case ("Date due"):
-                    order = "DateDue";
-                    break;
-                case ("Time allotted"):
-                    order = "TimeModified";
-                    break;
-                case ("Time used"):
-                    order = "TimeUsed";
-                    break;
-                default:
-                    order = "Name";
-                    break;
-            }
-            sql = "SELECT Name FROM task WHERE UserID = " + User.getUserID() + " ORDER BY " + order;
-        } else {
-            sql = "SELECT task.Name FROM task, category WHERE task.UserID = " + User.getUserID() + " AND category.UserID = task.UserID AND category.CategoryID = task.CategoryID ORDER BY category.Name";
-        }
-        ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            while (rs.next()) {
-                dlm.addElement(rs.getString("Name"));
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-
-        taskList.setModel(dlm);
-    }
+        colourPreview.setBackground(new Color(selectedTask.getColourCode()));    }//GEN-LAST:event_taskListValueChanged
 
     /**
      * @param args the command line arguments

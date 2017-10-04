@@ -7,18 +7,18 @@ import java.sql.ResultSet;
  * @author Adam-PC
  */
 public class Event {
-    
+
     private String eventName, description;
     private int day, colourCode, eventID;
     private double startTime, endTime;
     public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7, START = 0, END = 1;
 
     public Event() {
-
+        
     }
 
-    //Method to retrieve event details from the database given an ID
-    public void readFromDB(int eventID) {
+    //Constructor to retrieve event details from the database given an ID
+    public Event(int eventID) {
         this.eventID = eventID;
 
         String sql = "SELECT * from event where EventID == " + this.eventID + " AND UserID = " + User.getUserID();
@@ -38,29 +38,8 @@ public class Event {
         }
     }
 
-    //Method to retrieve event details from the database given a name
-    public void readFromDB(String eventName) {
-        this.eventName = eventName;
-
-        String sql = "SELECT * FROM event WHERE EventName = '" + this.eventName + "' AND UserID = " + User.getUserID();
-        ResultSet rs = DatabaseHandle.query(sql);
-
-        try {
-            if (rs.next()) {
-                this.eventID = rs.getInt("EventID");
-                this.description = rs.getString("Description");
-                this.colourCode = rs.getInt("Colour");
-                this.day = rs.getInt("Day");
-                this.startTime = rs.getFloat("StartTime");
-                this.endTime = rs.getFloat("EndTime");
-            }
-        } catch (Exception ex) {
-            System.err.println(ex);
-        }
-    }
-
     //Creates an event and inserts into a database given variables
-    public void createEvent(String eventName, String description, int colour, int day, double endTime, double startTime) {
+    public Event(String eventName, String description, int colour, int day, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
         this.colourCode = colour;

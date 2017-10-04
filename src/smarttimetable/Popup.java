@@ -38,7 +38,8 @@ public class Popup extends javax.swing.JFrame {
         popupMessageTextArea = new javax.swing.JTextArea();
         okButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setAlwaysOnTop(true);
 
         popupMessageTextArea.setEditable(false);
         popupMessageTextArea.setColumns(20);

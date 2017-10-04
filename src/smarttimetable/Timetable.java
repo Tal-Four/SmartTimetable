@@ -64,7 +64,7 @@ public class Timetable extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jLabel14 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         timetablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Timetable", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
