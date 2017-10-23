@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 
 /**
  *
@@ -20,16 +21,17 @@ public class TaskEditor extends javax.swing.JFrame {
     private boolean edit;
     private int oldTaskID;
     private LinkedList categoryIDList = new LinkedList();
+    private JFrame lastPanel;
 
     //Creates new form TaskEditor
-    public TaskEditor() {
-        initialise();
+    public TaskEditor(JFrame lastPanel) {
+        initialise(lastPanel);
         this.edit = false;
     }
 
     //Creates new form TaskEditor with given variables
-    public TaskEditor(int taskID) {
-        initialise();
+    public TaskEditor(int taskID, JFrame lastPanel) {
+        initialise(lastPanel);
         this.edit = true;
         this.oldTaskID = taskID;
 
@@ -45,8 +47,10 @@ public class TaskEditor extends javax.swing.JFrame {
     }
 
     //Initialises components and sets some text box values
-    private void initialise() {
+    private void initialise(JFrame lastPanel) {
         initComponents();
+        
+        this.lastPanel = lastPanel;
 
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -325,14 +329,14 @@ public class TaskEditor extends javax.swing.JFrame {
                 Task newTask = new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet);
             }
             this.setVisible(false);
-            new Menu().setVisible(true);
+            this.lastPanel.setVisible(true);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     //Returns back to menu screen, nothing is saved
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
-        new Menu().setVisible(true);
+        this.lastPanel.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
     //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters
@@ -375,7 +379,7 @@ public class TaskEditor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TaskEditor().setVisible(true);
+                new TaskEditor(null).setVisible(true);
             }
         });
     }

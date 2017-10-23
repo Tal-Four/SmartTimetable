@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 
 /**
  *
@@ -18,16 +19,17 @@ public class EventEditor extends javax.swing.JFrame {
 
     private boolean edit;
     private int oldEventID;
+    private JFrame lastPanel;
 
     //Creates a blank EventEditor form
-    public EventEditor() {
-        initialise();
+    public EventEditor(JFrame lastPanel) {
+        initialise(lastPanel);
         this.edit = false;
     }
 
     //Creates a prefilled EventEditor form
-    public EventEditor(int oldEventID) {
-        initialise();
+    public EventEditor(int oldEventID, JFrame lastPanel) {
+        initialise(lastPanel);
         this.edit = true;
         this.oldEventID = oldEventID;
 
@@ -43,9 +45,11 @@ public class EventEditor extends javax.swing.JFrame {
         endMinuteDropdown.setSelectedItem(event.timeToString(1)[1]);
     }
 
-    private void initialise() {
+    private void initialise(JFrame lastPanel) {
         initComponents();
 
+        this.lastPanel = lastPanel;
+        
         //Centers the frame to the centre of the monitor 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -287,9 +291,9 @@ public class EventEditor extends javax.swing.JFrame {
                 event = new Event(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
             }
 
-            //Returning to menu screen
+            //Returning to previous screen
             this.setVisible(false);
-            new Menu().setVisible(true);
+            this.lastPanel.setVisible(true);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -314,7 +318,7 @@ public class EventEditor extends javax.swing.JFrame {
     //Returns the user to the menu screen
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
-        new Menu().setVisible(true);
+        this.lastPanel.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
     //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters    
@@ -358,7 +362,7 @@ public class EventEditor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EventEditor().setVisible(true);
+                new EventEditor(null).setVisible(true);
             }
         });
     }

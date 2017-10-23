@@ -17,17 +17,7 @@ public class CategoryViewer extends javax.swing.JFrame {
     public CategoryViewer() {
         frameSetup();
     }
-
-    public CategoryViewer(int categoryID) {
-        frameSetup();
-        int counter = 0;
-        while (categoryIDList.getDataAt(counter) != categoryID && counter < categoryIDList.getLength()) {
-            counter++;
-        }
-        categoryList.setSelectedIndex(counter);
-        categoryListIndexSelected();
-    }
-
+    
     private void frameSetup() {
         initComponents();
 
@@ -313,7 +303,7 @@ public class CategoryViewer extends javax.swing.JFrame {
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         this.setVisible(false);
-        new CategoryEditor(categoryIDList.getDataAt(categoryList.getSelectedIndex())).setVisible(true);
+        new CategoryEditor(categoryIDList.getDataAt(categoryList.getSelectedIndex()), this).setVisible(true);
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed

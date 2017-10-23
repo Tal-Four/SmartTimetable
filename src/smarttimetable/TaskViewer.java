@@ -361,7 +361,7 @@ public class TaskViewer extends javax.swing.JFrame {
     //Edits the selected task
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         this.setVisible(false);
-        new TaskEditor(this.taskIDList.getDataAt(this.taskList.getSelectedIndex())).setVisible(true);
+        new TaskEditor(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()), this).setVisible(true);
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void sortDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortDropdownActionPerformed

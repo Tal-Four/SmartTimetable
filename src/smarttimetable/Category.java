@@ -25,6 +25,7 @@ public class Category {
                     this.name = rs.getString("Name");
                     this.modifier = rs.getFloat("Modifier");
                     this.taskCount = rs.getInt("TasksCompleted");
+                    this.colourCode = rs.getInt("Colour");
                 }
             }
         } catch (SQLException e) {
@@ -48,7 +49,7 @@ public class Category {
         this.colourCode = colourCode;
         this.name = name;
         
-        String sql = "UPDATE category SET Name = '" + this.name + "', Colour = " + this.colourCode + " WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
+        String sql = "UPDATE category, user SET Name = '" + this.name + "', Colour = " + this.colourCode + " WHERE CategoryID = " + this.categoryID + " AND category.UserID = user.UserID AND user.UserID = " + User.getUserID();
         int linesChanged = DatabaseHandle.update(sql);
         return linesChanged;
     }

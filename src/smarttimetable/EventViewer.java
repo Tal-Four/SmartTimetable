@@ -333,7 +333,7 @@ public class EventViewer extends javax.swing.JFrame {
     }//GEN-LAST:event_sortDropdownActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        new EventEditor(this.eventIDList.getDataAt(this.eventList.getSelectedIndex())).setVisible(true);
+        new EventEditor(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()), this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_editButtonActionPerformed
 

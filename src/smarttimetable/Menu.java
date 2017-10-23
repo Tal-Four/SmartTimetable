@@ -230,7 +230,7 @@ public class Menu extends javax.swing.JFrame {
     private void createEventsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createEventsButtonActionPerformed
         //Shows the event editor screen
         this.setVisible(false);
-        new EventEditor().setVisible(true);
+        new EventEditor(this).setVisible(true);
     }//GEN-LAST:event_createEventsButtonActionPerformed
 
     private void viewEditTasksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditTasksActionPerformed
@@ -242,7 +242,7 @@ public class Menu extends javax.swing.JFrame {
     private void createTaskButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTaskButtonActionPerformed
         //Shows the task editor screen
         this.setVisible(false);
-        new TaskEditor().setVisible(true);
+        new TaskEditor(this).setVisible(true);
     }//GEN-LAST:event_createTaskButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
@@ -254,7 +254,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void createCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCategoryButtonActionPerformed
         this.setVisible(false);
-        new CategoryEditor().setVisible(true);
+        new CategoryEditor(this).setVisible(true);
     }//GEN-LAST:event_createCategoryButtonActionPerformed
 
     private void viewEditCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditCategoryButtonActionPerformed

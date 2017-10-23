@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
+import javax.swing.JFrame;
 
 /**
  *
@@ -11,21 +12,22 @@ import java.sql.ResultSet;
  */
 public class CategoryEditor extends javax.swing.JFrame {
 
-    boolean edit;
-    int editedCategoryID;
+    private boolean edit;
+    private int editedCategoryID;
+    private JFrame lastPanel;
 
     /**
      * Creates new form CategoryEditor
      */
-    public CategoryEditor() {
+    public CategoryEditor(JFrame lastPanel) {
         this.edit = false;
-        frameSetup();
+        frameSetup(lastPanel);
     }
 
-    public CategoryEditor(int categoryID) {
+    public CategoryEditor(int categoryID, JFrame lastPanel) {
         this.edit = true;
         this.editedCategoryID = categoryID;
-        frameSetup();
+        frameSetup(lastPanel);
 
         String sql = "SELECT Name, Colour FROM category, user WHERE user.UserID = category.UserID AND user.UserID = " + User.getUserID() + " AND CategoryID = " + categoryID;
         ResultSet rs = DatabaseHandle.query(sql);
@@ -41,8 +43,10 @@ public class CategoryEditor extends javax.swing.JFrame {
         nameCharCount();
     }
 
-    private void frameSetup() {
+    private void frameSetup(JFrame lastPanel) {
         initComponents();
+        
+        this.lastPanel = lastPanel;
 
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -173,11 +177,7 @@ public class CategoryEditor extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
-        if (this.edit) {
-            new CategoryViewer(this.editedCategoryID).setVisible(true);
-        } else {
-            new Menu().setVisible(true);
-        }
+        this.lastPanel.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -190,6 +190,9 @@ public class CategoryEditor extends javax.swing.JFrame {
         } else {
             Category category = new Category(name, colourCode);
         }
+        
+        this.setVisible(false);
+        this.lastPanel.setVisible(true);        
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void categoryNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_categoryNameFieldKeyReleased
@@ -235,7 +238,7 @@ public class CategoryEditor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CategoryEditor().setVisible(true);
+                new CategoryEditor(null).setVisible(true);
             }
         });
     }
