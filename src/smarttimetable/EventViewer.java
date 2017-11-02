@@ -77,7 +77,7 @@ public class EventViewer extends javax.swing.JFrame {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
-        for (int count = 0; count < this.eventIDList.getLength(); count++) {
+        for (int count = 0; count < this.eventIDList.Length(); count++) {
             String sql = "SELECT EventName FROM event, user WHERE event.UserID = user.UserID AND user.UserID = "
                     + User.getUserID() + " AND EventID = " + this.eventIDList.getDataAt(count);
             ResultSet rs = DatabaseHandle.query(sql);

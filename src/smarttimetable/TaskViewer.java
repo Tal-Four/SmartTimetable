@@ -83,7 +83,7 @@ public class TaskViewer extends javax.swing.JFrame {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
-        for (int count = 0; count < this.taskIDList.getLength(); count++) {
+        for (int count = 0; count < this.taskIDList.Length(); count++) {
             String sql = "SELECT Name FROM task, user WHERE task.UserID = user.UserID AND user.UserID = "
                     + User.getUserID() + " AND TaskID = " + this.taskIDList.getDataAt(count);
             ResultSet rs = DatabaseHandle.query(sql);

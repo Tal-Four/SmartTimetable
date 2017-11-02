@@ -6,7 +6,7 @@ public class LinkedList {
 
     //Sets the root node to nothing
     public LinkedList() {
-        this.rootNode = null;
+        this.clear();
     }
 
     //Adds a node with user speciifed data to the list
@@ -70,7 +70,7 @@ public class LinkedList {
     }
 
     //Returns the number of nodes in the list
-    public int getLength() {
+    public int Length() {
         if (this.rootNode == null) {
             System.out.println("List empty.");
             return 0;
@@ -90,7 +90,7 @@ public class LinkedList {
     public int getDataAt(int location) {
         Node currentNode = this.rootNode;
 
-        if (currentNode == null || location >= getLength()) {
+        if (currentNode == null || location >= Length()) {
             return 0;
         }
 
