@@ -49,7 +49,7 @@ public class TaskEditor extends javax.swing.JFrame {
     //Initialises components and sets some text box values
     private void initialise(JFrame lastPanel) {
         initComponents();
-        
+
         this.lastPanel = lastPanel;
 
         //Centers the frame to the centre of the monitor
@@ -132,6 +132,12 @@ public class TaskEditor extends javax.swing.JFrame {
         nameField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 nameFieldKeyReleased(evt);
+            }
+        });
+
+        categoryDropdown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoryDropdownActionPerformed(evt);
             }
         });
 
@@ -321,12 +327,12 @@ public class TaskEditor extends javax.swing.JFrame {
 
         //Creates the task and changes screen back to the menu if the variables are valid
         if (valid) {
-            
+
             if (edit) {
                 Task editedTask = new Task(this.oldTaskID);
                 editedTask.editTask(taskName, description, categoryID, dateDueText, colourCode, timeSet, editedTask.getTaskID());
             } else {
-                Task newTask = new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet);
+                new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet);
             }
             this.setVisible(false);
             this.lastPanel.setVisible(true);
@@ -348,6 +354,18 @@ public class TaskEditor extends javax.swing.JFrame {
         }
         nameCharsUsed.setText(length + " out of 20 characters used");
     }//GEN-LAST:event_nameFieldKeyReleased
+
+    private void categoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryDropdownActionPerformed
+        String SQL = "SELECT Colour FROM category, user WHERE category.CategoryID = " + categoryIDList.getDataAt(categoryDropdown.getSelectedIndex()) + " AND category.UserID = user.UserID AND user.UserID = " + User.getUserID();
+        ResultSet rs = DatabaseHandle.query(SQL);
+        try {
+            if (rs.next()) {
+                colourChooser.setColor(new Color(rs.getInt("Colour")));
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }//GEN-LAST:event_categoryDropdownActionPerformed
 
     /**
      * @param args the command line arguments

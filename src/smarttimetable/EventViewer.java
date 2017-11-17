@@ -60,7 +60,7 @@ public class EventViewer extends javax.swing.JFrame {
                 selectedSort = "EventName";
                 break;
         }
-        sql = "SELECT EventName FROM event WHERE UserID = " + User.getUserID() + " ORDER BY " + selectedSort;
+        sql = "SELECT EventID FROM event, user WHERE event.Hidden = 0 AND user.UserID = event.UserID AND user.UserID = " + User.getUserID() + " ORDER BY event." + selectedSort;
 
         ResultSet rs = DatabaseHandle.query(sql);
         try {
@@ -79,7 +79,7 @@ public class EventViewer extends javax.swing.JFrame {
 
         for (int count = 0; count < this.eventIDList.Length(); count++) {
             String sql = "SELECT EventName FROM event, user WHERE event.UserID = user.UserID AND user.UserID = "
-                    + User.getUserID() + " AND EventID = " + this.eventIDList.getDataAt(count);
+                    + User.getUserID() + " AND event.EventID = " + this.eventIDList.getDataAt(count);
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 while (rs.next()) {

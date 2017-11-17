@@ -63,9 +63,9 @@ public class TaskViewer extends javax.swing.JFrame {
                     selectedSort = "Name";
                     break;
             }
-            sql = "SELECT TaskID FROM task WHERE UserID = " + User.getUserID() + " ORDER BY " + selectedSort;
+            sql = "SELECT TaskID FROM task, user WHERE user.UserID = task.UserID AND task.Hidden = 0 AND user.UserID = " + User.getUserID() + " ORDER BY " + selectedSort;
         } else {
-            sql = "SELECT TaskID FROM task, category, user WHERE user.UserID = task.UserID AND user.UserID = " + User.getUserID() + " AND category.UserID = task.UserID AND category.CategoryID = task.CategoryID ORDER BY category.Name";
+            sql = "SELECT TaskID FROM task, category, user WHERE user.UserID = task.UserID AND task.Hidden = 0 AND user.UserID = " + User.getUserID() + " AND category.UserID = task.UserID AND category.CategoryID = task.CategoryID ORDER BY category.Name";
         }
         
         ResultSet rs = DatabaseHandle.query(sql);

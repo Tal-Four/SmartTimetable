@@ -336,7 +336,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         } else if (timeModifierSortButton.isSelected()) {
             sort = "Modifier";
         }
-        String sql = "SELECT CategoryID FROM category, user WHERE category.UserID = user.UserID AND user.UserID = " + User.getUserID() + " ORDER BY " + sort;
+        String sql = "SELECT CategoryID FROM category, user WHERE category.Hidden = 0 AND category.UserID = user.UserID AND user.UserID = " + User.getUserID() + " ORDER BY " + sort;
 
         ResultSet rs = DatabaseHandle.query(sql);
         try {

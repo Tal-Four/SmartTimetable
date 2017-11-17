@@ -21,7 +21,7 @@ public class Event {
     public Event(int eventID) {
         this.eventID = eventID;
 
-        String sql = "SELECT * from event where EventID == " + this.eventID + " AND UserID = " + User.getUserID();
+        String sql = "SELECT event.* from event, user where event.EventID = " + this.eventID + " AND user.UserID = event.UserID AND user.UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(sql);
 
         try {
