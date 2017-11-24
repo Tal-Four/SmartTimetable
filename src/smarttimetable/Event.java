@@ -1,6 +1,10 @@
 package smarttimetable;
 
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -8,7 +12,7 @@ import java.sql.ResultSet;
  */
 public class Event {
 
-    private String eventName, description;
+    private String eventName, description, date;
     private int day, colourCode, eventID;
     private double startTime, endTime;
     public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7, START = 0, END = 1;
@@ -32,13 +36,14 @@ public class Event {
                 this.day = rs.getInt("Day");
                 this.startTime = rs.getFloat("StartTime");
                 this.endTime = rs.getFloat("EndTime");
+                this.date = rs.getString("Date");
             }
         } catch (Exception ex) {
             System.err.println(ex);
         }
     }
 
-    //Creates an event and inserts into a database given variables
+    //Creates a recurring event and inserts into a database given variables
     public Event(String eventName, String description, int colour, int day, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
@@ -54,8 +59,25 @@ public class Event {
 
         new Popup("Event " + this.eventName + " created.").setVisible(true);
     }
+    
+    //Creates a one-off event and inserts into a database given variables
+    public Event(String eventName, String description, int colour, String date, double endTime, double startTime) {
+        this.eventName = eventName;
+        this.description = description;
+        this.colourCode = colour;
+        this.date = dateTextToSQLFormat(date);
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.eventID = DatabaseHandle.createID("event", "EventID");
 
-    //Updates an existing record with new values
+        String sql = "INSERT INTO smarttimetabledb.event (`EventID`, `UserID`, `EventName`, `Description`, `Date`, `Colour`, `StartTime`, `EndTime`) "
+                + "VALUES (" + this.eventID + ", " + User.getUserID() + ", '" + this.eventName + "', '" + this.description + "', " + this.date + ", " + this.colourCode + ", " + this.startTime + ", " + this.endTime + ")";
+        DatabaseHandle.update(sql);
+
+        new Popup("Event " + this.eventName + " created.").setVisible(true);
+    }
+
+    //Updates a recurring existing record with new values
     public void editEvent(String eventName, String description, int colour, int day, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
@@ -64,7 +86,22 @@ public class Event {
         this.startTime = startTime;
         this.endTime = endTime;
 
-        String sql = "UPDATE smarttimetabledb.event SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = " + this.day + ", StartTime = " + this.startTime + ", EndTime  = " + this.endTime + " WHERE EventID = " + this.eventID + " AND UserID = " + User.getUserID();
+        String sql = "UPDATE smarttimetabledb.event SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = " + this.day + ", Date = NULL , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + " WHERE EventID = " + this.eventID + " AND UserID = " + User.getUserID();
+        DatabaseHandle.update(sql);
+
+        new Popup("Event " + this.eventName + " edited.").setVisible(true);
+    }
+    
+    //Updates a recurring existing record with new values
+    public void editEvent(String eventName, String description, int colour, String date, double endTime, double startTime) {
+        this.eventName = eventName;
+        this.description = description;
+        this.colourCode = colour;
+        this.date = dateTextToSQLFormat(date);
+        this.startTime = startTime;
+        this.endTime = endTime;
+
+        String sql = "UPDATE smarttimetabledb.event SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = NULL, Date = " + this.date + ", StartTime = " + this.startTime + ", EndTime  = " + this.endTime + " WHERE EventID = " + this.eventID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
 
         new Popup("Event " + this.eventName + " edited.").setVisible(true);
@@ -149,6 +186,28 @@ public class Event {
             timeString[1] = "30";
         }
         return timeString;
+    }
+    
+    //Converting date object to SQL date format
+    private String dateToSQLFormat(Date date) {
+        return (date.getYear() + 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    }
+
+    //Converting raw text to SQL date format
+    private String dateTextToSQLFormat(String dateText) {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = df.parse(dateText);
+        } catch (ParseException e) {
+            System.err.println(e);
+        }
+        return dateToSQLFormat(date);
+    }
+
+    //Formats the string from YYYY-MM-DD to DD/MM/YYYY
+    public String sqlDateToTextFormat(String sqlDate) {
+        return sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 

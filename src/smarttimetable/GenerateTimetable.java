@@ -15,7 +15,7 @@ public class GenerateTimetable {
         
     }
 
-    //Returns today's date in the format YYYy-MM-DD
+    //Returns today's date in the format YYYY-MM-DD
     private String getTodayDate(){
         GregorianCalendar calendar = new GregorianCalendar();
         int day = calendar.get(calendar.DATE);
