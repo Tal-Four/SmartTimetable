@@ -7,6 +7,8 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import javax.swing.DefaultListModel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
@@ -16,19 +18,23 @@ import javax.swing.ListSelectionModel;
  */
 public class Timetable extends javax.swing.JFrame {
 
+    private LinkedList timetableIDList = new LinkedList();
+
     /**
      * Creates new form Timetable
      */
     public Timetable() {
         initComponents();
-        
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         this.setMaximumSize(dim);
-        
+
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
+
+        updateList();
     }
 
     /**
@@ -62,6 +68,9 @@ public class Timetable extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         descriptionText = new javax.swing.JTextArea();
         descriptionLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        timetableList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -204,7 +213,22 @@ public class Timetable extends javax.swing.JFrame {
                 .addComponent(descriptionLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(327, 327, 327))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Timetable"));
+
+        jScrollPane3.setViewportView(timetableList);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout timetablePanelLayout = new javax.swing.GroupLayout(timetablePanel);
@@ -217,7 +241,9 @@ public class Timetable extends javax.swing.JFrame {
                     .addGroup(timetablePanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timetablePanelLayout.createSequentialGroup()
                         .addComponent(backButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -231,8 +257,11 @@ public class Timetable extends javax.swing.JFrame {
             .addGroup(timetablePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(detailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(timetablePanelLayout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(detailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -255,15 +284,43 @@ public class Timetable extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(timetablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void timetableTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timetableTableMouseClicked
-        
+
     }//GEN-LAST:event_timetableTableMouseClicked
+
+    private void updateList() {
+        String sql = "SELECT timetable.TimetableID, timetable.StartDay FROM timetable, user "
+                + "WHERE user.UserID = timetable.UserID AND user.UserID = " + User.getUserID() + ""
+                + " AND timetable.Hidden = 0 ORDER BY timetable.StartDay DESC";
+        ResultSet rs = DatabaseHandle.query(sql);
+        this.timetableIDList.clear();
+        DefaultListModel dlm = new DefaultListModel();
+
+        try {
+            while (rs.next()) {
+                this.timetableIDList.addNode(rs.getInt("TimetableID"));
+                String date = rs.getDate("StartDay").toString();
+                dlm.addElement(sqlDateToText(date));
+            }
+            this.timetableList.setModel(dlm);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+    private String sqlDateToText(String sqlDate) {
+        return (sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4));
+    }
+
+    private void loadTimetables() {
+
+    }
 
     private void timetableTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timetableTableKeyPressed
         render();
@@ -333,13 +390,16 @@ public class Timetable extends javax.swing.JFrame {
     private javax.swing.JTextArea descriptionText;
     private javax.swing.JPanel detailsPanel;
     private javax.swing.JButton exitButton;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel nameContentsLabel;
     private javax.swing.JLabel timeAlottedContentsLabel;
     private javax.swing.JLabel timeAlottedLabel;
     private javax.swing.JLabel timeUsedContentsLabel;
     private javax.swing.JLabel timeUsedLabel;
+    private javax.swing.JList<String> timetableList;
     private javax.swing.JPanel timetablePanel;
     private javax.swing.JTable timetableTable;
     private javax.swing.JLabel userLabel;
