@@ -60,7 +60,8 @@ public class GenerateTimetable {
         plotEvents(timetableID);
         return timetableID;
     }
-
+ 
+    //<editor-fold defaultstate="collapsed" desc=" Event Insertion ">
     private void plotEvents(int timetableID) {
 
         plotReccuringEvents(timetableID);
@@ -149,5 +150,6 @@ public class GenerateTimetable {
         }
 
     }
-
+    //</editor-fold>
+    
 }
