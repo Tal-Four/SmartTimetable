@@ -8,6 +8,7 @@ package smarttimetable;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.DefaultListModel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -35,6 +36,8 @@ public class Timetable extends javax.swing.JFrame {
         userLabel.setText("Logged in as: " + User.getUsername());
 
         updateList();
+
+        //loadTimetable();
     }
 
     /**
@@ -82,17 +85,11 @@ public class Timetable extends javax.swing.JFrame {
         timetableTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         timetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
-        timetableTable.setDefaultRenderer(String.class, new CustomRenderer());
         timetableTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         timetableTable.setColumnSelectionAllowed(true);
         timetableTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 timetableTableMouseClicked(evt);
-            }
-        });
-        timetableTable.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                timetableTableKeyPressed(evt);
             }
         });
         jScrollPane1.setViewportView(timetableTable);
@@ -218,6 +215,11 @@ public class Timetable extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Timetable"));
 
+        timetableList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                timetableListValueChanged(evt);
+            }
+        });
         jScrollPane3.setViewportView(timetableList);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -291,7 +293,44 @@ public class Timetable extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void timetableTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timetableTableMouseClicked
+        int selectedColumn = timetableTable.getSelectedColumn();
+        int selectedRow = timetableTable.getSelectedRow();
+        int timetableID = timetableIDList.getDataAt(timetableList.getSelectedIndex());
 
+        String sql = "SELECT event.EventID\n"
+                + "FROM event INNER JOIN ((timetableslot INNER JOIN [user] ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (event.UserID = user.UserID)\n"
+                + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((timetableslot.TaskID) Is Null));";
+        ResultSet rs = DatabaseHandle.query(sql);
+
+        boolean event = false;
+        int taskeventID = 0;
+        
+        try {
+            if (rs.next()) {
+                event = true;
+                taskeventID = rs.getInt("event.EventID");
+            } else {
+                sql = "SELECT task.TaskID\n"
+                        + "FROM task INNER JOIN ((timetableslot INNER JOIN [user] ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (task.UserID = user.UserID) AND (task.TaskID = timetableslot.TaskID) AND (task.UserID = timetableslot.UserID)\n"
+                        + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((timetableslot.TaskID) Is Null));";
+                rs = DatabaseHandle.query(sql);
+                
+                if (rs.next()) {
+                    event = false;
+                    taskeventID = rs.getInt("task.TaskID");
+                } else {
+                    taskeventID = 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        
+        if (event) {
+            
+        } else if (taskeventID != 0) {
+            
+        }
     }//GEN-LAST:event_timetableTableMouseClicked
 
     private void updateList() {
@@ -318,16 +357,42 @@ public class Timetable extends javax.swing.JFrame {
         return (sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4));
     }
 
-    private void loadTimetables() {
+    private void loadTimetable(int timetableID) {
+
+        String sql = "SELECT event.EventName, timetableslot.Day, timetableslot.Time\n"
+                + "FROM ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetable.UserID = user.UserID) AND (timetableslot.TimetableID = timetable.TimetableID) AND (timetableslot.UserID = timetable.UserID)) INNER JOIN event ON (event.UserID = user.UserID) AND (timetableslot.EventID = event.EventID) AND (timetableslot.UserID = event.UserID)\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)=" + timetableID + "));";
+
+        ResultSet rs = DatabaseHandle.query(sql);
+
+        try {
+            while (rs.next()) {
+                timetableTable.getModel().setValueAt(rs.getString("event.EventName"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+
+        sql = "SELECT task.Name, timetableslot.Day, timetableslot.Time\n"
+                + "FROM task INNER JOIN ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = user.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (task.UserID = timetableslot.UserID) AND (task.TaskID = timetableslot.TaskID) AND (task.UserID = user.UserID)\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)=" + timetableID + "));";
+
+        rs = DatabaseHandle.query(sql);
+
+        try {
+            while (rs.next()) {
+                timetableTable.getModel().setValueAt(rs.getString("event.EventName"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+
+        render();
 
     }
 
-    private void timetableTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timetableTableKeyPressed
-        render();
-    }//GEN-LAST:event_timetableTableKeyPressed
-
     private void render() {
-        timetableTable.getColumnModel().getColumn(timetableTable.getSelectedColumn()).setCellRenderer(new CustomRenderer());
+        timetableTable.setDefaultRenderer(Object.class, new CustomRenderer(timetableIDList.getDataAt(timetableList.getSelectedIndex())));
     }
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -341,6 +406,10 @@ public class Timetable extends javax.swing.JFrame {
         User.logoutUser();
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void timetableListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_timetableListValueChanged
+        loadTimetable(timetableIDList.getDataAt(timetableList.getSelectedIndex()));
+    }//GEN-LAST:event_timetableListValueChanged
 
     /**
      * @param args the command line arguments
