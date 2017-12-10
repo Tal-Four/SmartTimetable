@@ -60,20 +60,20 @@ public class GenerateTimetable {
         plotEvents(timetableID);
         return timetableID;
     }
- 
+
     //<editor-fold defaultstate="collapsed" desc=" Event Insertion ">
     private void plotEvents(int timetableID) {
 
         plotReccuringEvents(timetableID);
 
         plotSingleEvents(timetableID);
-
     }
 
     private void plotReccuringEvents(int timetableID) {
-        String sql = "SELECT event.* FROM event, user WHERE event.Date = NULL"
-                + " AND user.UserID = event.UserID AND user.UserID = " + User.getUserID()
-                + " ORDER BY event.Day, event.StartTime";
+        String sql = "SELECT event.EventID, event.Day, event.StartTime, event.EndTime\n"
+                + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
+                + "WHERE (((user.UserID)= " + User.getUserID() + ") AND ((event.Date) Is Null))\n"
+                + "ORDER BY event.Day, event.StartTime;";
         ResultSet rs = DatabaseHandle.query(sql);
 
         try {
@@ -86,7 +86,7 @@ public class GenerateTimetable {
 
                 for (int counter = startTime; counter <= endTime; counter++) {
                     sql = "INSERT INTO timetableslot (UserID, TimetableID, Day, Time, EventID) "
-                            + "VALUES (" + User.getUserID() + ", " + timetableID + ", " + (day - 1)
+                            + "VALUES (" + User.getUserID() + ", " + timetableID + ", " + day
                             + ", " + counter + ", " + eventID + ")";
                     DatabaseHandle.update(sql);
                 }
@@ -118,7 +118,7 @@ public class GenerateTimetable {
         String date;
 
         //Selects the events that have dates that fall within the week of the timetable starting
-        for (int day = 0; day < 7; day++) {
+        for (int day = 1; day <= 7; day++) {
             date = calendar.get(GregorianCalendar.YEAR) + "-"
                     + (1 + calendar.get(GregorianCalendar.MONTH)) + "-"
                     + calendar.get(GregorianCalendar.DATE);
@@ -151,5 +151,5 @@ public class GenerateTimetable {
 
     }
     //</editor-fold>
-    
+
 }
