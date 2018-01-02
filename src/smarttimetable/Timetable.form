@@ -63,7 +63,12 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="detailsPanel" max="32767" attributes="0"/>
-                              <Component id="jPanel1" max="32767" attributes="0"/>
+                              <Component id="selectTimetablePanel" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="changeButton" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="completeHoursButton" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
@@ -82,11 +87,16 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="selectTimetablePanel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="detailsPanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="changeButton" max="32767" attributes="0"/>
+                              <Component id="completeHoursButton" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <Component id="jScrollPane1" min="-2" pref="546" max="-2" attributes="0"/>
                   </Group>
@@ -121,6 +131,7 @@
                   <Connection code="new CustomTableModel()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="autoResizeMode" type="int" value="0"/>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0"/>
                 </Property>
@@ -135,7 +146,7 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="timetableTableMouseClicked"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="timetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);&#xa;timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);&#xa;timetableTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);&#xa;timetableTable.setColumnSelectionAllowed(true);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="timetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);&#xa;timetableTable.getTableHeader().setReorderingAllowed(false);&#xa;timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);&#xa;timetableTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);&#xa;timetableTable.setColumnSelectionAllowed(true);"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -179,25 +190,25 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="CategoryLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="dateDueLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="dateSetLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="NameLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="timeAlottedLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="timeUsedLabel" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="timeAlottedLabel" alignment="1" max="32767" attributes="0"/>
                                   <Component id="descriptionLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dateSetEndTimeLabel" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="categoryStartTimeLabel" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="nameLabel" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="dateDueEventTypeLabel" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="timeUsedLabel" alignment="1" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="categoryContentsLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="nameContentsLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="dateSetContentsLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="dateDueContentsLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="timeAlottedContentsLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="timeUsedContentsLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="timeUsedContentsLabel" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="timeAlottedContentsLabel" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="dateDueEventTypeContentsLabel" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="dateSetEndTimeContentsLabel" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="categoryStartTimeContentsLabel" max="32767" attributes="0"/>
+                                  <Component id="nameContentsLabel" alignment="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jScrollPane2" min="-2" pref="223" max="-2" attributes="0"/>
@@ -210,34 +221,34 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="NameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="nameContentsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="nameLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="nameContentsLabel" min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="CategoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="categoryContentsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="categoryStartTimeLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="categoryStartTimeContentsLabel" min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="dateSetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="dateSetContentsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="dateSetEndTimeLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="dateSetEndTimeContentsLabel" min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="dateDueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="dateDueContentsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="dateDueEventTypeLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="dateDueEventTypeContentsLabel" min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="timeAlottedLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="timeAlottedContentsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="timeAlottedLabel" max="32767" attributes="0"/>
+                          <Component id="timeAlottedContentsLabel" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="timeUsedLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="timeUsedContentsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="timeUsedContentsLabel" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="descriptionLabel" min="-2" max="-2" attributes="0"/>
@@ -249,25 +260,25 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="NameLabel">
+            <Component class="javax.swing.JLabel" name="nameLabel">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" value="Name:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="CategoryLabel">
+            <Component class="javax.swing.JLabel" name="categoryStartTimeLabel">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" value="Category:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="dateSetLabel">
+            <Component class="javax.swing.JLabel" name="dateSetEndTimeLabel">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" value="Date Set:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="dateDueLabel">
+            <Component class="javax.swing.JLabel" name="dateDueEventTypeLabel">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" value="Date Due:"/>
@@ -281,38 +292,21 @@
             </Component>
             <Component class="javax.swing.JLabel" name="timeUsedLabel">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" value="Time Used:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="nameContentsLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="[NAME]"/>
-              </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="categoryContentsLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="[CATEGORY]"/>
-              </Properties>
+            <Component class="javax.swing.JLabel" name="categoryStartTimeContentsLabel">
             </Component>
-            <Component class="javax.swing.JLabel" name="dateSetContentsLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="[DATE SET]"/>
-              </Properties>
+            <Component class="javax.swing.JLabel" name="dateSetEndTimeContentsLabel">
             </Component>
-            <Component class="javax.swing.JLabel" name="dateDueContentsLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="[DATE DUE]"/>
-              </Properties>
+            <Component class="javax.swing.JLabel" name="dateDueEventTypeContentsLabel">
             </Component>
             <Component class="javax.swing.JLabel" name="timeAlottedContentsLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="[TIME ALLOTTED]"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="timeUsedContentsLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="[TIME USED]"/>
-              </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane2">
               <AuxValues>
@@ -338,7 +332,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Container class="javax.swing.JPanel" name="selectTimetablePanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -384,6 +378,22 @@
             </Container>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JButton" name="changeButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Change"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="changeButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="completeHoursButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Complete Hours"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="completeHoursButtonActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

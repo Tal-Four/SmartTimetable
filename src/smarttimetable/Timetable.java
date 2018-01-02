@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -37,7 +38,6 @@ public class Timetable extends javax.swing.JFrame {
 
         updateList();
 
-        //loadTimetable();
     }
 
     /**
@@ -56,24 +56,26 @@ public class Timetable extends javax.swing.JFrame {
         userLabel = new javax.swing.JLabel();
         exitButton = new javax.swing.JButton();
         detailsPanel = new javax.swing.JPanel();
-        NameLabel = new javax.swing.JLabel();
-        CategoryLabel = new javax.swing.JLabel();
-        dateSetLabel = new javax.swing.JLabel();
-        dateDueLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        categoryStartTimeLabel = new javax.swing.JLabel();
+        dateSetEndTimeLabel = new javax.swing.JLabel();
+        dateDueEventTypeLabel = new javax.swing.JLabel();
         timeAlottedLabel = new javax.swing.JLabel();
         timeUsedLabel = new javax.swing.JLabel();
         nameContentsLabel = new javax.swing.JLabel();
-        categoryContentsLabel = new javax.swing.JLabel();
-        dateSetContentsLabel = new javax.swing.JLabel();
-        dateDueContentsLabel = new javax.swing.JLabel();
+        categoryStartTimeContentsLabel = new javax.swing.JLabel();
+        dateSetEndTimeContentsLabel = new javax.swing.JLabel();
+        dateDueEventTypeContentsLabel = new javax.swing.JLabel();
         timeAlottedContentsLabel = new javax.swing.JLabel();
         timeUsedContentsLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descriptionText = new javax.swing.JTextArea();
         descriptionLabel = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        selectTimetablePanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         timetableList = new javax.swing.JList<>();
+        changeButton = new javax.swing.JButton();
+        completeHoursButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -82,8 +84,10 @@ public class Timetable extends javax.swing.JFrame {
         timetableTable.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         timetableTable.setModel(new CustomTableModel());
         timetableTable.setToolTipText("");
+        timetableTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         timetableTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         timetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        timetableTable.getTableHeader().setReorderingAllowed(false);
         timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
         timetableTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         timetableTable.setColumnSelectionAllowed(true);
@@ -114,34 +118,23 @@ public class Timetable extends javax.swing.JFrame {
 
         detailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));
 
-        NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        NameLabel.setText("Name:");
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        nameLabel.setText("Name:");
 
-        CategoryLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        CategoryLabel.setText("Category:");
+        categoryStartTimeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        categoryStartTimeLabel.setText("Category:");
 
-        dateSetLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        dateSetLabel.setText("Date Set:");
+        dateSetEndTimeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        dateSetEndTimeLabel.setText("Date Set:");
 
-        dateDueLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        dateDueLabel.setText("Date Due:");
+        dateDueEventTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        dateDueEventTypeLabel.setText("Date Due:");
 
         timeAlottedLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         timeAlottedLabel.setText("Time Alotted:");
 
+        timeUsedLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         timeUsedLabel.setText("Time Used:");
-
-        nameContentsLabel.setText("[NAME]");
-
-        categoryContentsLabel.setText("[CATEGORY]");
-
-        dateSetContentsLabel.setText("[DATE SET]");
-
-        dateDueContentsLabel.setText("[DATE DUE]");
-
-        timeAlottedContentsLabel.setText("[TIME ALLOTTED]");
-
-        timeUsedContentsLabel.setText("[TIME USED]");
 
         descriptionText.setEditable(false);
         descriptionText.setColumns(20);
@@ -159,23 +152,23 @@ public class Timetable extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(detailsPanelLayout.createSequentialGroup()
-                        .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CategoryLabel)
-                            .addComponent(dateDueLabel)
-                            .addComponent(dateSetLabel)
-                            .addComponent(NameLabel)
-                            .addComponent(timeAlottedLabel)
-                            .addComponent(timeUsedLabel)
-                            .addComponent(descriptionLabel))
+                        .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(timeAlottedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(descriptionLabel)
+                            .addComponent(dateSetEndTimeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(categoryStartTimeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateDueEventTypeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(timeUsedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(categoryContentsLabel)
-                            .addComponent(nameContentsLabel)
-                            .addComponent(dateSetContentsLabel)
-                            .addComponent(dateDueContentsLabel)
-                            .addComponent(timeAlottedContentsLabel)
-                            .addComponent(timeUsedContentsLabel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(timeUsedContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(timeAlottedContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateDueEventTypeContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateSetEndTimeContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(categoryStartTimeContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nameContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(detailsPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 12, Short.MAX_VALUE))))
@@ -183,29 +176,29 @@ public class Timetable extends javax.swing.JFrame {
         detailsPanelLayout.setVerticalGroup(
             detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detailsPanelLayout.createSequentialGroup()
-                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NameLabel)
-                    .addComponent(nameContentsLabel))
+                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameLabel)
+                    .addComponent(nameContentsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CategoryLabel)
-                    .addComponent(categoryContentsLabel))
+                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(categoryStartTimeLabel)
+                    .addComponent(categoryStartTimeContentsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateSetLabel)
-                    .addComponent(dateSetContentsLabel))
+                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateSetEndTimeLabel)
+                    .addComponent(dateSetEndTimeContentsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateDueLabel)
-                    .addComponent(dateDueContentsLabel))
+                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateDueEventTypeLabel)
+                    .addComponent(dateDueEventTypeContentsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(timeAlottedLabel)
-                    .addComponent(timeAlottedContentsLabel))
+                .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(timeAlottedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(timeAlottedContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(timeUsedLabel)
-                    .addComponent(timeUsedContentsLabel))
+                    .addComponent(timeUsedContentsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(descriptionLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -213,7 +206,7 @@ public class Timetable extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Timetable"));
+        selectTimetablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Timetable"));
 
         timetableList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -222,16 +215,30 @@ public class Timetable extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(timetableList);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout selectTimetablePanelLayout = new javax.swing.GroupLayout(selectTimetablePanel);
+        selectTimetablePanel.setLayout(selectTimetablePanelLayout);
+        selectTimetablePanelLayout.setHorizontalGroup(
+            selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        selectTimetablePanelLayout.setVerticalGroup(
+            selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
+
+        changeButton.setText("Change");
+        changeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeButtonActionPerformed(evt);
+            }
+        });
+
+        completeHoursButton.setText("Complete Hours");
+        completeHoursButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                completeHoursButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout timetablePanelLayout = new javax.swing.GroupLayout(timetablePanel);
         timetablePanel.setLayout(timetablePanelLayout);
@@ -245,7 +252,11 @@ public class Timetable extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(selectTimetablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(timetablePanelLayout.createSequentialGroup()
+                                .addComponent(changeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(completeHoursButton))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timetablePanelLayout.createSequentialGroup()
                         .addComponent(backButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -258,11 +269,15 @@ public class Timetable extends javax.swing.JFrame {
             timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(timetablePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(timetablePanelLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selectTimetablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(detailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(detailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(changeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(completeHoursButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -297,39 +312,92 @@ public class Timetable extends javax.swing.JFrame {
         int selectedRow = timetableTable.getSelectedRow();
         int timetableID = timetableIDList.getDataAt(timetableList.getSelectedIndex());
 
-        String sql = "SELECT event.EventID\n"
-                + "FROM event INNER JOIN ((timetableslot INNER JOIN [user] ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (event.UserID = user.UserID)\n"
-                + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((timetableslot.TaskID) Is Null));";
-        ResultSet rs = DatabaseHandle.query(sql);
+        nameContentsLabel.setText("");
+        categoryStartTimeContentsLabel.setText("");
+        dateSetEndTimeContentsLabel.setText("");
+        dateDueEventTypeContentsLabel.setText("");
+        timeAlottedContentsLabel.setText("");
+        timeUsedContentsLabel.setText("");
+        descriptionText.setText("");
 
-        boolean event = false;
-        int taskeventID = 0;
-        
-        try {
-            if (rs.next()) {
-                event = true;
-                taskeventID = rs.getInt("event.EventID");
-            } else {
-                sql = "SELECT task.TaskID\n"
-                        + "FROM task INNER JOIN ((timetableslot INNER JOIN [user] ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (task.UserID = user.UserID) AND (task.TaskID = timetableslot.TaskID) AND (task.UserID = timetableslot.UserID)\n"
-                        + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((timetableslot.TaskID) Is Null));";
-                rs = DatabaseHandle.query(sql);
-                
-                if (rs.next()) {
-                    event = false;
-                    taskeventID = rs.getInt("task.TaskID");
-                } else {
-                    taskeventID = 0;
+        if (timetableTable.getModel().getValueAt(selectedRow, selectedColumn) != null) {
+
+            Object[] cellIDAndEventCheck = this.getCellIDAndCheckEvent();
+
+            boolean event = (boolean) cellIDAndEventCheck[1];
+            int taskeventID = (int) cellIDAndEventCheck[0];
+
+            if (event) {
+                categoryStartTimeLabel.setText("Start Time:");
+                dateSetEndTimeLabel.setText("End Time:");
+                dateDueEventTypeLabel.setText("Event Type:");
+                timeAlottedLabel.setText(" ");
+                timeUsedLabel.setText(" ");
+
+                String sql = "SELECT event.EventName, event.StartTime, event.EndTime, event.Description, event.Day\n"
+                        + "FROM ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) INNER JOIN event ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (user.UserID = event.UserID)\n"
+                        + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
+
+                ResultSet rs = DatabaseHandle.query(sql);
+                try {
+                    if (rs.next()) {
+
+                        nameContentsLabel.setText(rs.getString("event.EventName"));
+
+                        float startTime = rs.getFloat("event.StartTime");
+                        if ((startTime * 2) % 2 == 0) {
+                            categoryStartTimeContentsLabel.setText((int) startTime + ":00");
+                        } else {
+                            categoryStartTimeContentsLabel.setText((int) startTime + ":30");
+                        }
+
+                        float endTime = (float) (rs.getFloat("event.EndTime") + 0.5);
+                        if ((endTime * 2) % 2 == 0) {
+                            dateSetEndTimeContentsLabel.setText((int) endTime + ":00");
+                        } else {
+                            dateSetEndTimeContentsLabel.setText((int) endTime + ":30");
+                        }
+
+                        descriptionText.setText(rs.getString("event.Description"));
+
+                        if (rs.getInt("Day") != 0) {
+                            dateDueEventTypeContentsLabel.setText("Weekly Event");
+                        } else {
+                            dateDueEventTypeContentsLabel.setText("Single Event");
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
+                }
+
+            } else if (taskeventID != 0) {
+                categoryStartTimeLabel.setText("Category:");
+                dateSetEndTimeLabel.setText("Date Set:");
+                dateDueEventTypeLabel.setText("Date Due:");
+                timeAlottedLabel.setText("Time Alloted:");
+                timeUsedLabel.setText("Time Used:");
+
+                String sql = "SELECT task.TaskID\n"
+                        + "FROM timetable INNER JOIN (task INNER JOIN (timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) ON (timetableslot.TaskID = task.TaskID) AND (task.UserID = timetableslot.UserID) AND (task.UserID = user.UserID)) ON (timetableslot.UserID = timetable.UserID) AND (timetable.TimetableID = timetableslot.TimetableID) AND (timetable.UserID = user.UserID)\n"
+                        + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
+
+                ResultSet rs = DatabaseHandle.query(sql);
+
+                try {
+                    if (rs.next()) {
+                        Task task = new Task(rs.getInt("task.TaskID"));
+                        nameContentsLabel.setText(task.getName());
+                        descriptionText.setText(task.getDescription());
+                        timeUsedContentsLabel.setText("" + task.getTimeUsed());
+                        timeAlottedContentsLabel.setText("" + task.getTimeModified());
+                        dateDueEventTypeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateDue()));
+                        dateSetEndTimeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateSet()));
+                        categoryStartTimeContentsLabel.setText(task.getCategory().getName());
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
             }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        
-        if (event) {
-            
-        } else if (taskeventID != 0) {
-            
         }
     }//GEN-LAST:event_timetableTableMouseClicked
 
@@ -353,11 +421,31 @@ public class Timetable extends javax.swing.JFrame {
         }
     }
 
+    private String dateToSQLFormat(Date date) {
+        String year = (date.getYear() + 1900) + "";
+        String month = "";
+        if ((date.getMonth() + 1) > 9) {
+            month = (date.getMonth() + 1) + "";
+        } else {
+            month = "0" + (date.getMonth() + 1) + "";
+        }
+        String day = "";
+        if (date.getDate() > 9) {
+            day = date.getDate() + "";
+        } else {
+            day = "0" + date.getDate() + "";
+        }
+        return year + "-" + month + "-" + day;
+    }
+
     private String sqlDateToText(String sqlDate) {
         return (sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4));
     }
 
     private void loadTimetable(int timetableID) {
+
+        ((CustomTableModel) timetableTable.getModel()).clear();
+        timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
 
         String sql = "SELECT event.EventName, timetableslot.Day, timetableslot.Time\n"
                 + "FROM ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetable.UserID = user.UserID) AND (timetableslot.TimetableID = timetable.TimetableID) AND (timetableslot.UserID = timetable.UserID)) INNER JOIN event ON (event.UserID = user.UserID) AND (timetableslot.EventID = event.EventID) AND (timetableslot.UserID = event.UserID)\n"
@@ -381,7 +469,7 @@ public class Timetable extends javax.swing.JFrame {
 
         try {
             while (rs.next()) {
-                timetableTable.getModel().setValueAt(rs.getString("event.EventName"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
+                timetableTable.getModel().setValueAt(rs.getString("task.Name"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
             }
         } catch (Exception e) {
             System.err.println(e);
@@ -389,6 +477,40 @@ public class Timetable extends javax.swing.JFrame {
 
         render();
 
+    }
+
+    private Object[] getCellIDAndCheckEvent() {
+        int selectedColumn = timetableTable.getSelectedColumn();
+        int selectedRow = timetableTable.getSelectedRow();
+        int timetableID = timetableIDList.getDataAt(timetableList.getSelectedIndex());
+        boolean event = false;
+        int taskEventID = 0;
+
+        String sql = "SELECT event.EventID\n"
+                + "FROM event INNER JOIN ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (event.UserID = user.UserID)\n"
+                + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((timetableslot.TaskID) Is Null));";
+        ResultSet rs = DatabaseHandle.query(sql);
+
+        try {
+            if (rs.next()) {
+                event = true;
+                taskEventID = rs.getInt("event.EventID");
+            } else {
+                sql = "SELECT task.TaskID\n"
+                        + "FROM task INNER JOIN ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (task.UserID = user.UserID) AND (task.TaskID = timetableslot.TaskID) AND (task.UserID = timetableslot.UserID)\n"
+                        + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((timetableslot.EventID) Is Null));";
+                rs = DatabaseHandle.query(sql);
+
+                if (rs.next()) {
+                    event = false;
+                    taskEventID = rs.getInt("task.TaskID");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        return new Object[]{taskEventID, event};
     }
 
     private void render() {
@@ -410,6 +532,14 @@ public class Timetable extends javax.swing.JFrame {
     private void timetableListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_timetableListValueChanged
         loadTimetable(timetableIDList.getDataAt(timetableList.getSelectedIndex()));
     }//GEN-LAST:event_timetableListValueChanged
+
+    private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
+
+    }//GEN-LAST:event_changeButtonActionPerformed
+
+    private void completeHoursButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeHoursButtonActionPerformed
+
+    }//GEN-LAST:event_completeHoursButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -447,23 +577,25 @@ public class Timetable extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CategoryLabel;
-    private javax.swing.JLabel NameLabel;
     private javax.swing.JButton backButton;
-    private javax.swing.JLabel categoryContentsLabel;
-    private javax.swing.JLabel dateDueContentsLabel;
-    private javax.swing.JLabel dateDueLabel;
-    private javax.swing.JLabel dateSetContentsLabel;
-    private javax.swing.JLabel dateSetLabel;
+    private javax.swing.JLabel categoryStartTimeContentsLabel;
+    private javax.swing.JLabel categoryStartTimeLabel;
+    private javax.swing.JButton changeButton;
+    private javax.swing.JButton completeHoursButton;
+    private javax.swing.JLabel dateDueEventTypeContentsLabel;
+    private javax.swing.JLabel dateDueEventTypeLabel;
+    private javax.swing.JLabel dateSetEndTimeContentsLabel;
+    private javax.swing.JLabel dateSetEndTimeLabel;
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JTextArea descriptionText;
     private javax.swing.JPanel detailsPanel;
     private javax.swing.JButton exitButton;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel nameContentsLabel;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JPanel selectTimetablePanel;
     private javax.swing.JLabel timeAlottedContentsLabel;
     private javax.swing.JLabel timeAlottedLabel;
     private javax.swing.JLabel timeUsedContentsLabel;
