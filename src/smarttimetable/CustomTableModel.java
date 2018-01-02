@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
  * @author crazy
  */
 public class CustomTableModel extends DefaultTableModel {
-    
+
     private Object[][] data;
     private String[] headers;
 
@@ -15,6 +15,13 @@ public class CustomTableModel extends DefaultTableModel {
         this.headers = new String[]{
             "Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
         };
+        this.clear();
+    }
+
+    /**
+     * Empties the data from the table except first column
+     */
+    public void clear() {
         this.data = new Object[][]{
             {"00:00", null, null, null, null, null, null, null},
             {"00:30", null, null, null, null, null, null, null},
@@ -67,7 +74,7 @@ public class CustomTableModel extends DefaultTableModel {
         };
         setDataVector(this.data, this.headers);
     }
-    
+
     //Sets the table to uneditable
     @Override
     public boolean isCellEditable(int row, int column) {
@@ -77,10 +84,6 @@ public class CustomTableModel extends DefaultTableModel {
     public void setData(Object[][] data) {
         this.data = data;
     }
-    
-    public void setDataAt(Object data, int row, int column){
-        this.data[row][column] = data;
-    }
 
     public void setHeaders(String[] headers) {
         this.headers = headers;
@@ -88,10 +91,6 @@ public class CustomTableModel extends DefaultTableModel {
 
     public Object[][] getData() {
         return data;
-    }
-    
-    public Object getDataAt(int row, int column){
-        return data[row][column];
     }
 
     public String[] getHeaders() {
