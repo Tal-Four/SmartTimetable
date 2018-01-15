@@ -1,5 +1,7 @@
 package smarttimetable;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -15,91 +17,91 @@ import java.util.logging.Logger;
  *
  * @author crazy
  */
-public class GenerateTimetable {
+public class OldGenerateTimetable {
 
-    public GenerateTimetable(int sleepStart, int sleepEnd) {
+    /*public OldGenerateTimetable() {
 
-        if (checkTaskAssigningPossible(true, sleepStart, sleepEnd)) {
-            boolean highPriority = !checkTaskAssigningPossible(false, sleepStart, sleepEnd);
+        int[] sleepTimes = getSleepTimes();
 
-            String sql;
-            String todayDate = getDate(new GregorianCalendar());
+        if (sleepTimes[0] != Integer.MIN_VALUE) {
 
-            if (highPriority) {
-                sql = "SELECT COUNT(*)\n"
-                        + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
-                        + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.HighPriority)=True) AND ((task.DateDue)>'" + todayDate + "'))\n"
-                        + "ORDER BY task.DateDue;";
-            } else {
-                sql = "SELECT COUNT(*)\n"
-                        + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
-                        + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.DateDue)>'" + todayDate + "'))\n"
-                        + "ORDER BY task.DateDue;";
-            }
+            if (checkTaskAssigningPossible(true, sleepTimes)) {
+                boolean highPriority = checkTaskAssigningPossible(false, sleepTimes);
 
-            ResultSet rs = DatabaseHandle.query(sql);
+                String sql;
+                String todayDate = getDate(new GregorianCalendar());
 
-            int arraySize = 0;
-            try {
-                if (rs.next()) {
-                    arraySize = rs.getInt("COUNT(*)");
+                if (highPriority) {
+                    sql = "SELECT COUNT(*)\n"
+                            + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
+                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.HighPriority)=True) AND ((task.DateDue)>'" + todayDate + "'))\n"
+                            + "ORDER BY task.DateDue;";
+                } else {
+                    sql = "SELECT COUNT(*)\n"
+                            + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
+                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.DateDue)>'" + todayDate + "'))\n"
+                            + "ORDER BY task.DateDue;";
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
 
-            Task[] taskArray = new Task[arraySize];
+                ResultSet rs = DatabaseHandle.query(sql);
 
-            if (highPriority) {
-                sql = "SELECT task.TaskID\n"
-                        + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
-                        + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.HighPriority)=True) AND ((task.DateDue)>'" + todayDate + "'))\n"
-                        + "ORDER BY task.DateDue;";
-            } else {
-                sql = "SELECT task.TaskID\n"
-                        + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
-                        + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.DateDue)>'" + todayDate + "'))\n"
-                        + "ORDER BY task.DateDue;";
-            }
-
-            rs = DatabaseHandle.query(sql);
-
-            try {
-                int counter = 0;
-                while (rs.next()) {
-                    taskArray[counter] = new Task(rs.getInt("TaskID"));
-                    counter++;
+                int arraySize = 0;
+                try {
+                    if (rs.next()) {
+                        arraySize = rs.getInt("COUNT(*)");
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
 
-            for (Task task : taskArray) {
-                task.clearSlots();
-            }
+                Task[] taskArray = new Task[arraySize];
 
-            boolean firstWeek = true;
-            GregorianCalendar calendar = new GregorianCalendar();
-            int timetableID = timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+                if (highPriority) {
+                    sql = "SELECT task.TaskID\n"
+                            + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
+                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.HighPriority)=True) AND ((task.DateDue)>'" + todayDate + "'))\n"
+                            + "ORDER BY task.DateDue;";
+                } else {
+                    sql = "SELECT task.TaskID\n"
+                            + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
+                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.DateDue)>'" + todayDate + "'))\n"
+                            + "ORDER BY task.DateDue;";
+                }
 
-            while (!plotTasks(taskArray, timetableID, sleepStart, sleepEnd, firstWeek)) {
-                firstWeek = false;
-                calendar.add(GregorianCalendar.WEEK_OF_YEAR, 1);
-                timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+                rs = DatabaseHandle.query(sql);
+
+                try {
+                    int counter = 0;
+                    while (rs.next()) {
+                        taskArray[counter] = new Task(rs.getInt("TaskID"));
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
+                }
+
+                boolean firstWeek = true;
+                GregorianCalendar calendar = new GregorianCalendar();
+                int timetableID = timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+
+                while (!plotTasks(taskArray, timetableID, sleepTimes, firstWeek)) {
+                    firstWeek = false;
+                    calendar.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+                    timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+                }
             }
         }
     }
 
-    private boolean plotTasks(Task[] taskList, int timetableID, int sleepStart, int sleepEnd, boolean firstWeek) {
+    private boolean plotTasks(Task[] taskList, int timetableID, int[] sleepTimes, boolean firstWeek) {
         boolean done = false;
 
         boolean[][] slotsFilled = new boolean[7][48];
 
         for (int sleepCounter = 0; sleepCounter < 7; sleepCounter++) {
-            for (int sleepStartCounter = sleepStart; sleepStartCounter < 48; sleepStartCounter++) {
+            for (int sleepStartCounter = sleepTimes[0]; sleepStartCounter < 48; sleepStartCounter++) {
                 slotsFilled[sleepCounter][sleepStartCounter] = true;
             }
-            for (int sleepEndCounter = 0; sleepEndCounter < sleepEnd; sleepEndCounter++) {
+            for (int sleepEndCounter = 0; sleepEndCounter < sleepTimes[1]; sleepEndCounter++) {
                 slotsFilled[sleepCounter][sleepEndCounter] = true;
             }
         }
@@ -112,7 +114,7 @@ public class GenerateTimetable {
 
         try {
             while (rs.next()) {
-                slotsFilled[rs.getInt("Day") - 1][rs.getInt("Time")] = true;
+                slotsFilled[rs.getInt("Day")][rs.getInt("Time")] = true;
             }
         } catch (SQLException e) {
             System.err.println(e);
@@ -125,7 +127,15 @@ public class GenerateTimetable {
         if (firstWeek) {
             GregorianCalendar calendar = new GregorianCalendar();
             weekStartDay = ((calendar.get(GregorianCalendar.DAY_OF_WEEK) + 5) % 7);
-            currentTime = (int) (this.getCurrentTime() * 2) + 1;
+            currentTime = (int) (this.getCurrentTime() * 2);
+        }
+
+        for (int dayCounter = weekStartDay; dayCounter < 7; dayCounter++) {
+            for (int timeCounter = sleepTimes[1]; timeCounter < sleepTimes[0]; timeCounter++) {
+                if (!slotsFilled[dayCounter][timeCounter] && (currentTime < timeCounter || dayCounter > weekStartDay || !firstWeek)) {
+                    freeSlots++;
+                }
+            }
         }
 
         sql = "SELECT timetable.StartDay\n"
@@ -149,14 +159,6 @@ public class GenerateTimetable {
             }
         }
 
-        for (int dayCounter = weekStartDay; dayCounter < 7; dayCounter++) {
-            for (int timeCounter = sleepEnd; timeCounter < sleepStart; timeCounter++) {
-                if (!slotsFilled[dayCounter][timeCounter] && (currentTime < timeCounter || dayCounter > weekStartDay || !firstWeek)) {
-                    freeSlots++;
-                }
-            }
-        }
-
         try {
             if (rs.next()) {
                 weekStart = rs.getDate("StartDay");
@@ -167,13 +169,13 @@ public class GenerateTimetable {
 
         int counter = 0;
         Random rand = new Random();
-        while (!done && freeSlots > 0 && counter < taskList.length) {
+        while (!done && freeSlots > 0) {
             int slotsFreePerTask = freeSlots;
             int difference = getDayDifference(weekStart, taskList[counter].getDateDue()) - weekStartDay;
             if (difference < (6 - weekStartDay)) {
                 slotsFreePerTask = 0;
                 for (int dayCounter = weekStartDay; dayCounter <= weekStartDay + difference; dayCounter++) {
-                    for (int timeCounter = sleepEnd; timeCounter < sleepStart; timeCounter++) {
+                    for (int timeCounter = sleepTimes[1]; timeCounter < sleepTimes[0]; timeCounter++) {
                         if (slotsFilled[dayCounter][timeCounter] && (!firstWeek || currentTime < timeCounter || dayCounter > weekStartDay)) {
                             slotsFreePerTask++;
                         }
@@ -189,12 +191,12 @@ public class GenerateTimetable {
 
                 while (dayCounter < 7 && dayCounter < difference && !assigned) {
 
-                    int slotCounter = sleepEnd;
+                    int slotCounter = sleepTimes[1];
                     if (firstWeek && dayCounter == weekStartDay) {
                         slotCounter = currentTime;
                     }
 
-                    while (slotCounter < sleepStart && !assigned) {
+                    while (slotCounter < sleepTimes[0] && !assigned) {
 
                         if (!slotsFilled[dayCounter][slotCounter]) {
                             if (freeCounter == assignedSlot) {
@@ -203,27 +205,16 @@ public class GenerateTimetable {
                                         + timetableID + ", " + (dayCounter + 1) + ", " + slotCounter + ");";
 
                                 DatabaseHandle.update(sql);
-
-                                taskList[counter].newSlotAssigned();
                                 assigned = true;
                                 freeSlots--;
                                 slotsFreePerTask--;
-                                slotsFilled[dayCounter][slotCounter] = true;
                             }
                         }
-                        slotCounter++;
+
                     }
-                    dayCounter++;
                 }
 
             }
-            done = true;
-            for (Task task : taskList) {
-                if (slotsNeeded > task.getSlotsAssigned()) {
-                    done = false;
-                }
-            }
-
             counter++;
         }
 
@@ -365,7 +356,7 @@ public class GenerateTimetable {
     }
     //</editor-fold>
 
-    private boolean checkTaskAssigningPossible(boolean highPriority, int sleepStart, int sleepEnd) {
+    private boolean checkTaskAssigningPossible(boolean highPriority, int[] sleepTimes) {
         String sql;
         GregorianCalendar calendar = new GregorianCalendar();
         String todayDate = calendar.get(GregorianCalendar.YEAR) + "-"
@@ -396,7 +387,7 @@ public class GenerateTimetable {
                 int dayDifference = getDayDifference(new Date(), task.sqlDateToTextFormat(task.getDateDue()));
                 int totalSlotsRemainingToday = 48 - (int) (currentTime * 2);
                 int totalSlotsBeforeDeadline = (dayDifference * 48) + totalSlotsRemainingToday;
-                int slotsUsedByEvents = getSlotsUsedByEventsBeforeDate(dayDifference, sleepStart, sleepEnd);
+                int slotsUsedByEvents = getSlotsUsedByEventsBeforeDate(dayDifference, sleepTimes);
                 int slotsAvailableBeforeDeadline = totalSlotsBeforeDeadline - (slotsUsedByEvents + slotsUsedByPreviousTasks);
                 slotsAvailableBeforeDeadline = ((slotsAvailableBeforeDeadline / 5) * 4) + (slotsAvailableBeforeDeadline % 5);
                 if (slotsAvailableBeforeDeadline >= slotsToPlot) {
@@ -412,11 +403,11 @@ public class GenerateTimetable {
         return possible;
     }
 
-    private int getSlotsUsedByEventsBeforeDate(int dayDifference, int sleepStart, int sleepEnd) {
+    private int getSlotsUsedByEventsBeforeDate(int dayDifference, int[] sleepTimes) {
 
         int slotsUsed = 0;
         //Get slots used by "Sleep" events first
-        int sleepSlotsPerDay = (48 - sleepStart) + sleepEnd;
+        int sleepSlotsPerDay = (48 - sleepTimes[0]) + sleepTimes[1];
 
         int daysLeft;
         GregorianCalendar cal = new GregorianCalendar();
@@ -505,13 +496,9 @@ public class GenerateTimetable {
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
-                String startString = rs.getString("StartSum");
-                String endString = rs.getString("EndSum");
-                if (startString != null && endString != null) {
-                    double startSum = Double.parseDouble(startString);
-                    double endSum = Double.parseDouble(endString);
-                    slots = (int) ((endSum - startSum) * 2);
-                }
+                double startSum = Double.parseDouble(rs.getString("StartSum"));
+                double endSum = Double.parseDouble(rs.getString("EndSum"));
+                slots = (int) ((endSum - startSum) * 2);
             }
         } catch (SQLException e) {
             System.err.println(e);
@@ -520,10 +507,7 @@ public class GenerateTimetable {
     }
 
     private int getDayDifference(Date startDate, String endDate) {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");;
-        if (endDate.charAt(4) == '-') {
-            endDate = endDate.substring(8, 10) + "/" + endDate.substring(5, 7) + "/" + endDate.substring(0, 4);
-        }
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(startDate);
         long before = calendar.getTimeInMillis();
@@ -547,4 +531,19 @@ public class GenerateTimetable {
         }
         return time;
     }
+
+    /**
+     * Returns the time the user goes to sleep(index 0) and the time the user
+     * gets up (index 1) in the form of slot times (0-47 for each half hour)
+     *
+    private int[] getSleepTimes() {
+        int[] sleepTimes = new int[2];
+        SleepInput sleepInput = new SleepInput(sleepTimes);
+        sleepInput.setVisible(true);
+
+        
+
+        return sleepTimes;
+    }
+     */
 }

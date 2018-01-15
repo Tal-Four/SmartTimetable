@@ -14,10 +14,10 @@ import java.util.Date;
 public class Task {
 
     private Category category;
-    private int taskID, colourCode;
+    private int taskID, colourCode, slotsAssigned;
     private double timeSet, timeModified, timeUsed;
     private String description, name, dateSet, dateDue;
-    
+
     //Constructor that reads a task from the database given an ID
     public Task(int taskID) {
         this.taskID = taskID;
@@ -76,8 +76,6 @@ public class Task {
         new Popup("Task " + this.name + " edited.").setVisible(true);
     }
 
-    
-
     //Converting date object to SQL date format
     private String dateToSQLFormat(Date date) {
         return (date.getYear() + 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate();
@@ -113,8 +111,24 @@ public class Task {
         return timeModded;
     }
 
-    private double roundToHalf(double number) {
+    public double roundToHalf(double number) {
         return (Math.round(number * 2) / 2.0);
+    }
+
+    public void newSlotAssigned() {
+        this.slotsAssigned++;
+        String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.SlotsAssigned = " + this.slotsAssigned + "\n"
+                + "WHERE (((task.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
+        
+        DatabaseHandle.update(sql);
+    }
+    
+    public void clearSlots(){
+        this.slotsAssigned = 0;
+        String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.SlotsAssigned = " + this.slotsAssigned + "\n"
+                + "WHERE (((task.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
+        
+        DatabaseHandle.update(sql);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 
@@ -158,6 +172,10 @@ public class Task {
         this.dateDue = dateDue;
     }
 
+    public void setSlotsAssigned(int slotsASsigned) {
+        this.slotsAssigned = slotsASsigned;
+    }
+
     public int getTaskID() {
         return this.taskID;
     }
@@ -196,5 +214,9 @@ public class Task {
 
     public String getDateDue() {
         return this.dateDue;
-    } // </editor-fold>
+    }
+
+    public int getSlotsAssigned() {
+        return slotsAssigned;
+    }// </editor-fold>
 }

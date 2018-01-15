@@ -82,7 +82,7 @@ public class Popup extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     /**
