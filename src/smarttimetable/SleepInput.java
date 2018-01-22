@@ -2,6 +2,7 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JFrame;
 
 /**
  *
@@ -9,12 +10,16 @@ import java.awt.Toolkit;
  */
 public class SleepInput extends javax.swing.JFrame {
 
+    private JFrame menu;
+    
     /**
      * Creates new form SleepInput
      *
-     */
-    public SleepInput() {
+     */    
+    public SleepInput(JFrame menu) {
         initComponents();
+        
+        this.menu = menu;
 
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -189,7 +194,7 @@ public class SleepInput extends javax.swing.JFrame {
 
         if (sleepEnd < sleepStart) {
             this.setVisible(false);
-            new GenerateTimetable(sleepStart, sleepEnd);
+            new GenerateTimetable(sleepStart, sleepEnd, new LoadingScreen(), menu);
         } else {
             new Popup("Error: The start time is equal to or after the end time.").setVisible(true);
         }
@@ -240,7 +245,7 @@ public class SleepInput extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SleepInput().setVisible(true);
+                new SleepInput(new JFrame()).setVisible(true);
             }
         });
     }

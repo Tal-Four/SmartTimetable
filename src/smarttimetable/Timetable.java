@@ -534,7 +534,7 @@ public class Timetable extends javax.swing.JFrame {
     }//GEN-LAST:event_timetableListValueChanged
 
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
-
+        
     }//GEN-LAST:event_changeButtonActionPerformed
 
     private void completeHoursButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeHoursButtonActionPerformed

@@ -119,15 +119,15 @@ public class Task {
         this.slotsAssigned++;
         String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.SlotsAssigned = " + this.slotsAssigned + "\n"
                 + "WHERE (((task.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
-        
+
         DatabaseHandle.update(sql);
     }
-    
-    public void clearSlots(){
-        this.slotsAssigned = 0;
+
+    public void resetSlots() {
+        this.slotsAssigned = (int) (this.timeUsed * 2);
         String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.SlotsAssigned = " + this.slotsAssigned + "\n"
                 + "WHERE (((task.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
-        
+
         DatabaseHandle.update(sql);
     }
 

@@ -8,8 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -17,10 +16,12 @@ import java.util.logging.Logger;
  */
 public class GenerateTimetable {
 
-    public GenerateTimetable(int sleepStart, int sleepEnd) {
+    public GenerateTimetable(int workEnd, int workStart, JFrame loadingScreen, JFrame menu) {
 
-        if (checkTaskAssigningPossible(true, sleepStart, sleepEnd)) {
-            boolean highPriority = !checkTaskAssigningPossible(false, sleepStart, sleepEnd);
+        if (checkTaskAssigningPossible(true, workEnd, workStart)) {
+            boolean highPriority = !checkTaskAssigningPossible(false, workEnd, workStart);
+
+            archivePreviousTables();
 
             String sql;
             String todayDate = getDate(new GregorianCalendar());
@@ -75,19 +76,28 @@ public class GenerateTimetable {
             }
 
             for (Task task : taskArray) {
-                task.clearSlots();
+                task.resetSlots();
             }
 
             boolean firstWeek = true;
             GregorianCalendar calendar = new GregorianCalendar();
             int timetableID = timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
 
-            while (!plotTasks(taskArray, timetableID, sleepStart, sleepEnd, firstWeek)) {
+            while (!plotTasks(taskArray, timetableID, workEnd, workStart, firstWeek)) {
                 firstWeek = false;
                 calendar.add(GregorianCalendar.WEEK_OF_YEAR, 1);
                 timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
             }
         }
+        loadingScreen.dispose();
+        menu.setVisible(true);
+    }
+
+    private void archivePreviousTables() {
+        String sql = "UPDATE user INNER JOIN timetable ON user.UserID = timetable.UserID SET timetable.Hidden = 1\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + "));";
+
+        DatabaseHandle.update(sql);
     }
 
     private boolean plotTasks(Task[] taskList, int timetableID, int sleepStart, int sleepEnd, boolean firstWeek) {
@@ -210,6 +220,7 @@ public class GenerateTimetable {
                                 slotsFreePerTask--;
                                 slotsFilled[dayCounter][slotCounter] = true;
                             }
+                            freeCounter++;
                         }
                         slotCounter++;
                     }
@@ -219,6 +230,7 @@ public class GenerateTimetable {
             }
             done = true;
             for (Task task : taskList) {
+                slotsNeeded = (int) (task.roundToHalf(task.getTimeModified()) * 2);
                 if (slotsNeeded > task.getSlotsAssigned()) {
                     done = false;
                 }
@@ -412,26 +424,21 @@ public class GenerateTimetable {
         return possible;
     }
 
-    private int getSlotsUsedByEventsBeforeDate(int dayDifference, int sleepStart, int sleepEnd) {
+    private int getSlotsUsedByEventsBeforeDate(int dayDifference, int workEnd, int workStart) {
 
         int slotsUsed = 0;
-        //Get slots used by "Sleep" events first
-        int sleepSlotsPerDay = (48 - sleepStart) + sleepEnd;
 
-        int daysLeft;
-        GregorianCalendar cal = new GregorianCalendar();
-        if (cal.get(GregorianCalendar.DAY_OF_WEEK) == 1) {
-            daysLeft = 1;
-        } else {
-            daysLeft = 9 - cal.get(GregorianCalendar.DAY_OF_WEEK);
-        }
-        slotsUsed = slotsUsed + (sleepSlotsPerDay * daysLeft);
-
-        //Get slots used by reccuring events second
         int days = dayDifference + 1;
         int numberOfWeeks = days / 7;
         int numberOfExtraDays = days % 7;
 
+        //Get slots used by "Sleep" events first
+        int sleepSlotsPerDay = (48 - workEnd) + workStart;
+
+        GregorianCalendar cal = new GregorianCalendar();
+        slotsUsed = slotsUsed + (sleepSlotsPerDay * days);
+
+        //Get slots used by reccuring events second
         String inStatement;
         if (numberOfExtraDays == 0) {
             inStatement = "NULL";
@@ -448,18 +455,49 @@ public class GenerateTimetable {
             }
             cal.add(GregorianCalendar.DAY_OF_WEEK, -(numberOfExtraDays - 1));
         }
-        String sql = "SELECT Sum(StartTime) AS StartSum, Sum(EndTime) AS EndSum\n"
+        String sql = "SELECT StartTime, EndTime\n"
                 + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
                 + "WHERE (((event.Date) Is Null) AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Day) In (" + inStatement + ")));";
 
-        slotsUsed = slotsUsed + calculateSlotsFromResultSet(sql);
+        ResultSet rs = DatabaseHandle.query(sql);
 
-        sql = "SELECT Sum(StartTime) AS StartSum, Sum(EndTime) AS EndSum\n"
+        try {
+            while (rs.next()) {
+                int counter = rs.getInt("StartTime");
+                if (counter < workStart) {
+                    counter = workStart;
+                }
+                int endTime = rs.getInt("EndTime");
+                while (counter < endTime && counter < workEnd) {
+                    slotsUsed++;
+                    counter++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        sql = "SELECT StartTime, EndTime\n"
                 + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
                 + "WHERE (((event.Date) Is Null) AND ((user.UserID)=" + User.getUserID() + "));";
 
-        slotsUsed = slotsUsed + (calculateSlotsFromResultSet(sql) * numberOfWeeks);
+        rs = DatabaseHandle.query(sql);
 
+        try {
+            while (rs.next()) {
+                int counter = rs.getInt("StartTime");
+                if (counter < workStart) {
+                    counter = workStart;
+                }
+                int endTime = rs.getInt("EndTime");
+                while (counter < endTime && counter < workEnd) {
+                    slotsUsed++;
+                    counter++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
         //Get slots used by single events third
         String todayDate = getDate(cal);
 
@@ -469,20 +507,35 @@ public class GenerateTimetable {
                 + cal.get(GregorianCalendar.MONTH) + "-"
                 + cal.get(GregorianCalendar.DAY_OF_MONTH);
 
-        sql = "SELECT Sum(StartTime) AS StartSum, Sum(EndTime) AS EndSum\n"
+        sql = "SELECT StartTime, EndTime\n"
                 + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
                 + "WHERE (((event.Day) Is Null) AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date) Between (CAST('" + todayDate + "' AS DATE)) And (CAST('" + endDate + "' AS DATE))));";
 
-        slotsUsed = slotsUsed + calculateSlotsFromResultSet(sql);
+        rs = DatabaseHandle.query(sql);
 
+        try {
+            while (rs.next()) {
+                int counter = rs.getInt("StartTime");
+                if (counter < workStart) {
+                    counter = workStart;
+                }
+                int endTime = rs.getInt("EndTime");
+                while (counter < endTime && counter < workEnd) {
+                    slotsUsed++;
+                    counter++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
         //Take away events already passed today
         int currentTime = (int) (getCurrentTime() * 2);
-        int day = 8 - daysLeft;
+        int day = 1 + ((new GregorianCalendar().get(GregorianCalendar.DAY_OF_WEEK) + 5) % 7);
         sql = "SELECT event.StartTime, event.EndTime\n"
                 + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
-                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.StartTime)<" + currentTime + ") AND (((event.Day)=" + day + ") OR ((event.Date)='" + todayDate + "')));";
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.Hidden) = True) AND ((event.StartTime)<" + currentTime + ") AND (((event.Day)=" + day + ") OR ((event.Date)='" + todayDate + "')));";
 
-        ResultSet rs = DatabaseHandle.query(sql);
+        rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
                 int startTime = (int) (Double.parseDouble(rs.getString("StartTime")) * 2);
@@ -497,26 +550,16 @@ public class GenerateTimetable {
             System.err.println(e);
         }
 
-        return slotsUsed;
-    }
-
-    private int calculateSlotsFromResultSet(String sql) {
-        int slots = 0;
-        ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            if (rs.next()) {
-                String startString = rs.getString("StartSum");
-                String endString = rs.getString("EndSum");
-                if (startString != null && endString != null) {
-                    double startSum = Double.parseDouble(startString);
-                    double endSum = Double.parseDouble(endString);
-                    slots = (int) ((endSum - startSum) * 2);
-                }
+        if (currentTime > workStart) {
+            slotsUsed = slotsUsed - workStart;
+            if (currentTime > workEnd) {
+                slotsUsed = slotsUsed - (currentTime - workEnd);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
+        } else {
+            slotsUsed = slotsUsed - currentTime;
         }
-        return slots;
+
+        return slotsUsed;
     }
 
     private int getDayDifference(Date startDate, String endDate) {
