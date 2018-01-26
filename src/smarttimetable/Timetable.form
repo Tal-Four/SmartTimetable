@@ -142,11 +142,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="timetableTableMouseClicked"/>
-              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="timetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);&#xa;timetableTable.getTableHeader().setReorderingAllowed(false);&#xa;timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);&#xa;timetableTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);&#xa;timetableTable.setColumnSelectionAllowed(true);"/>
+                <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="timetableTable.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {&#xa;    public void valueChanged(ListSelectionEvent evt) {&#xa;        timetableTableValueChanged(evt);&#xa;    }&#xa;});&#xa;timetableTable.getColumnModel().getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {&#xa;    public void valueChanged(ListSelectionEvent evt) {&#xa;        timetableTableValueChanged(evt);&#xa;    }&#xa;});"/>
               </AuxValues>
             </Component>
           </SubComponents>

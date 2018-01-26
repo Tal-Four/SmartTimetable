@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
 
 /**
  *
@@ -20,7 +21,7 @@ import javax.swing.ListSelectionModel;
  */
 public class Timetable extends javax.swing.JFrame {
 
-    private LinkedList timetableIDList = new LinkedList();
+    private final LinkedList timetableIDList = new LinkedList();
 
     /**
      * Creates new form Timetable
@@ -35,6 +36,9 @@ public class Timetable extends javax.swing.JFrame {
 
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
+
+        this.completeHoursButton.setEnabled(false);
+        this.changeButton.setEnabled(false);
 
         updateList();
 
@@ -91,9 +95,14 @@ public class Timetable extends javax.swing.JFrame {
         timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
         timetableTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         timetableTable.setColumnSelectionAllowed(true);
-        timetableTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                timetableTableMouseClicked(evt);
+        timetableTable.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent evt) {
+                timetableTableValueChanged(evt);
+            }
+        });
+        timetableTable.getColumnModel().getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent evt) {
+                timetableTableValueChanged(evt);
             }
         });
         jScrollPane1.setViewportView(timetableTable);
@@ -307,99 +316,113 @@ public class Timetable extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void timetableTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timetableTableMouseClicked
+    private void timetableTableValueChanged(javax.swing.event.ListSelectionEvent evt) {
         int selectedColumn = timetableTable.getSelectedColumn();
         int selectedRow = timetableTable.getSelectedRow();
         int timetableID = timetableIDList.getDataAt(timetableList.getSelectedIndex());
 
-        nameContentsLabel.setText("");
-        categoryStartTimeContentsLabel.setText("");
-        dateSetEndTimeContentsLabel.setText("");
-        dateDueEventTypeContentsLabel.setText("");
-        timeAlottedContentsLabel.setText("");
-        timeUsedContentsLabel.setText("");
-        descriptionText.setText("");
+        if (selectedColumn == 0 || this.timetableList.isSelectionEmpty()) {
+            this.changeButton.setEnabled(false);
+            this.completeHoursButton.setEnabled(false);
+        } else {
+            this.changeButton.setEnabled(true);
+        }
 
-        if (timetableTable.getModel().getValueAt(selectedRow, selectedColumn) != null) {
+        this.nameContentsLabel.setText("");
+        this.categoryStartTimeContentsLabel.setText("");
+        this.dateSetEndTimeContentsLabel.setText("");
+        this.dateDueEventTypeContentsLabel.setText("");
+        this.timeAlottedContentsLabel.setText("");
+        this.timeUsedContentsLabel.setText("");
+        this.descriptionText.setText("");
 
-            Object[] cellIDAndEventCheck = this.getCellIDAndCheckEvent();
+        if (selectedColumn >= 0 && selectedColumn <= 7 && selectedRow >= 0 && selectedRow < 48) {
+            if (this.timetableTable.getModel().getValueAt(selectedRow, selectedColumn) != null) {
 
-            boolean event = (boolean) cellIDAndEventCheck[1];
-            int taskeventID = (int) cellIDAndEventCheck[0];
+                Object[] cellIDAndEventCheck = this.getCellIDAndCheckEvent();
 
-            if (event) {
-                categoryStartTimeLabel.setText("Start Time:");
-                dateSetEndTimeLabel.setText("End Time:");
-                dateDueEventTypeLabel.setText("Event Type:");
-                timeAlottedLabel.setText(" ");
-                timeUsedLabel.setText(" ");
+                boolean event = (boolean) cellIDAndEventCheck[1];
+                int taskeventID = (int) cellIDAndEventCheck[0];
 
-                String sql = "SELECT event.EventName, event.StartTime, event.EndTime, event.Description, event.Day\n"
-                        + "FROM ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) INNER JOIN event ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (user.UserID = event.UserID)\n"
-                        + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
+                if (event) {
 
-                ResultSet rs = DatabaseHandle.query(sql);
-                try {
-                    if (rs.next()) {
+                    this.completeHoursButton.setEnabled(false);
 
-                        nameContentsLabel.setText(rs.getString("event.EventName"));
+                    this.categoryStartTimeLabel.setText("Start Time:");
+                    this.dateSetEndTimeLabel.setText("End Time:");
+                    this.dateDueEventTypeLabel.setText("Event Type:");
+                    this.timeAlottedLabel.setText(" ");
+                    this.timeUsedLabel.setText(" ");
 
-                        float startTime = rs.getFloat("event.StartTime");
-                        if ((startTime * 2) % 2 == 0) {
-                            categoryStartTimeContentsLabel.setText((int) startTime + ":00");
-                        } else {
-                            categoryStartTimeContentsLabel.setText((int) startTime + ":30");
+                    String sql = "SELECT event.EventName, event.StartTime, event.EndTime, event.Description, event.Day\n"
+                            + "FROM ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) INNER JOIN event ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (user.UserID = event.UserID)\n"
+                            + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
+
+                    ResultSet rs = DatabaseHandle.query(sql);
+                    try {
+                        if (rs.next()) {
+
+                            nameContentsLabel.setText(rs.getString("event.EventName"));
+
+                            float startTime = rs.getFloat("event.StartTime");
+                            if ((startTime * 2) % 2 == 0) {
+                                categoryStartTimeContentsLabel.setText((int) startTime + ":00");
+                            } else {
+                                categoryStartTimeContentsLabel.setText((int) startTime + ":30");
+                            }
+
+                            float endTime = (float) (rs.getFloat("event.EndTime") + 0.5);
+                            if ((endTime * 2) % 2 == 0) {
+                                dateSetEndTimeContentsLabel.setText((int) endTime + ":00");
+                            } else {
+                                dateSetEndTimeContentsLabel.setText((int) endTime + ":30");
+                            }
+
+                            descriptionText.setText(rs.getString("event.Description"));
+
+                            if (rs.getInt("Day") != 0) {
+                                dateDueEventTypeContentsLabel.setText("Weekly Event");
+                            } else {
+                                dateDueEventTypeContentsLabel.setText("Single Event");
+                            }
                         }
-
-                        float endTime = (float) (rs.getFloat("event.EndTime") + 0.5);
-                        if ((endTime * 2) % 2 == 0) {
-                            dateSetEndTimeContentsLabel.setText((int) endTime + ":00");
-                        } else {
-                            dateSetEndTimeContentsLabel.setText((int) endTime + ":30");
-                        }
-
-                        descriptionText.setText(rs.getString("event.Description"));
-
-                        if (rs.getInt("Day") != 0) {
-                            dateDueEventTypeContentsLabel.setText("Weekly Event");
-                        } else {
-                            dateDueEventTypeContentsLabel.setText("Single Event");
-                        }
+                    } catch (SQLException e) {
+                        System.err.println(e);
                     }
-                } catch (SQLException e) {
-                    System.err.println(e);
-                }
 
-            } else if (taskeventID != 0) {
-                categoryStartTimeLabel.setText("Category:");
-                dateSetEndTimeLabel.setText("Date Set:");
-                dateDueEventTypeLabel.setText("Date Due:");
-                timeAlottedLabel.setText("Time Alloted:");
-                timeUsedLabel.setText("Time Used:");
+                } else if (taskeventID != 0) {
+                    this.completeHoursButton.setEnabled(true);
 
-                String sql = "SELECT task.TaskID\n"
-                        + "FROM timetable INNER JOIN (task INNER JOIN (timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) ON (timetableslot.TaskID = task.TaskID) AND (task.UserID = timetableslot.UserID) AND (task.UserID = user.UserID)) ON (timetableslot.UserID = timetable.UserID) AND (timetable.TimetableID = timetableslot.TimetableID) AND (timetable.UserID = user.UserID)\n"
-                        + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
+                    this.categoryStartTimeLabel.setText("Category:");
+                    this.dateSetEndTimeLabel.setText("Date Set:");
+                    this.dateDueEventTypeLabel.setText("Date Due:");
+                    this.timeAlottedLabel.setText("Time Alloted:");
+                    this.timeUsedLabel.setText("Time Used:");
 
-                ResultSet rs = DatabaseHandle.query(sql);
+                    String sql = "SELECT task.TaskID\n"
+                            + "FROM timetable INNER JOIN (task INNER JOIN (timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) ON (timetableslot.TaskID = task.TaskID) AND (task.UserID = timetableslot.UserID) AND (task.UserID = user.UserID)) ON (timetableslot.UserID = timetable.UserID) AND (timetable.TimetableID = timetableslot.TimetableID) AND (timetable.UserID = user.UserID)\n"
+                            + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
 
-                try {
-                    if (rs.next()) {
-                        Task task = new Task(rs.getInt("task.TaskID"));
-                        nameContentsLabel.setText(task.getName());
-                        descriptionText.setText(task.getDescription());
-                        timeUsedContentsLabel.setText("" + task.getTimeUsed());
-                        timeAlottedContentsLabel.setText("" + task.getTimeModified());
-                        dateDueEventTypeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateDue()));
-                        dateSetEndTimeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateSet()));
-                        categoryStartTimeContentsLabel.setText(task.getCategory().getName());
+                    ResultSet rs = DatabaseHandle.query(sql);
+
+                    try {
+                        if (rs.next()) {
+                            Task task = new Task(rs.getInt("task.TaskID"));
+                            nameContentsLabel.setText(task.getName());
+                            descriptionText.setText(task.getDescription());
+                            timeUsedContentsLabel.setText("" + task.getTimeUsed());
+                            timeAlottedContentsLabel.setText("" + task.getTimeModified());
+                            dateDueEventTypeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateDue()));
+                            dateSetEndTimeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateSet()));
+                            categoryStartTimeContentsLabel.setText(task.getCategory().getName());
+                        }
+                    } catch (SQLException e) {
+                        System.err.println(e);
                     }
-                } catch (SQLException e) {
-                    System.err.println(e);
                 }
             }
         }
-    }//GEN-LAST:event_timetableTableMouseClicked
+    }
 
     private void updateList() {
         String sql = "SELECT timetable.TimetableID, timetable.StartDay FROM timetable, user "
@@ -440,6 +463,11 @@ public class Timetable extends javax.swing.JFrame {
 
     private String sqlDateToText(String sqlDate) {
         return (sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4));
+    }
+
+    public void reloadTimetable() {
+        int timetableID = this.timetableIDList.getDataAt(this.timetableList.getSelectedIndex());
+        loadTimetable(timetableID);
     }
 
     private void loadTimetable(int timetableID) {
@@ -534,11 +562,23 @@ public class Timetable extends javax.swing.JFrame {
     }//GEN-LAST:event_timetableListValueChanged
 
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
-        
+        int selectedColumn = this.timetableTable.getSelectedColumn();
+        if (selectedColumn > 0) {
+            int selectedRow = this.timetableTable.getSelectedRow();
+            Object temp = this.timetableTable.getValueAt(selectedRow, selectedColumn);
+            String previousContents = "";
+            if (temp != null) {
+                previousContents = temp.toString();
+            }
+            int timetableID = this.timetableIDList.getDataAt(this.timetableList.getSelectedIndex());
+
+            (new ChangeSlot(this, previousContents, selectedColumn, selectedRow, timetableID)).setVisible(true);
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_changeButtonActionPerformed
 
     private void completeHoursButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeHoursButtonActionPerformed
-
+        
     }//GEN-LAST:event_completeHoursButtonActionPerformed
 
     /**

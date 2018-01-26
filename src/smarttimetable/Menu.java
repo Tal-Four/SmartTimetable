@@ -212,7 +212,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void generateTimetableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTimetableButtonActionPerformed
         //Creates a timetable for the user
-        new SleepInput(this).setVisible(true);
+        new WorkHoursInput(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_generateTimetableButtonActionPerformed
 

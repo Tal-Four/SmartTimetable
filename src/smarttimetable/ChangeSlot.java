@@ -2,7 +2,9 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.JFrame;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -10,15 +12,28 @@ import javax.swing.JFrame;
  */
 public class ChangeSlot extends javax.swing.JFrame {
 
-    private JFrame timetable;
+    private final Timetable timetable;
+    private final LinkedList idList = new LinkedList();
+    private final int day, time, timetableID;
+    private final String previousContents;
 
     /**
      * Creates new form ChangeSlot
+     *
+     * @param timetable
+     * @param previousContents
+     * @param day
+     * @param time
+     * @param timetableID
      */
-    public ChangeSlot(JFrame timetable) {
+    public ChangeSlot(Timetable timetable, String previousContents, int day, int time, int timetableID) {
         initComponents();
 
+        this.day = day;
+        this.time = time;
         this.timetable = timetable;
+        this.timetableID = timetableID;
+        this.previousContents = previousContents;
 
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -26,6 +41,15 @@ public class ChangeSlot extends javax.swing.JFrame {
 
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
+
+        if (previousContents.equals("")) {
+            this.slotContainsResultText.setText("Empty");
+        } else {
+            this.slotContainsResultText.setText(previousContents);
+        }
+        this.taskButton.setSelected(true);
+        this.taskButtonPressed();
+        this.setAlwaysOnTop(true);
     }
 
     /**
@@ -38,27 +62,28 @@ public class ChangeSlot extends javax.swing.JFrame {
     private void initComponents() {
 
         eventOrTaskGroup = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        changeSlotPanel = new javax.swing.JPanel();
+        slotContainsText = new javax.swing.JLabel();
+        slotContainsResultText = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
         userLabel = new javax.swing.JLabel();
-        saveButton = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        changeButton = new javax.swing.JButton();
+        changeToPanel = new javax.swing.JPanel();
+        taskEventListScrollPanel = new javax.swing.JScrollPane();
+        taskEventList = new javax.swing.JList<>();
         taskButton = new javax.swing.JRadioButton();
         eventButton = new javax.swing.JRadioButton();
+        emptyRadioButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Change Slot", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
+        changeSlotPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Change Slot", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
-        jLabel1.setText("Slot currently contains:");
-
-        jLabel2.setText("[SLOT CONTENTS]");
+        slotContainsText.setText("Slot currently contains:");
 
         backButton.setText("Back");
+        backButton.setMaximumSize(new java.awt.Dimension(77, 26));
+        backButton.setMinimumSize(new java.awt.Dimension(77, 26));
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -67,22 +92,17 @@ public class ChangeSlot extends javax.swing.JFrame {
 
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        saveButton.setText("Save");
-        saveButton.setToolTipText("");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
+        changeButton.setText("Change");
+        changeButton.setToolTipText("");
+        changeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
+                changeButtonActionPerformed(evt);
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Change to:"));
+        changeToPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Change to:"));
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        taskEventListScrollPanel.setViewportView(taskEventList);
 
         eventOrTaskGroup.add(taskButton);
         taskButton.setText("Task");
@@ -100,66 +120,76 @@ public class ChangeSlot extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        eventOrTaskGroup.add(emptyRadioButton);
+        emptyRadioButton.setText("Empty");
+        emptyRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emptyRadioButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout changeToPanelLayout = new javax.swing.GroupLayout(changeToPanel);
+        changeToPanel.setLayout(changeToPanelLayout);
+        changeToPanelLayout.setHorizontalGroup(
+            changeToPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(changeToPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(changeToPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(taskEventListScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(changeToPanelLayout.createSequentialGroup()
                         .addComponent(taskButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(eventButton)))
+                        .addComponent(eventButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(emptyRadioButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        changeToPanelLayout.setVerticalGroup(
+            changeToPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changeToPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(changeToPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(taskButton)
-                    .addComponent(eventButton))
+                    .addComponent(eventButton)
+                    .addComponent(emptyRadioButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                .addComponent(taskEventListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout changeSlotPanelLayout = new javax.swing.GroupLayout(changeSlotPanel);
+        changeSlotPanel.setLayout(changeSlotPanelLayout);
+        changeSlotPanelLayout.setHorizontalGroup(
+            changeSlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(changeSlotPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(backButton)
+                .addGroup(changeSlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(changeToPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changeSlotPanelLayout.createSequentialGroup()
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(changeButton))
+                    .addGroup(changeSlotPanelLayout.createSequentialGroup()
+                        .addComponent(slotContainsText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addGap(0, 39, Short.MAX_VALUE)))
+                        .addComponent(slotContainsResultText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+        changeSlotPanelLayout.setVerticalGroup(
+            changeSlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(changeSlotPanelLayout.createSequentialGroup()
+                .addGroup(changeSlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(slotContainsText)
+                    .addComponent(slotContainsResultText, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(changeToPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(backButton)
-                        .addComponent(saveButton))
+                .addGroup(changeSlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changeSlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(changeButton))
                     .addComponent(userLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -170,14 +200,14 @@ public class ChangeSlot extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(changeSlotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(changeSlotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -189,17 +219,97 @@ public class ChangeSlot extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:        
-    }//GEN-LAST:event_saveButtonActionPerformed
+    private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
+        if (!this.taskEventList.isSelectionEmpty()) {
+
+            boolean event = this.eventButton.isSelected();
+            int id = this.idList.getDataAt(this.taskEventList.getSelectedIndex());
+
+            String sql;
+
+            if (!this.previousContents.equals("")) {
+                if (event) {
+                    sql = "UPDATE (timetable INNER JOIN timetableslot ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = timetableslot.UserID)) INNER JOIN user ON timetable.UserID = user.UserID "
+                            + "SET timetableslot.EventID = " + id + ", timetableslot.TaskID = Null\n"
+                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)= " + this.timetableID + ") AND ((timetableslot.Day)=" + this.day + ") AND ((timetableslot.Time)=" + this.time + "));";
+                } else {
+                    sql = "UPDATE (timetable INNER JOIN timetableslot ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = timetableslot.UserID)) INNER JOIN user ON timetable.UserID = user.UserID "
+                            + "SET timetableslot.EventID = Null, timetableslot.TaskID = " + id + "\n"
+                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)= " + this.timetableID + ") AND ((timetableslot.Day)=" + this.day + ") AND ((timetableslot.Time)=" + this.time + "));";
+                }
+            } else {
+                if (event) {
+                    sql = "INSERT INTO timetableslot (UserID, EventID, TimetableID, Day, Time)\n"
+                            + "VALUES(" + User.getUserID() + ", " + id + ", " + this.timetableID + ", " + this.day + ", " + this.time + ");";
+                } else {
+                    sql = "INSERT INTO timetableslot (UserID, TaskID, TimetableID, Day, Time)\n"
+                            + "VALUES(" + User.getUserID() + ", " + id + ", " + this.timetableID + ", " + this.day + ", " + this.time + ");";
+                }
+            }
+
+            DatabaseHandle.update(sql);
+
+            this.timetable.setVisible(true);
+            this.timetable.reloadTimetable();
+            this.dispose();
+
+        } else if (this.emptyRadioButton.isSelected()) {
+
+            String sql = "DELETE FROM timetableSlot\n"
+                    + "WHERE (((UserID)=" + User.getUserID() + ") AND ((TimetableID)=" + this.timetableID + ") AND ((Day)=" + this.day + ") AND ((Time)= " + this.time + "));";
+
+            DatabaseHandle.update(sql);
+
+            this.timetable.setVisible(true);
+            this.timetable.reloadTimetable();
+            this.dispose();
+
+        } else {
+            new Popup("Please select an item from the list.").setVisible(true);
+        }
+    }//GEN-LAST:event_changeButtonActionPerformed
 
     private void taskButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_taskButtonActionPerformed
-        // TODO add your handling code here:
+        taskButtonPressed();
     }//GEN-LAST:event_taskButtonActionPerformed
 
+    private void taskButtonPressed() {
+        String sql = "SELECT task.TaskID AS ID, task.Name\n"
+                + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False));";
+
+        updateList(sql);
+    }
+
+    private void updateList(String sql) {
+        ResultSet rs = DatabaseHandle.query(sql);
+
+        DefaultListModel dlm = new DefaultListModel();
+
+        idList.clear();
+        try {
+            while (rs.next()) {
+                dlm.addElement(rs.getString("Name"));
+                idList.addNode(rs.getInt("ID"));
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        this.taskEventList.setModel(dlm);
+    }
+
     private void eventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventButtonActionPerformed
-        // TODO add your handling code here:
+        String sql = "SELECT event.EventID AS ID, event.EventName AS Name\n"
+                + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.Hidden)=False));";
+
+        updateList(sql);
     }//GEN-LAST:event_eventButtonActionPerformed
+
+    private void emptyRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emptyRadioButtonActionPerformed
+        this.taskEventList.setModel(new DefaultListModel());
+    }//GEN-LAST:event_emptyRadioButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,39 +325,48 @@ public class ChangeSlot extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangeSlot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeSlot.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangeSlot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeSlot.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangeSlot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeSlot.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangeSlot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangeSlot.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ChangeSlot(new JFrame()).setVisible(true);
+                new ChangeSlot(new Timetable(), "", 0, 0, 0).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
+    private javax.swing.JButton changeButton;
+    private javax.swing.JPanel changeSlotPanel;
+    private javax.swing.JPanel changeToPanel;
+    private javax.swing.JRadioButton emptyRadioButton;
     private javax.swing.JRadioButton eventButton;
     private javax.swing.ButtonGroup eventOrTaskGroup;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton saveButton;
+    private javax.swing.JLabel slotContainsResultText;
+    private javax.swing.JLabel slotContainsText;
     private javax.swing.JRadioButton taskButton;
+    private javax.swing.JList<String> taskEventList;
+    private javax.swing.JScrollPane taskEventListScrollPanel;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
 }

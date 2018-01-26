@@ -8,17 +8,18 @@ import javax.swing.JFrame;
  *
  * @author crazy
  */
-public class SleepInput extends javax.swing.JFrame {
+public class WorkHoursInput extends javax.swing.JFrame {
 
-    private JFrame menu;
-    
+    private final JFrame menu;
+
     /**
      * Creates new form SleepInput
      *
-     */    
-    public SleepInput(JFrame menu) {
+     * @param menu
+     */
+    public WorkHoursInput(JFrame menu) {
         initComponents();
-        
+
         this.menu = menu;
 
         //Centers the frame to the centre of the monitor
@@ -152,9 +153,8 @@ public class SleepInput extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(workTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(workTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(continueButton))))
+                    .addComponent(continueButton)
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -183,18 +183,23 @@ public class SleepInput extends javax.swing.JFrame {
      * generates a new timetable
      */
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
-        int sleepEnd = (Integer.parseInt((String) this.fromHourDropdown.getSelectedItem())) * 2;
+        int workStart = (Integer.parseInt((String) this.fromHourDropdown.getSelectedItem())) * 2;
         if (this.fromMinuteDropdown.getSelectedItem().equals("30")) {
-            sleepEnd++;
+            workStart++;
         }
-        int sleepStart = (Integer.parseInt((String) this.untilHourDropdown.getSelectedItem())) * 2;
+        int workEnd = (Integer.parseInt((String) this.untilHourDropdown.getSelectedItem())) * 2;
         if (this.untilMinuteDropdown.getSelectedItem().equals("30")) {
-            sleepStart++;
+            workEnd++;
         }
 
-        if (sleepEnd < sleepStart) {
+        if (workStart < workEnd) {
             this.setVisible(false);
-            new GenerateTimetable(sleepStart, sleepEnd, new LoadingScreen(), menu);
+            LoadingScreen loadingScreen = new LoadingScreen();
+            loadingScreen.setVisible(true);
+            new GenerateTimetable(workEnd, workStart);
+            loadingScreen.dispose();
+            menu.setVisible(true);
+            this.dispose();
         } else {
             new Popup("Error: The start time is equal to or after the end time.").setVisible(true);
         }
@@ -202,6 +207,7 @@ public class SleepInput extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
+        menu.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -222,21 +228,25 @@ public class SleepInput extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SleepInput.class
+            java.util.logging.Logger.getLogger(WorkHoursInput.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SleepInput.class
+            java.util.logging.Logger.getLogger(WorkHoursInput.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SleepInput.class
+            java.util.logging.Logger.getLogger(WorkHoursInput.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SleepInput.class
+            java.util.logging.Logger.getLogger(WorkHoursInput.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -245,7 +255,7 @@ public class SleepInput extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SleepInput(new JFrame()).setVisible(true);
+                new WorkHoursInput(new JFrame()).setVisible(true);
             }
         });
     }

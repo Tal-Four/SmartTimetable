@@ -11,7 +11,6 @@ public class Popup extends javax.swing.JFrame {
 
     /**
      * Creates new form Popup
-     *
      * @param message
      */
     public Popup(String message) {

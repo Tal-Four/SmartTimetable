@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
-import javax.swing.JFrame;
 
 /**
  *
@@ -16,7 +15,7 @@ import javax.swing.JFrame;
  */
 public class GenerateTimetable {
 
-    public GenerateTimetable(int workEnd, int workStart, JFrame loadingScreen, JFrame menu) {
+    public GenerateTimetable(int workEnd, int workStart) {
 
         if (checkTaskAssigningPossible(true, workEnd, workStart)) {
             boolean highPriority = !checkTaskAssigningPossible(false, workEnd, workStart);
@@ -89,8 +88,6 @@ public class GenerateTimetable {
                 timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
             }
         }
-        loadingScreen.dispose();
-        menu.setVisible(true);
     }
 
     private void archivePreviousTables() {
@@ -158,6 +155,17 @@ public class GenerateTimetable {
                 }
             }
         }
+        
+        for (int c = 0; c < 48; c++) {
+            for (int c2 = 0; c2 < 7; c2++) {
+                if (slotsFilled[c2][c]) {
+                    System.out.print("1");
+                } else {
+                    System.out.print("0");
+                }
+            }
+            System.out.println();
+        }
 
         for (int dayCounter = weekStartDay; dayCounter < 7; dayCounter++) {
             for (int timeCounter = sleepEnd; timeCounter < sleepStart; timeCounter++) {
@@ -197,7 +205,7 @@ public class GenerateTimetable {
                 int freeCounter = 0;
                 boolean assigned = false;
 
-                while (dayCounter < 7 && dayCounter < difference && !assigned) {
+                while (dayCounter < 7 && dayCounter - weekStartDay < difference && !assigned) {
 
                     int slotCounter = sleepEnd;
                     if (firstWeek && dayCounter == weekStartDay) {
@@ -381,7 +389,7 @@ public class GenerateTimetable {
         String sql;
         GregorianCalendar calendar = new GregorianCalendar();
         String todayDate = calendar.get(GregorianCalendar.YEAR) + "-"
-                + calendar.get(GregorianCalendar.MONTH) + "-"
+                + (calendar.get(GregorianCalendar.MONTH) + 1) + "-"
                 + calendar.get(GregorianCalendar.DAY_OF_MONTH);
         if (highPriority) {
             //Only checks to see whether the tasks flagged as high priority can be plotted successfully.
