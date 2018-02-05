@@ -71,7 +71,7 @@ public class Task {
         this.timeSet = timeSet;
         this.timeModified = calcModifiedTime();
 
-        String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + " WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
+        String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + " WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " edited.").setVisible(true);
     }
@@ -128,6 +128,18 @@ public class Task {
         String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.SlotsAssigned = " + this.slotsAssigned + "\n"
                 + "WHERE (((task.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
 
+        DatabaseHandle.update(sql);
+    }
+
+    public void complete() {
+        String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.Hidden = 1\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
+        DatabaseHandle.update(sql);
+
+        this.category.taskComplete(this);
+
+        sql = "DELETE FROM timetableslot INNER JOIN (task INNER JOIN user ON task.UserID = user.UserID) ON (task.TaskID = timetableslot.TaskID) AND (timetableslot.UserID = task.UserID)\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
         DatabaseHandle.update(sql);
     }
 
