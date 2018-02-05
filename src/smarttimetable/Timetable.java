@@ -439,20 +439,20 @@ public class Timetable extends javax.swing.JFrame {
                 dlm.addElement(sqlDateToText(date));
             }
             this.timetableList.setModel(dlm);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e);
         }
     }
 
     private String dateToSQLFormat(Date date) {
         String year = (date.getYear() + 1900) + "";
-        String month = "";
+        String month;
         if ((date.getMonth() + 1) > 9) {
             month = (date.getMonth() + 1) + "";
         } else {
             month = "0" + (date.getMonth() + 1) + "";
         }
-        String day = "";
+        String day;
         if (date.getDate() > 9) {
             day = date.getDate() + "";
         } else {
@@ -485,7 +485,7 @@ public class Timetable extends javax.swing.JFrame {
             while (rs.next()) {
                 timetableTable.getModel().setValueAt(rs.getString("event.EventName"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e);
         }
 
@@ -499,7 +499,7 @@ public class Timetable extends javax.swing.JFrame {
             while (rs.next()) {
                 timetableTable.getModel().setValueAt(rs.getString("task.Name"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e);
         }
 
@@ -572,13 +572,16 @@ public class Timetable extends javax.swing.JFrame {
             }
             int timetableID = this.timetableIDList.getDataAt(this.timetableList.getSelectedIndex());
 
-            (new ChangeSlot(this, previousContents, selectedColumn, selectedRow, timetableID)).setVisible(true);
+            new ChangeSlot(this, previousContents, selectedColumn, selectedRow, timetableID).setVisible(true);
             this.setVisible(false);
         }
     }//GEN-LAST:event_changeButtonActionPerformed
 
     private void completeHoursButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeHoursButtonActionPerformed
-        
+        int taskID = (int) this.getCellIDAndCheckEvent()[0];
+        Task task = new Task(taskID);
+        new CompleteHours(this, task).setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_completeHoursButtonActionPerformed
 
     /**
