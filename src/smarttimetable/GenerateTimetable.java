@@ -80,7 +80,7 @@ public class GenerateTimetable {
 
             boolean firstWeek = true;
             GregorianCalendar calendar = new GregorianCalendar();
-            int timetableID = timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+            int timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
 
             while (!plotTasks(taskArray, timetableID, workEnd, workStart, firstWeek)) {
                 firstWeek = false;
@@ -155,18 +155,7 @@ public class GenerateTimetable {
                 }
             }
         }
-        
-        for (int c = 0; c < 48; c++) {
-            for (int c2 = 0; c2 < 7; c2++) {
-                if (slotsFilled[c2][c]) {
-                    System.out.print("1");
-                } else {
-                    System.out.print("0");
-                }
-            }
-            System.out.println();
-        }
-
+                
         for (int dayCounter = weekStartDay; dayCounter < 7; dayCounter++) {
             for (int timeCounter = sleepEnd; timeCounter < sleepStart; timeCounter++) {
                 if (!slotsFilled[dayCounter][timeCounter] && (currentTime < timeCounter || dayCounter > weekStartDay || !firstWeek)) {
@@ -571,7 +560,7 @@ public class GenerateTimetable {
     }
 
     private int getDayDifference(Date startDate, String endDate) {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");;
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         if (endDate.charAt(4) == '-') {
             endDate = endDate.substring(8, 10) + "/" + endDate.substring(5, 7) + "/" + endDate.substring(0, 4);
         }
