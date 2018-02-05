@@ -57,9 +57,11 @@ public class Category {
     public void taskComplete(Task task) {
         this.taskCount++;
         calculateModifier(task);
-        String sql = "UPDATE smarttimetabledb.category SET TasksCompleted = " + taskCount + ", Modifier = " + this.modifier + " WHERE CategoryID = " + categoryID + " AND UserID = " + User.getUserID();
+        String sql = "UPDATE smarttimetabledb.category "
+                + "SET TasksCompleted = " + taskCount + ", Modifier = " + this.modifier + " "
+                + "WHERE CategoryID = " + categoryID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
-        task.deleteTask();
+        task.complete();
     }
 
     public void calculateModifier(Task task) {
