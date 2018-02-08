@@ -1,19 +1,80 @@
 package smarttimetable;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class User {
 
     private static int userID;
-    private static String username, password;
+    private static String username, password, question, answer;
 
-    //Constructer never used as static doesn't need to be initialisd
-    private User() {
-    }
-
-    //Changes the variables to the variables provided
-    public static void newUser(int userID, String username, String password) {
-        User.userID = userID;
+    //Creates a new User record and sets the variables to the variables provided
+    public static void createNewUser(String username, String password, String question, String answer) {
         User.username = username;
         User.password = password;
+        User.question = question;
+        User.answer = answer;
+
+        //Looping through existing IDs until a ID without an record is found
+        String sql = "SELECT * FROM user ORDER BY UserID";
+        ResultSet rs = DatabaseHandle.query(sql);
+        int userID = 0;
+        try {
+            do {
+                userID++;
+            } while (rs.next() && rs.getInt("UserID") == userID);
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        User.userID = userID;
+
+        if (User.password == null) {
+            sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`, `Question`, `Answer`) "
+                    + "VALUES(" + User.userID + ", '" + User.username + "', " + User.question + "', '" + User.answer + "')";
+        } else {
+            sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`,`Password`, `Question`, `Answer`) "
+                    + "VALUES(" + User.userID + ", '" + User.username + "', '" + User.password + "', '" + User.question + "', '" + User.answer + "')";
+        }
+
+        //Adding record to database
+        DatabaseHandle.update(sql);
+    }
+
+    //Loads that user's details based on the username
+    public static void loadUser(String username) {
+        String sql = "SELECT * FROM user WHERE Usernanme = " + username;
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            if (rs.next()) {
+                User.answer = rs.getString("Answer");
+                User.question = rs.getString("Question");
+                User.userID = rs.getInt("UserID");
+                User.password = rs.getString("Password");
+            } else {
+                new Popup("User not found.").setVisible(true);
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
+
+    //Loads that user's details based on the userID
+    public static void loadUser(int userID) {
+        String sql = "SELECT * FROM user WHERE UserID = " + userID;
+        ResultSet rs = DatabaseHandle.query(sql);
+        try {
+            if (rs.next()) {
+                User.answer = rs.getString("Answer");
+                User.question = rs.getString("Question");
+                User.username = rs.getString("Username");
+                User.password = rs.getString("Password");
+            } else {
+                new Popup("User not found.").setVisible(true);
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
     }
 
     //Changes the variables to null
@@ -21,6 +82,8 @@ public class User {
         User.userID = 0;
         User.username = null;
         User.password = null;
+        User.answer = null;
+        User.question = null;
     }
 
     //<editor-fold defaultstate="collapsed" desc=" Getters & Setters ">
