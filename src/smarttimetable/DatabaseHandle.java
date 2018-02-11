@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 /**
  *
  * @author Adam-PC
@@ -19,10 +17,6 @@ public class DatabaseHandle {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb";
-
-    //Constructor
-    private DatabaseHandle() {
-    }
 
     //Connects the program to the database
     public static void connect() {
