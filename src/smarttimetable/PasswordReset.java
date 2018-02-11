@@ -2,8 +2,6 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  *
@@ -150,7 +148,7 @@ public class PasswordReset extends javax.swing.JFrame {
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         if (answerField.getText().equals(User.getAnswer())) {
-            new newPassword().setVisible(true);
+            new NewPassword().setVisible(true);
             this.dispose();
         } else {
             new Popup("Incorrect answer.").setVisible(true);
