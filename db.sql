@@ -10,6 +10,11 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- Dumping database structure for smarttimetabledb
+CREATE DATABASE IF NOT EXISTS `smarttimetabledb` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `smarttimetabledb`;
+
+
 -- Dumping structure for table smarttimetabledb.category
 CREATE TABLE IF NOT EXISTS `category` (
   `CategoryID` smallint(6) unsigned NOT NULL,
@@ -55,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `event` (
   CONSTRAINT `FK_event_user` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table smarttimetabledb.event: ~7 rows (approximately)
+-- Dumping data for table smarttimetabledb.event: ~8 rows (approximately)
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
 REPLACE INTO `event` (`UserID`, `EventID`, `EventName`, `Description`, `Date`, `Day`, `Colour`, `StartTime`, `Hidden`, `EndTime`) VALUES
 	(2, 1, 's', '', NULL, 1, -16777216, 4, b'0', 5.5),
@@ -110,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `timetable` (
   CONSTRAINT `FK_timetable_user` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table smarttimetabledb.timetable: ~0 rows (approximately)
+-- Dumping data for table smarttimetabledb.timetable: ~1 rows (approximately)
 /*!40000 ALTER TABLE `timetable` DISABLE KEYS */;
 REPLACE INTO `timetable` (`UserID`, `TimetableID`, `Hidden`, `StartDay`) VALUES
 	(2, 1, b'0', '2018-01-29');
