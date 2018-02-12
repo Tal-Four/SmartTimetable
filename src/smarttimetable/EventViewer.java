@@ -47,8 +47,8 @@ public class EventViewer extends javax.swing.JFrame {
             case ("Name"):
                 selectedSort = "EventName";
                 break;
-            case ("Day"):
-                selectedSort = "Day";
+            case ("Date/Day"):
+                selectedSort = "Date, event.Day";
                 break;
             case ("Start time"):
                 selectedSort = "StartTime";
@@ -116,10 +116,13 @@ public class EventViewer extends javax.swing.JFrame {
         descriptionBox = new javax.swing.JTextArea();
         endTimeLabel = new javax.swing.JLabel();
         startTimeLabel = new javax.swing.JLabel();
-        dayLabel = new javax.swing.JLabel();
+        dayDateLabel = new javax.swing.JLabel();
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         colourPreview = new javax.swing.JPanel();
+        dayDateContentsLabel = new javax.swing.JLabel();
+        endTimeContentsLabel = new javax.swing.JLabel();
+        startTimeContentsLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -145,7 +148,7 @@ public class EventViewer extends javax.swing.JFrame {
 
         sortLabel.setText("Sort By:");
 
-        sortDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Day", "Start time", "End time" }));
+        sortDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Date/Day", "Start time", "End time" }));
         sortDropdown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sortDropdownActionPerformed(evt);
@@ -202,11 +205,13 @@ public class EventViewer extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        endTimeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         endTimeLabel.setText("End Time:");
 
         startTimeLabel.setText("Start Time:");
 
-        dayLabel.setText("Day:");
+        dayDateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        dayDateLabel.setText("Day:");
 
         editButton.setText("Edit Selected");
         editButton.setToolTipText("Edit the selected task");
@@ -259,17 +264,18 @@ public class EventViewer extends javax.swing.JFrame {
                         .addGap(0, 2, Short.MAX_VALUE)
                         .addComponent(eventPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(dayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(49, 49, 49))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(endTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(startTimeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(38, 38, 38)))
+                                    .addComponent(startTimeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(dayDateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(endTimeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(dayDateContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(startTimeContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(endTimeContentsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(colourPreview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(descriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -297,11 +303,17 @@ public class EventViewer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(dayLabel)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dayDateLabel)
+                                    .addComponent(dayDateContentsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(startTimeLabel)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(startTimeLabel)
+                                    .addComponent(startTimeContentsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(endTimeLabel))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(endTimeLabel)
+                                    .addComponent(endTimeContentsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(colourPreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -351,56 +363,31 @@ public class EventViewer extends javax.swing.JFrame {
     private void eventListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventListValueChanged
         Event selectedEvent = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
 
-        descriptionBox.setText(selectedEvent.getDescription());
-        dayLabel.setText("Day: " + selectedEvent.dayIntToString(selectedEvent.getDay()));
-        startTimeLabel.setText("Start Time: " + selectedEvent.timeToString(0)[0] + ":" + selectedEvent.timeToString(0)[1]);
-        endTimeLabel.setText("End Time: " + selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
-        colourPreview.setBackground(new Color(selectedEvent.getColourCode()));    }//GEN-LAST:event_eventListValueChanged
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EventViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EventViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EventViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EventViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        if (selectedEvent.getDate() == null) {
+            dayDateLabel.setText("Day:");
+            dayDateContentsLabel.setText(selectedEvent.dayIntToString(selectedEvent.getDay()));
+        } else {
+            dayDateLabel.setText("Date:");
+            dayDateContentsLabel.setText(selectedEvent.sqlDateToTextFormat(selectedEvent.getDate()));
         }
-        //</editor-fold>
-        //</editor-fold>
+        descriptionBox.setText(selectedEvent.getDescription());
+        startTimeContentsLabel.setText(selectedEvent.timeToString(0)[0] + ":" + selectedEvent.timeToString(0)[1]);
+        endTimeContentsLabel.setText(selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
+        colourPreview.setBackground(new Color(selectedEvent.getColourCode()));
+    }//GEN-LAST:event_eventListValueChanged
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EventViewer().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JPanel colourPreview;
-    private javax.swing.JLabel dayLabel;
+    private javax.swing.JLabel dayDateContentsLabel;
+    private javax.swing.JLabel dayDateLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextArea descriptionBox;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JButton editButton;
+    private javax.swing.JLabel endTimeContentsLabel;
     private javax.swing.JLabel endTimeLabel;
     private javax.swing.JList<String> eventList;
     private javax.swing.JPanel eventPanel;
@@ -410,6 +397,7 @@ public class EventViewer extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> sortDropdown;
     private javax.swing.JLabel sortLabel;
+    private javax.swing.JLabel startTimeContentsLabel;
     private javax.swing.JLabel startTimeLabel;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables

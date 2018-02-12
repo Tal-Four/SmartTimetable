@@ -18,7 +18,7 @@ public class Event {
     public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7, START = 0, END = 1;
 
     public Event() {
-        
+
     }
 
     //Constructor to retrieve event details from the database given an ID
@@ -59,7 +59,7 @@ public class Event {
 
         new Popup("Event " + this.eventName + " created.").setVisible(true);
     }
-    
+
     //Creates a one-off event and inserts into a database given variables
     public Event(String eventName, String description, int colour, String date, double endTime, double startTime) {
         this.eventName = eventName;
@@ -85,19 +85,21 @@ public class Event {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.date = null;
 
         String sql = "UPDATE smarttimetabledb.event SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = " + this.day + ", Date = NULL , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + " WHERE EventID = " + this.eventID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
 
         new Popup("Event " + this.eventName + " edited.").setVisible(true);
     }
-    
+
     //Updates a recurring existing record with new values
     public void editEvent(String eventName, String description, int colour, String date, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
         this.colourCode = colour;
         this.date = dateTextToSQLFormat(date);
+        this.day = 0;
         this.startTime = startTime;
         this.endTime = endTime;
 
@@ -187,7 +189,7 @@ public class Event {
         }
         return timeString;
     }
-    
+
     //Converting date object to SQL date format
     private String dateToSQLFormat(Date date) {
         return (date.getYear() + 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate();
@@ -239,6 +241,10 @@ public class Event {
         return endTime;
     }
 
+    public String getDate() {
+        return date;
+    }
+
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
@@ -265,6 +271,10 @@ public class Event {
 
     public void setEndTime(double endTime) {
         this.endTime = endTime;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }//</editor-fold>
 
 }

@@ -19,14 +19,16 @@ import javax.swing.JOptionPane;
  */
 public class TaskViewer extends javax.swing.JFrame {
 
-    LinkedList taskIDList = new LinkedList();    
-    
+    LinkedList taskIDList = new LinkedList();
+
     /**
      * Creates new form TaskViewer
      */
     public TaskViewer() {
         initComponents();
-        
+
+        todoButton.setSelected(true);
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -40,9 +42,9 @@ public class TaskViewer extends javax.swing.JFrame {
         this.taskIDList.clear();
 
         String selectedSort = sortDropdown.getSelectedItem().toString();
-        String sql = null;
+        String sql;
+        Boolean archive = archivedButton.isSelected();
         if (!selectedSort.equals("Category")) {
-
             switch (selectedSort) {
                 case ("Name"):
                     selectedSort = "Name";
@@ -63,11 +65,18 @@ public class TaskViewer extends javax.swing.JFrame {
                     selectedSort = "Name";
                     break;
             }
-            sql = "SELECT TaskID FROM task, user WHERE user.UserID = task.UserID AND task.Hidden = 0 AND user.UserID = " + User.getUserID() + " ORDER BY " + selectedSort;
+
+            sql = "SELECT task.TaskID\n"
+                    + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
+                    + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=" + archive + "))\n"
+                    + "ORDER BY task." + selectedSort + " DESC;";
         } else {
-            sql = "SELECT TaskID FROM task, category, user WHERE user.UserID = task.UserID AND task.Hidden = 0 AND user.UserID = " + User.getUserID() + " AND category.UserID = task.UserID AND category.CategoryID = task.CategoryID ORDER BY category.Name";
+            sql = "SELECT task.TaskID\n"
+                    + "FROM task INNER JOIN (user INNER JOIN category ON user.UserID = category.UserID) ON (user.UserID = task.UserID) AND (task.CategoryID = category.CategoryID) AND (task.UserID = category.UserID)\n"
+                    + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=" + archive + "))\n"
+                    + "ORDER BY category.Name;";
         }
-        
+
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
@@ -77,28 +86,29 @@ public class TaskViewer extends javax.swing.JFrame {
             System.err.println(ex);
         }
     }
-    
+
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
-    private void setUpList() {
+    public void setUpList() {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
         for (int count = 0; count < this.taskIDList.Length(); count++) {
-            String sql = "SELECT Name FROM task, user WHERE task.UserID = user.UserID AND user.UserID = "
-                    + User.getUserID() + " AND TaskID = " + this.taskIDList.getDataAt(count);
+            String sql = "SELECT task.Name\n"
+                    + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
+                    + "WHERE (((task.TaskID)=" + this.taskIDList.getDataAt(count) + ") AND ((user.UserID)=" + User.getUserID() + "));";
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 while (rs.next()) {
                     dlm.addElement(rs.getString("Name"));
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.err.println(e);
             }
         }
 
         this.taskList.setModel(dlm);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,6 +118,7 @@ public class TaskViewer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        todoOrArchivedButtonGroup = new javax.swing.ButtonGroup();
         backButton = new javax.swing.JButton();
         userLabel = new javax.swing.JLabel();
         exitButton = new javax.swing.JButton();
@@ -118,6 +129,8 @@ public class TaskViewer extends javax.swing.JFrame {
         taskPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         taskList = new javax.swing.JList<>();
+        todoButton = new javax.swing.JRadioButton();
+        archivedButton = new javax.swing.JRadioButton();
         descriptionPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descriptionBox = new javax.swing.JTextArea();
@@ -178,20 +191,45 @@ public class TaskViewer extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(taskList);
 
+        todoOrArchivedButtonGroup.add(todoButton);
+        todoButton.setText("To-do");
+        todoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                todoButtonActionPerformed(evt);
+            }
+        });
+
+        todoOrArchivedButtonGroup.add(archivedButton);
+        archivedButton.setText("Archived");
+        archivedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                archivedButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout taskPanelLayout = new javax.swing.GroupLayout(taskPanel);
         taskPanel.setLayout(taskPanelLayout);
         taskPanelLayout.setHorizontalGroup(
             taskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, taskPanelLayout.createSequentialGroup()
+            .addGroup(taskPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                .addGroup(taskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(taskPanelLayout.createSequentialGroup()
+                        .addComponent(todoButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(archivedButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
                 .addContainerGap())
         );
         taskPanelLayout.setVerticalGroup(
             taskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, taskPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                .addGroup(taskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(todoButton)
+                    .addComponent(archivedButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -291,8 +329,8 @@ public class TaskViewer extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(completeButton)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(editButton)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -360,8 +398,13 @@ public class TaskViewer extends javax.swing.JFrame {
 
     //Edits the selected task
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        this.setVisible(false);
-        new TaskEditor(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()), this).setVisible(true);
+        if (this.todoButton.isSelected()) {
+            this.setVisible(false);
+            Task task = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
+            new TaskEditor(task, this).setVisible(true);
+        } else {
+            new Popup("Cannot edit an archived task.").setVisible(true);
+        }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void sortDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortDropdownActionPerformed
@@ -383,19 +426,31 @@ public class TaskViewer extends javax.swing.JFrame {
     //Removes the task from the database and recalculates the category modifier
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
         if (taskList.getSelectedValue() != null) {
-            int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to complete " + taskList.getSelectedValue(), "Complete task", JOptionPane.YES_NO_OPTION);
-            if (yesNo == 0) {
-                Task task = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
-                task.getCategory().taskComplete(task);
-                setUpList();
+            Task task = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
+            if (this.completeButton.getText().equals("To-Do")) {
+                task.markAsTodo();
+                this.setUpList();
+            } else {
+                Object[] options = {"Mark As Complete", "Complete Hours", "Cancel"};
+                int result = JOptionPane.showOptionDialog(this, "Mark as complete to finish the task.\nComplete hours to add how much time you've completed.", "Task Completion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+                if (result == 1) {
+                    new CompleteHours(this, task).setVisible(true);
+                    this.setVisible(false);
+                } else if (result == 0) {
+                    task.complete();
+                    setUpList();
+                }
             }
+        } else {
+            new Popup("Please select an item.").setVisible(true);
         }
     }//GEN-LAST:event_completeButtonActionPerformed
-   
+
     //Displays relevant details when the user selects a task
     private void taskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_taskListValueChanged
         Task selectedTask = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
-        
+
         //Setting the labels
         categoryLabel.setText("Category: " + selectedTask.getCategory().getName());
         dateDueLabel.setText("Date Due: " + selectedTask.sqlDateToTextFormat(selectedTask.getDateDue()));
@@ -405,43 +460,20 @@ public class TaskViewer extends javax.swing.JFrame {
         descriptionBox.setText(selectedTask.getDescription());
         colourPreview.setBackground(new Color(selectedTask.getColourCode()));    }//GEN-LAST:event_taskListValueChanged
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TaskViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TaskViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TaskViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TaskViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void todoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todoButtonActionPerformed
+        this.completeButton.setText("Complete");
+        setUpList();
+    }//GEN-LAST:event_todoButtonActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TaskViewer().setVisible(true);
-            }
-        });
-    }
+    private void archivedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivedButtonActionPerformed
+        this.completeButton.setText("To-Do");
+        setUpList();
+    }//GEN-LAST:event_archivedButtonActionPerformed
+
 
     //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton archivedButton;
     private javax.swing.JButton backButton;
     private javax.swing.JLabel categoryLabel;
     private javax.swing.JPanel colourPreview;
@@ -462,6 +494,8 @@ public class TaskViewer extends javax.swing.JFrame {
     private javax.swing.JPanel taskPanel;
     private javax.swing.JLabel timeAllottedLabel;
     private javax.swing.JLabel timeUsedLabel;
+    private javax.swing.JRadioButton todoButton;
+    private javax.swing.ButtonGroup todoOrArchivedButtonGroup;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
     //</editor-fold>

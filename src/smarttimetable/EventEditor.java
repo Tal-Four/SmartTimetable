@@ -49,6 +49,8 @@ public class EventEditor extends javax.swing.JFrame {
         initComponents();
 
         this.lastPanel = lastPanel;
+
+        this.dateField.setEnabled(false);
         
         //Centers the frame to the centre of the monitor 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -67,10 +69,10 @@ public class EventEditor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dayDateButtonGroup = new javax.swing.ButtonGroup();
         mainDetailsPanel = new javax.swing.JPanel();
         eventNameLabel = new javax.swing.JLabel();
         startTimeLabel = new javax.swing.JLabel();
-        dayLabel = new javax.swing.JLabel();
         colourLabel = new javax.swing.JLabel();
         endTimeLabel = new javax.swing.JLabel();
         colourChooser = new javax.swing.JColorChooser();
@@ -81,6 +83,10 @@ public class EventEditor extends javax.swing.JFrame {
         endHourDropdown = new javax.swing.JComboBox<>();
         endMinuteDropdown = new javax.swing.JComboBox<>();
         eventNameCharsUsed = new javax.swing.JLabel();
+        dayRadioButton = new javax.swing.JRadioButton();
+        dateRadioButton = new javax.swing.JRadioButton();
+        dateField = new javax.swing.JTextField();
+        dateFormatLabel = new javax.swing.JLabel();
         descriptionPanel = new javax.swing.JPanel();
         descriptionScrollPane = new javax.swing.JScrollPane();
         descriptionText = new javax.swing.JTextArea();
@@ -98,9 +104,6 @@ public class EventEditor extends javax.swing.JFrame {
 
         startTimeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         startTimeLabel.setText("Start Time:");
-
-        dayLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        dayLabel.setText("Day:");
 
         colourLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         colourLabel.setText("Colour:");
@@ -126,6 +129,25 @@ public class EventEditor extends javax.swing.JFrame {
 
         eventNameCharsUsed.setText("0 out of 20 characters used");
 
+        dayDateButtonGroup.add(dayRadioButton);
+        dayRadioButton.setSelected(true);
+        dayRadioButton.setText("Day:");
+        dayRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dayRadioButtonActionPerformed(evt);
+            }
+        });
+
+        dayDateButtonGroup.add(dateRadioButton);
+        dateRadioButton.setText("Date");
+        dateRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateRadioButtonActionPerformed(evt);
+            }
+        });
+
+        dateFormatLabel.setText("dd/mm/yyyy format");
+
         javax.swing.GroupLayout mainDetailsPanelLayout = new javax.swing.GroupLayout(mainDetailsPanel);
         mainDetailsPanel.setLayout(mainDetailsPanelLayout);
         mainDetailsPanelLayout.setHorizontalGroup(
@@ -135,11 +157,11 @@ public class EventEditor extends javax.swing.JFrame {
                 .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainDetailsPanelLayout.createSequentialGroup()
                         .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(dayLabel)
                             .addComponent(eventNameLabel)
                             .addComponent(startTimeLabel)
                             .addComponent(endTimeLabel)
-                            .addComponent(colourLabel))
+                            .addComponent(colourLabel)
+                            .addComponent(dayRadioButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainDetailsPanelLayout.createSequentialGroup()
@@ -154,7 +176,14 @@ public class EventEditor extends javax.swing.JFrame {
                                 .addComponent(eventNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(eventNameCharsUsed))
-                            .addComponent(daySelection, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(mainDetailsPanelLayout.createSequentialGroup()
+                                .addComponent(daySelection, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(dateRadioButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dateFormatLabel))))
                     .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -168,8 +197,11 @@ public class EventEditor extends javax.swing.JFrame {
                     .addComponent(eventNameCharsUsed))
                 .addGap(18, 18, 18)
                 .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dayLabel)
-                    .addComponent(daySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(daySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dayRadioButton)
+                    .addComponent(dateRadioButton)
+                    .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateFormatLabel))
                 .addGap(18, 18, 18)
                 .addGroup(mainDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(startTimeLabel)
@@ -271,24 +303,35 @@ public class EventEditor extends javax.swing.JFrame {
         //Checking to see if the name is valid
         if (eventNameField.getText().equals("") || eventNameField.getText().length() > 20) {
             new Popup("Name over 20 characters or blank").setVisible(true);
+        } else if (this.dateRadioButton.isSelected() && !(dateField.getText().length() == 10 && dateField.getText().charAt(2) == '/' && dateField.getText().charAt(5) == '/')) {
+            new Popup("Invalid date format").setVisible(true);
         } else {
             Event event = new Event();
 
             //Assigning the value of day based on the dropdown
             int day = event.dayStringToInt(daySelection.getSelectedItem().toString());
-
+            String date = dateField.getText();
             //Changing the start and end times to the needed format based off the dropdowns
             double endTime, startTime;
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
+           
 
             if (edit) {
                 //Edits an existing record
                 event = new Event(this.oldEventID);
-                event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
+                if (this.dateRadioButton.isSelected()) {
+                    event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), date, endTime, startTime);
+                } else {
+                    event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
+                }
             } else {
                 //Entering the event into the database
-                event = new Event(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
+                if (this.dateRadioButton.isSelected()) {
+                    new Event(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), date, endTime, startTime);
+                } else {
+                    new Event(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
+                }
             }
 
             //Returning to previous screen
@@ -309,8 +352,8 @@ public class EventEditor extends javax.swing.JFrame {
         //Attempts to parse the String to an int and then divides it by 60
         try {
             numberDouble = Double.parseDouble(numberString) / 60;
-        } catch (Exception ex) {
-            System.err.println(ex);
+        } catch (NumberFormatException e) {
+            System.err.println(e);
         }
         return numberDouble;
     }
@@ -331,48 +374,26 @@ public class EventEditor extends javax.swing.JFrame {
         eventNameCharsUsed.setText(length + " out of 20 characters used");
     }//GEN-LAST:event_eventNameFieldKeyReleased
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EventEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EventEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EventEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EventEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void dayRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayRadioButtonActionPerformed
+        this.dateField.setEnabled(false);
+        this.daySelection.setEnabled(true);
+    }//GEN-LAST:event_dayRadioButtonActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EventEditor(null).setVisible(true);
-            }
-        });
-    }
+    private void dateRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateRadioButtonActionPerformed
+        this.daySelection.setEnabled(false);
+        this.dateField.setEnabled(true);
+    }//GEN-LAST:event_dateRadioButtonActionPerformed
 
     //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JColorChooser colourChooser;
     private javax.swing.JLabel colourLabel;
-    private javax.swing.JLabel dayLabel;
+    private javax.swing.JTextField dateField;
+    private javax.swing.JLabel dateFormatLabel;
+    private javax.swing.JRadioButton dateRadioButton;
+    private javax.swing.ButtonGroup dayDateButtonGroup;
+    private javax.swing.JRadioButton dayRadioButton;
     private javax.swing.JComboBox<String> daySelection;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JScrollPane descriptionScrollPane;

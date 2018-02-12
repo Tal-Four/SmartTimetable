@@ -61,9 +61,8 @@ public class Task {
     }
 
     //Method when called edits a task already in the database
-    public void editTask(String name, String description, int categoryID, String dateDueText, int colourCode, double timeSet, int taskID) {
+    public void editTask(String name, String description, int categoryID, String dateDueText, int colourCode, double timeSet) {
         this.category = new Category(categoryID);
-        this.taskID = taskID;
         this.name = name;
         this.description = description;
         this.dateDue = dateTextToSQLFormat(dateDueText);
@@ -71,7 +70,7 @@ public class Task {
         this.timeSet = timeSet;
         this.timeModified = calcModifiedTime();
 
-        String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + " WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
+        String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + " WHERE UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " edited.").setVisible(true);
     }
@@ -100,7 +99,7 @@ public class Task {
 
     //Deletes this task from the DB
     public void deleteTask() {
-        String sql = "DELETE FROM smarttimetabledb.`task` WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
+        String sql = "DELETE FROM timetableslot, task WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
         DatabaseHandle.update(sql);
     }
 
@@ -132,15 +131,22 @@ public class Task {
     }
 
     public void complete() {
-        String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.Hidden = 1\n"
+        String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.Hidden = True\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
         DatabaseHandle.update(sql);
 
         this.category.taskComplete(this);
 
-        sql = "DELETE FROM timetableslot INNER JOIN (task INNER JOIN user ON task.UserID = user.UserID) ON (task.TaskID = timetableslot.TaskID) AND (timetableslot.UserID = task.UserID)\n"
+        sql = "DELETE FROM timetableslot WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
+        DatabaseHandle.update(sql);
+    }
+
+    public void markAsTodo() {
+        String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.Hidden = False\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
         DatabaseHandle.update(sql);
+        
+        this.category.taskTodo(this);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 
@@ -231,4 +237,5 @@ public class Task {
     public int getSlotsAssigned() {
         return slotsAssigned;
     }// </editor-fold>
+
 }

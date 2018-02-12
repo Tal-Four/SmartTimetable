@@ -58,13 +58,24 @@ public class Category {
         this.taskCount++;
         calculateModifier(task);
         String sql = "UPDATE smarttimetabledb.category "
-                + "SET TasksCompleted = " + taskCount + ", Modifier = " + this.modifier + " "
-                + "WHERE CategoryID = " + categoryID + " AND UserID = " + User.getUserID();
+                + "SET TasksCompleted = " + this.taskCount + ", Modifier = " + this.modifier + " "
+                + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
-        task.complete();
+    }
+    
+    public void taskTodo(Task task){
+        this.taskCount--;
+        Double timeMultiplier = task.getTimeUsed() / task.getTimeSet();
+        Double oldMeanTotal = this.modifier * (this.taskCount + 1);
+        this.modifier = (oldMeanTotal - timeMultiplier) / this.taskCount;
+        
+        String sql = "UPDATE smarttimetabledb.category "
+                + "SET TasksCompleted = " + this.taskCount + ", Modifier = " + this.modifier + " "
+                + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
+        DatabaseHandle.update(sql);
     }
 
-    public void calculateModifier(Task task) {
+    private void calculateModifier(Task task) {
         double timeMultiplier = task.getTimeUsed() / task.getTimeSet();
         double oldMeanTotal = this.modifier * (this.taskCount - 1);
         this.modifier = (oldMeanTotal + timeMultiplier) / this.taskCount;

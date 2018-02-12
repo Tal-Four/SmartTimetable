@@ -44,6 +44,7 @@ public class User {
     //Loads that user's details based on the username
     public static void loadUser(String username) {
         String sql = "SELECT * FROM user WHERE Username = '" + username + "';";
+        User.username = username;
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
@@ -62,6 +63,7 @@ public class User {
     //Loads that user's details based on the userID
     public static void loadUser(int userID) {
         String sql = "SELECT * FROM user WHERE UserID = " + userID;
+        User.userID = userID;
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
@@ -106,7 +108,7 @@ public class User {
     public static String getAnswer() {
         return answer;
     }
-    
+
     public static void setUserID(int userID) {
         User.userID = userID;
     }
@@ -118,7 +120,7 @@ public class User {
     public static void setPassword(String password) {
         User.password = password;
     }
-    
+
     public static void setQuestion(String question) {
         User.question = question;
     }
