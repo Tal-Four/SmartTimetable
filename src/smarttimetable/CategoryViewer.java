@@ -52,6 +52,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         sortLabel = new javax.swing.JLabel();
         nameSortButton = new javax.swing.JRadioButton();
         timeModifierSortButton = new javax.swing.JRadioButton();
+        jButton1 = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         detailsPanel = new javax.swing.JPanel();
@@ -112,6 +113,8 @@ public class CategoryViewer extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Ascending");
+
         javax.swing.GroupLayout categoryPanelLayout = new javax.swing.GroupLayout(categoryPanel);
         categoryPanel.setLayout(categoryPanelLayout);
         categoryPanelLayout.setHorizontalGroup(
@@ -123,22 +126,26 @@ public class CategoryViewer extends javax.swing.JFrame {
                     .addGroup(categoryPanelLayout.createSequentialGroup()
                         .addComponent(sortLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nameSortButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(timeModifierSortButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(categoryPanelLayout.createSequentialGroup()
+                                .addComponent(nameSortButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(timeModifierSortButton)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         categoryPanelLayout.setVerticalGroup(
             categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, categoryPanelLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sortLabel)
                     .addComponent(nameSortButton)
                     .addComponent(timeModifierSortButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -394,6 +401,7 @@ public class CategoryViewer extends javax.swing.JFrame {
     private javax.swing.JPanel detailsPanel;
     private javax.swing.JButton editButton;
     private javax.swing.JButton exitButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel nameLabel;
