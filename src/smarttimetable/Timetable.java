@@ -54,8 +54,9 @@ public class Timetable extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        currentOrArchivedGroup = new javax.swing.ButtonGroup();
         timetablePanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        timetableScrollPanel = new javax.swing.JScrollPane();
         timetableTable = new javax.swing.JTable();
         backButton = new javax.swing.JButton();
         userLabel = new javax.swing.JLabel();
@@ -77,8 +78,10 @@ public class Timetable extends javax.swing.JFrame {
         descriptionText = new javax.swing.JTextArea();
         descriptionLabel = new javax.swing.JLabel();
         selectTimetablePanel = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        timetableListScrollPanel = new javax.swing.JScrollPane();
         timetableList = new javax.swing.JList<>();
+        currentRadioButton = new javax.swing.JRadioButton();
+        archivedRadioButton = new javax.swing.JRadioButton();
         changeButton = new javax.swing.JButton();
         completeHoursButton = new javax.swing.JButton();
 
@@ -106,7 +109,7 @@ public class Timetable extends javax.swing.JFrame {
                 timetableTableValueChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(timetableTable);
+        timetableScrollPanel.setViewportView(timetableTable);
 
         backButton.setText("Back");
         backButton.setToolTipText("Back button");
@@ -223,17 +226,46 @@ public class Timetable extends javax.swing.JFrame {
                 timetableListValueChanged(evt);
             }
         });
-        jScrollPane3.setViewportView(timetableList);
+        timetableListScrollPanel.setViewportView(timetableList);
+
+        currentOrArchivedGroup.add(currentRadioButton);
+        currentRadioButton.setSelected(true);
+        currentRadioButton.setText("Current");
+        currentRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                currentRadioButtonActionPerformed(evt);
+            }
+        });
+
+        currentOrArchivedGroup.add(archivedRadioButton);
+        archivedRadioButton.setText("Archived");
+        archivedRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                archivedRadioButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout selectTimetablePanelLayout = new javax.swing.GroupLayout(selectTimetablePanel);
         selectTimetablePanel.setLayout(selectTimetablePanelLayout);
         selectTimetablePanelLayout.setHorizontalGroup(
             selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(timetableListScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(selectTimetablePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(currentRadioButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(archivedRadioButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         selectTimetablePanelLayout.setVerticalGroup(
             selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(selectTimetablePanelLayout.createSequentialGroup()
+                .addGroup(selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(currentRadioButton)
+                    .addComponent(archivedRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(timetableListScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         changeButton.setText("Change");
@@ -258,7 +290,7 @@ public class Timetable extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(timetablePanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(timetableScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(detailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -288,7 +320,7 @@ public class Timetable extends javax.swing.JFrame {
                         .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(changeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(completeHoursButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(timetableScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(timetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -426,9 +458,12 @@ public class Timetable extends javax.swing.JFrame {
     }
 
     private void updateList() {
-        String sql = "SELECT timetable.TimetableID, timetable.StartDay FROM timetable, user "
-                + "WHERE user.UserID = timetable.UserID AND user.UserID = " + User.getUserID() + ""
-                + " AND timetable.Hidden = 0 ORDER BY timetable.StartDay DESC";
+        this.timetableList.setModel(new DefaultListModel<>());
+        
+        String sql = "SELECT timetable.TimetableID, timetable.StartDay\n"
+                + "FROM user INNER JOIN timetable ON user.UserID = timetable.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.Hidden)=" + archivedRadioButton.isSelected() + "))\n"
+                + "ORDER BY timetable.StartDay DESC;";
         ResultSet rs = DatabaseHandle.query(sql);
         this.timetableIDList.clear();
         DefaultListModel dlm = new DefaultListModel();
@@ -443,23 +478,6 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-    }
-
-    private String dateToSQLFormat(Date date) {
-        String year = (date.getYear() + 1900) + "";
-        String month;
-        if ((date.getMonth() + 1) > 9) {
-            month = (date.getMonth() + 1) + "";
-        } else {
-            month = "0" + (date.getMonth() + 1) + "";
-        }
-        String day;
-        if (date.getDate() > 9) {
-            day = date.getDate() + "";
-        } else {
-            day = "0" + date.getDate() + "";
-        }
-        return year + "-" + month + "-" + day;
     }
 
     private String sqlDateToText(String sqlDate) {
@@ -579,27 +597,38 @@ public class Timetable extends javax.swing.JFrame {
     }//GEN-LAST:event_changeButtonActionPerformed
 
     private void completeHoursButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeHoursButtonActionPerformed
-        Object[] options = {"Mark As Complete", "Complete Hours"};
-        int result = JOptionPane.showOptionDialog(this, "Mark as complete to finish the task.\nComplete hours to add how much time you've completed.", "Task Completion", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-                
+        Object[] options = {"Mark As Complete", "Complete Hours", "Cancel"};
+        int result = JOptionPane.showOptionDialog(this, "Mark as complete to finish the task.\nComplete hours to add how much time you've completed.", "Task Completion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
         int taskID = (int) this.getCellIDAndCheckEvent()[0];
         Task task = new Task(taskID);
         if (result == 1) {
             new CompleteHours(this, task).setVisible(true);
             this.setVisible(false);
-        } else {
+        } else if (result == 0) {
             task.complete();
             this.reloadTimetable();
         }
     }//GEN-LAST:event_completeHoursButtonActionPerformed
 
+    private void currentRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentRadioButtonActionPerformed
+        updateList();
+    }//GEN-LAST:event_currentRadioButtonActionPerformed
+
+    private void archivedRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivedRadioButtonActionPerformed
+        updateList();
+    }//GEN-LAST:event_archivedRadioButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton archivedRadioButton;
     private javax.swing.JButton backButton;
     private javax.swing.JLabel categoryStartTimeContentsLabel;
     private javax.swing.JLabel categoryStartTimeLabel;
     private javax.swing.JButton changeButton;
     private javax.swing.JButton completeHoursButton;
+    private javax.swing.ButtonGroup currentOrArchivedGroup;
+    private javax.swing.JRadioButton currentRadioButton;
     private javax.swing.JLabel dateDueEventTypeContentsLabel;
     private javax.swing.JLabel dateDueEventTypeLabel;
     private javax.swing.JLabel dateSetEndTimeContentsLabel;
@@ -608,9 +637,7 @@ public class Timetable extends javax.swing.JFrame {
     private javax.swing.JTextArea descriptionText;
     private javax.swing.JPanel detailsPanel;
     private javax.swing.JButton exitButton;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel nameContentsLabel;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JPanel selectTimetablePanel;
@@ -619,7 +646,9 @@ public class Timetable extends javax.swing.JFrame {
     private javax.swing.JLabel timeUsedContentsLabel;
     private javax.swing.JLabel timeUsedLabel;
     private javax.swing.JList<String> timetableList;
+    private javax.swing.JScrollPane timetableListScrollPanel;
     private javax.swing.JPanel timetablePanel;
+    private javax.swing.JScrollPane timetableScrollPanel;
     private javax.swing.JTable timetableTable;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables

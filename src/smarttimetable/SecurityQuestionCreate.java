@@ -9,12 +9,17 @@ import java.awt.Toolkit;
  */
 public class SecurityQuestionCreate extends javax.swing.JFrame {
 
+    private final String username, password; 
+    
     /**
      * Creates new form SecurityQuestionAnswer
      */
     public SecurityQuestionCreate(String username, String password) {
         initComponents();
 
+        this.username = username;
+        this.password = password;
+        
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -125,7 +130,11 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
-        fin
+        User.createNewUser(this.username, this.password, this.questionTextArea.getText(), this.answerField.getText());
+        new Popup("User " + this.username + " created.").setVisible(true);
+        User.loadUser(this.username);
+        new Menu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_confirmButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed

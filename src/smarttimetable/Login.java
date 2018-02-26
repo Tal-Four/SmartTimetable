@@ -268,24 +268,17 @@ public class Login extends javax.swing.JFrame {
 
         username = existingUsernameField.getText().toLowerCase();
         password = existingPasswordField.getText();
-        boolean valid = false;
 
         User.loadUser(username);
 
         //Checking to see if correct password entered
         if (password.equals(User.getPassword())) {
-            valid = true;
+            new Menu().setVisible(true);
+            this.dispose();
         } else {
             System.err.println("Incorrect password entered");
-            valid = false;
             User.logoutUser();
             new Popup("Incorrect password entered").setVisible(true);
-        }
-
-        //Showing next screen
-        if (valid) {
-            this.setVisible(false);
-            new Menu().setVisible(true);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 

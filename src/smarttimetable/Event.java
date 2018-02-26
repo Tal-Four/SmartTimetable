@@ -169,7 +169,7 @@ public class Event {
 
     //Deletes this event from the DB
     public void deleteEvent() {
-        String sql = "DELETE FROM smarttimetabledb.`event` WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
+        String sql = "DELETE FROM timetableSlot, event WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
         DatabaseHandle.update(sql);
     }
 

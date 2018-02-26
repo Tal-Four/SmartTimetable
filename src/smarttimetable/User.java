@@ -18,16 +18,16 @@ public class User {
         //Looping through existing IDs until a ID without an record is found
         String sql = "SELECT * FROM user ORDER BY UserID";
         ResultSet rs = DatabaseHandle.query(sql);
-        int userID = 0;
+        int newUserID = 0;
         try {
             do {
-                userID++;
-            } while (rs.next() && rs.getInt("UserID") == userID);
+                newUserID++;
+            } while (rs.next() && rs.getInt("UserID") == newUserID);
         } catch (SQLException e) {
             System.err.println(e);
         }
 
-        User.userID = userID;
+        User.userID = newUserID;
 
         if (User.password == null) {
             sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`, `Question`, `Answer`) "

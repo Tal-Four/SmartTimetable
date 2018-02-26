@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 
 /**
@@ -36,16 +37,16 @@ public class CategoryEditor extends javax.swing.JFrame {
                 this.colourChooser.setColor(new Color(rs.getInt("Colour")));
                 this.categoryNameField.setText(rs.getString("Name"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
         nameCharCount();
     }
 
     private void frameSetup(JFrame lastPanel) {
         initComponents();
-        
+
         this.lastPanel = lastPanel;
 
         //Centers the frame to the centre of the monitor
@@ -183,23 +184,25 @@ public class CategoryEditor extends javax.swing.JFrame {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         int colourCode = this.colourChooser.getColor().getRGB();
         String name = this.categoryNameField.getText();
-        
+
         if (edit) {
             Category category = new Category(this.editedCategoryID);
             category.editCategory(name, colourCode);
+            new Popup(category.getName() + " edited.").setVisible(true);
         } else {
             Category category = new Category(name, colourCode);
+            new Popup(category.getName() + " created.").setVisible(true);
         }
-        
+
         this.setVisible(false);
-        this.lastPanel.setVisible(true);        
+        this.lastPanel.setVisible(true);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void categoryNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_categoryNameFieldKeyReleased
         nameCharCount();
     }//GEN-LAST:event_categoryNameFieldKeyReleased
 
-    private void nameCharCount(){
+    private void nameCharCount() {
         int length = categoryNameField.getText().length();
         if (length > 15) {
             categoryNameField.setText(categoryNameField.getText().substring(0, 15));
@@ -207,8 +210,7 @@ public class CategoryEditor extends javax.swing.JFrame {
         }
         categoryNameCharsUsed.setText(length + " out of 15 characters used");
     }
-    
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;

@@ -80,6 +80,7 @@ public class TaskEditor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        priorityGroup = new javax.swing.ButtonGroup();
         backButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
@@ -95,8 +96,11 @@ public class TaskEditor extends javax.swing.JFrame {
         nameCharsUsed = new javax.swing.JLabel();
         timeNeededFormatLabel = new javax.swing.JLabel();
         deadlineFormatLabel = new javax.swing.JLabel();
+        priorityLabel = new javax.swing.JLabel();
+        highRadioButton = new javax.swing.JRadioButton();
+        standardRadioButton = new javax.swing.JRadioButton();
         descriptionPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        descriptionScrollPanel = new javax.swing.JScrollPane();
         descriptionBox = new javax.swing.JTextArea();
         titleLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
@@ -146,6 +150,16 @@ public class TaskEditor extends javax.swing.JFrame {
 
         deadlineFormatLabel.setText("(DD/MM/YYYY) format");
 
+        priorityLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        priorityLabel.setText("Priority:");
+
+        priorityGroup.add(highRadioButton);
+        highRadioButton.setText("High");
+
+        priorityGroup.add(standardRadioButton);
+        standardRadioButton.setSelected(true);
+        standardRadioButton.setText("Standard");
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -159,16 +173,22 @@ public class TaskEditor extends javax.swing.JFrame {
                             .addComponent(nameLabel)
                             .addComponent(deadlineLabel)
                             .addComponent(categoryLabel)
-                            .addComponent(colourLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(categoryDropdown, 0, 200, Short.MAX_VALUE)
-                            .addComponent(deadlineField)
-                            .addComponent(timeField)
-                            .addComponent(nameField, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(colourLabel)
+                            .addComponent(priorityLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(categoryDropdown, 0, 200, Short.MAX_VALUE)
+                                .addComponent(deadlineField)
+                                .addComponent(timeField)
+                                .addComponent(nameField, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(standardRadioButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(highRadioButton)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(timeNeededFormatLabel)
@@ -181,10 +201,10 @@ public class TaskEditor extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(nameLabel)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameField)
+                    .addComponent(nameCharsUsed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(timeLabel)
@@ -201,10 +221,15 @@ public class TaskEditor extends javax.swing.JFrame {
                     .addComponent(categoryLabel)
                     .addComponent(categoryDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(priorityLabel)
+                    .addComponent(standardRadioButton)
+                    .addComponent(highRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(colourLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addContainerGap())
         );
 
         descriptionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Description"));
@@ -213,17 +238,17 @@ public class TaskEditor extends javax.swing.JFrame {
         descriptionBox.setLineWrap(true);
         descriptionBox.setRows(5);
         descriptionBox.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(descriptionBox);
+        descriptionScrollPanel.setViewportView(descriptionBox);
 
         javax.swing.GroupLayout descriptionPanelLayout = new javax.swing.GroupLayout(descriptionPanel);
         descriptionPanel.setLayout(descriptionPanelLayout);
         descriptionPanelLayout.setHorizontalGroup(
             descriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+            .addComponent(descriptionScrollPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
         );
         descriptionPanelLayout.setVerticalGroup(
             descriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+            .addComponent(descriptionScrollPanel)
         );
 
         titleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -268,11 +293,11 @@ public class TaskEditor extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(titleLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(descriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(descriptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(backButton)
@@ -295,6 +320,7 @@ public class TaskEditor extends javax.swing.JFrame {
         String dateDueText = deadlineField.getText();
         int colourCode = colourChooser.getColor().getRGB();
         double timeSet = 0;
+        Boolean highPriority = highRadioButton.isSelected();
 
         //<editor-fold defaultstate="collapsed" desc=" Valid checks ">
         //Checks to see if name is empty
@@ -306,7 +332,7 @@ public class TaskEditor extends javax.swing.JFrame {
         //Attemps to read the double. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
         try {
             timeSet = Double.parseDouble(timeField.getText());
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             System.err.println(ex);
             valid = false;
             new Popup("Invalid time set").setVisible(true);
@@ -328,9 +354,9 @@ public class TaskEditor extends javax.swing.JFrame {
         if (valid) {
 
             if (edit) {
-                oldTask.editTask(taskName, description, categoryID, dateDueText, colourCode, timeSet);
+                oldTask.editTask(taskName, description, categoryID, dateDueText, colourCode, timeSet, highPriority);
             } else {
-                new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet);
+                new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet, highPriority);
             }
             this.setVisible(false);
             this.lastPanel.setVisible(true);
@@ -379,12 +405,16 @@ public class TaskEditor extends javax.swing.JFrame {
     private javax.swing.JLabel deadlineLabel;
     private javax.swing.JTextArea descriptionBox;
     private javax.swing.JPanel descriptionPanel;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane descriptionScrollPanel;
+    private javax.swing.JRadioButton highRadioButton;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel nameCharsUsed;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.ButtonGroup priorityGroup;
+    private javax.swing.JLabel priorityLabel;
     private javax.swing.JButton saveButton;
+    private javax.swing.JRadioButton standardRadioButton;
     private javax.swing.JTextField timeField;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JLabel timeNeededFormatLabel;

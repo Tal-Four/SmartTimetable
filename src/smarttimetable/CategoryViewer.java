@@ -6,18 +6,19 @@ import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 public class CategoryViewer extends javax.swing.JFrame {
 
     /**
      * Creates new form CategoryViewer
      */
-    private LinkedList categoryIDList = new LinkedList();
+    private final LinkedList categoryIDList = new LinkedList();
 
     public CategoryViewer() {
         frameSetup();
     }
-    
+
     private void frameSetup() {
         initComponents();
 
@@ -290,7 +291,7 @@ public class CategoryViewer extends javax.swing.JFrame {
                     timeModifierVariableLabel.setText("" + (rs.getInt("Modifier")));
                     colourPreview.setBackground(new Color(rs.getInt("Colour")));
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.err.println(e);
             }
 
@@ -298,12 +299,26 @@ public class CategoryViewer extends javax.swing.JFrame {
     }
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-
+        if (categoryList.getSelectedValue() != null) {
+            int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + categoryList.getSelectedValue(), "Delete category", JOptionPane.YES_NO_OPTION);
+            if (result == 0) {
+                Category category = new Category(categoryIDList.getDataAt(categoryList.getSelectedIndex()));
+                String sql = "UPDATE category INNER JOIN user ON category.UserID = user.UserID SET category.Hidden = True\n"
+                        + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + category.getCategoryID() + "));";
+                DatabaseHandle.update(sql);
+            }
+        } else {
+            new Popup("Please select a category first.").setVisible(true);
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        this.setVisible(false);
-        new CategoryEditor(categoryIDList.getDataAt(categoryList.getSelectedIndex()), this).setVisible(true);
+        if (categoryList.getSelectedValue() != null) {
+            this.setVisible(false);
+            new CategoryEditor(categoryIDList.getDataAt(categoryList.getSelectedIndex()), this).setVisible(true);
+        } else {
+            new Popup("Please select a category first.").setVisible(true);
+        }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -360,7 +375,7 @@ public class CategoryViewer extends javax.swing.JFrame {
                 while (rs.next()) {
                     dlm.addElement(rs.getString("Name"));
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.err.println(e);
             }
         }
@@ -368,7 +383,6 @@ public class CategoryViewer extends javax.swing.JFrame {
         categoryList.setModel(dlm);
     }
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;

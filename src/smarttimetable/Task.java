@@ -14,6 +14,7 @@ import java.util.Date;
 public class Task {
 
     private Category category;
+    private Boolean highPriority;
     private int taskID, colourCode, slotsAssigned;
     private double timeSet, timeModified, timeUsed;
     private String description, name, dateSet, dateDue;
@@ -34,6 +35,7 @@ public class Task {
                 this.name = rs.getString("Name");
                 this.dateSet = rs.getString("DateSet");
                 this.dateDue = rs.getString("DateDue");
+                this.highPriority = rs.getBoolean("HighPriority");
             }
         } catch (SQLException e) {
             System.err.println(e);
@@ -41,7 +43,7 @@ public class Task {
     }
 
     //Constructor when called adds a task to the database
-    public Task(String name, String description, int category, String dateDueText, int colourCode, double timeSet) {
+    public Task(String name, String description, int category, String dateDueText, int colourCode, double timeSet, Boolean highPriority) {
         this.category = new Category(category);
         this.name = name;
         this.description = description;
@@ -53,15 +55,16 @@ public class Task {
         Date currentDate = new Date();
         this.dateSet = dateToSQLFormat(currentDate);
         this.timeUsed = 0;
+        this.highPriority = highPriority;
 
-        String sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`) "
-                + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.category.getCategoryID() + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " + this.timeModified + ")";
+        String sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`, `HighPriortiy`) "
+                + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.category.getCategoryID() + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " + this.timeModified + ", " + this.highPriority + ")";
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " created.").setVisible(true);
     }
 
     //Method when called edits a task already in the database
-    public void editTask(String name, String description, int categoryID, String dateDueText, int colourCode, double timeSet) {
+    public void editTask(String name, String description, int categoryID, String dateDueText, int colourCode, double timeSet, Boolean highPriority) {
         this.category = new Category(categoryID);
         this.name = name;
         this.description = description;
@@ -69,8 +72,11 @@ public class Task {
         this.colourCode = colourCode;
         this.timeSet = timeSet;
         this.timeModified = calcModifiedTime();
+        this.highPriority = highPriority;
 
-        String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + " WHERE UserID = " + User.getUserID();
+        String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', "
+                + "Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + ", "
+                + "HighPriority = " + this.highPriority + " WHERE UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " edited.").setVisible(true);
     }
@@ -145,7 +151,7 @@ public class Task {
         String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.Hidden = False\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
         DatabaseHandle.update(sql);
-        
+
         this.category.taskTodo(this);
     }
 

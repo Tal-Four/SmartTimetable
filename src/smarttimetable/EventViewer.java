@@ -345,8 +345,12 @@ public class EventViewer extends javax.swing.JFrame {
     }//GEN-LAST:event_sortDropdownActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        new EventEditor(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()), this).setVisible(true);
-        this.setVisible(false);
+        if (eventList.getSelectedValue() != null) {
+            new EventEditor(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()), this).setVisible(true);
+            this.setVisible(false);
+        } else {
+            new Popup("Please select an event before attempting to edit.").setVisible(true);
+        }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -357,6 +361,8 @@ public class EventViewer extends javax.swing.JFrame {
                 event.deleteEvent();
                 setUpList();
             }
+        } else {
+            new Popup("Please select an event before attempting to edit.").setVisible(true);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -376,7 +382,6 @@ public class EventViewer extends javax.swing.JFrame {
         colourPreview.setBackground(new Color(selectedEvent.getColourCode()));
     }//GEN-LAST:event_eventListValueChanged
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
