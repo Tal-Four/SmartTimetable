@@ -93,7 +93,7 @@ public class Event {
         new Popup("Event " + this.eventName + " edited.").setVisible(true);
     }
 
-    //Updates a recurring existing record with new values
+    //Updates a one-off existing record with new values
     public void editEvent(String eventName, String description, int colour, String date, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
