@@ -76,7 +76,7 @@ public class Task {
 
         String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', "
                 + "Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + ", "
-                + "HighPriority = " + this.highPriority + " WHERE UserID = " + User.getUserID();
+                + "HighPriority = " + this.highPriority + " WHERE UserID = " + User.getUserID() + " AND TaskID = "  + this.taskID;
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " edited.").setVisible(true);
     }
@@ -105,7 +105,9 @@ public class Task {
 
     //Deletes this task from the DB
     public void deleteTask() {
-        String sql = "DELETE FROM timetableslot, task WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
+        String sql = "DELETE FROM timetableslot WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
+        DatabaseHandle.update(sql);
+        sql = "DELETE FROM task WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
         DatabaseHandle.update(sql);
     }
 

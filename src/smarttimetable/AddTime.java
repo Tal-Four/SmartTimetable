@@ -54,7 +54,7 @@ public class AddTime extends javax.swing.JFrame {
         addTimePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add Time", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
         continueButton.setText("Continue");
-        continueButton.setToolTipText("Exit the program");
+        continueButton.setToolTipText("Adds the specified time to the respective task.");
         continueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continueButtonActionPerformed(evt);
@@ -64,7 +64,7 @@ public class AddTime extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         cancelButton.setText("Cancel");
-        cancelButton.setToolTipText("Logout and return to the login screen");
+        cancelButton.setToolTipText("Cancels adding time and returns to the previous screen.");
         cancelButton.setMaximumSize(new java.awt.Dimension(84, 26));
         cancelButton.setMinimumSize(new java.awt.Dimension(84, 26));
         cancelButton.setPreferredSize(new java.awt.Dimension(84, 26));
@@ -75,6 +75,8 @@ public class AddTime extends javax.swing.JFrame {
         });
 
         textLabel.setText("How many hours do you want to add?");
+
+        inputField.setToolTipText("Type the number of hours you want to add to the task here.");
 
         javax.swing.GroupLayout addTimePanelLayout = new javax.swing.GroupLayout(addTimePanel);
         addTimePanel.setLayout(addTimePanelLayout);

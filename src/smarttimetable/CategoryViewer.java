@@ -52,7 +52,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         sortLabel = new javax.swing.JLabel();
         nameSortButton = new javax.swing.JRadioButton();
         timeModifierSortButton = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
+        ascDescSortButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         detailsPanel = new javax.swing.JPanel();
@@ -69,6 +69,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Category Viewer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
         backButton.setText("Back");
+        backButton.setToolTipText("Return to the menu.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -76,7 +77,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         });
 
         exitButton.setText("Exit");
-        exitButton.setToolTipText("");
+        exitButton.setToolTipText("Closes the program.");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -86,6 +87,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         categoryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Categories"));
 
         categoryList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        categoryList.setToolTipText("Selecting a category from this list will display its details below.");
         categoryList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         categoryList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -99,6 +101,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         sortButtonGroup.add(nameSortButton);
         nameSortButton.setSelected(true);
         nameSortButton.setText("Name");
+        nameSortButton.setToolTipText("Sorts the list of categories by their name.");
         nameSortButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameSortButtonActionPerformed(evt);
@@ -107,13 +110,20 @@ public class CategoryViewer extends javax.swing.JFrame {
 
         sortButtonGroup.add(timeModifierSortButton);
         timeModifierSortButton.setText("Time Modifier");
+        timeModifierSortButton.setToolTipText("Sorts the list of categories by their time modifier.");
         timeModifierSortButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 timeModifierSortButtonActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Ascending");
+        ascDescSortButton.setText("Ascending");
+        ascDescSortButton.setToolTipText("Specifies whether the sort is ascending or descending, the currently shown text is what the current sort is ordered by.");
+        ascDescSortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ascDescSortButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout categoryPanelLayout = new javax.swing.GroupLayout(categoryPanel);
         categoryPanel.setLayout(categoryPanelLayout);
@@ -132,7 +142,7 @@ public class CategoryViewer extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(timeModifierSortButton)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(ascDescSortButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         categoryPanelLayout.setVerticalGroup(
@@ -143,13 +153,14 @@ public class CategoryViewer extends javax.swing.JFrame {
                     .addComponent(nameSortButton)
                     .addComponent(timeModifierSortButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ascDescSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         deleteButton.setText("Delete");
+        deleteButton.setToolTipText("Delete the selected category.");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -157,7 +168,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         });
 
         editButton.setText("Edit Selected");
-        editButton.setToolTipText("Edit the selected task");
+        editButton.setToolTipText("Edit the selected category.");
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editButtonActionPerformed(evt);
@@ -167,6 +178,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         detailsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));
 
         colourPreview.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        colourPreview.setToolTipText("The colour of  the selected category.");
         colourPreview.setMinimumSize(new java.awt.Dimension(10, 27));
 
         javax.swing.GroupLayout colourPreviewLayout = new javax.swing.GroupLayout(colourPreview);
@@ -185,6 +197,10 @@ public class CategoryViewer extends javax.swing.JFrame {
         timeModifierLabel.setText("Time Modifier:");
 
         nameLabel.setText("Name:");
+
+        nameVariableLabel.setToolTipText("The name of the selected category.");
+
+        timeModifierVariableLabel.setToolTipText("The time modifier of the selected category.");
 
         javax.swing.GroupLayout detailsPanelLayout = new javax.swing.GroupLayout(detailsPanel);
         detailsPanel.setLayout(detailsPanelLayout);
@@ -286,7 +302,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void categoryListIndexSelected() {
+    public void categoryListIndexSelected() {
         if (categoryList.getSelectedIndex() != -1) {
             nameVariableLabel.setText(categoryList.getSelectedValue());
 
@@ -349,6 +365,15 @@ public class CategoryViewer extends javax.swing.JFrame {
         categoryListIndexSelected();
     }//GEN-LAST:event_categoryListValueChanged
 
+    private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
+        if (ascDescSortButton.getText().equals("Ascending")) {
+            ascDescSortButton.setText("Descending");
+        } else {
+            ascDescSortButton.setText("Ascending");
+        }
+        this.setUpList();
+    }//GEN-LAST:event_ascDescSortButtonActionPerformed
+
     private void updateIDList() {
         this.categoryIDList.clear();
 
@@ -358,8 +383,13 @@ public class CategoryViewer extends javax.swing.JFrame {
         } else if (timeModifierSortButton.isSelected()) {
             sort = "Modifier";
         }
-        String sql = "SELECT CategoryID FROM category, user WHERE category.Hidden = 0 AND category.UserID = user.UserID AND user.UserID = " + User.getUserID() + " ORDER BY " + sort;
-
+        if (ascDescSortButton.getText().equals("Descending")){
+            sort = sort + " DESC";
+        }
+        String sql = "SELECT category.CategoryID\n"
+                + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.Hidden)=False))\n"
+                + "ORDER BY category." + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
@@ -392,6 +422,7 @@ public class CategoryViewer extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ascDescSortButton;
     private javax.swing.JButton backButton;
     private javax.swing.JList<String> categoryList;
     private javax.swing.JPanel categoryPanel;
@@ -401,7 +432,6 @@ public class CategoryViewer extends javax.swing.JFrame {
     private javax.swing.JPanel detailsPanel;
     private javax.swing.JButton editButton;
     private javax.swing.JButton exitButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel nameLabel;

@@ -44,6 +44,10 @@ public class TaskViewer extends javax.swing.JFrame {
         String selectedSort = sortDropdown.getSelectedItem().toString();
         String sql;
         Boolean archive = archivedButton.isSelected();
+        String sort = "";
+        if (ascDescSortButton.getText().equals("Descending")) {
+            sort = " DESC";
+        }
         if (!selectedSort.equals("Category")) {
             switch (selectedSort) {
                 case ("Name"):
@@ -69,12 +73,12 @@ public class TaskViewer extends javax.swing.JFrame {
             sql = "SELECT task.TaskID\n"
                     + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=" + archive + "))\n"
-                    + "ORDER BY task." + selectedSort + " DESC;";
+                    + "ORDER BY task." + selectedSort + sort + ";";
         } else {
             sql = "SELECT task.TaskID\n"
                     + "FROM task INNER JOIN (user INNER JOIN category ON user.UserID = category.UserID) ON (user.UserID = task.UserID) AND (task.CategoryID = category.CategoryID) AND (task.UserID = category.UserID)\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=" + archive + "))\n"
-                    + "ORDER BY category.Name;";
+                    + "ORDER BY category.Name " + sort + ";";
         }
 
         ResultSet rs = DatabaseHandle.query(sql);
@@ -142,10 +146,12 @@ public class TaskViewer extends javax.swing.JFrame {
         timeUsedLabel = new javax.swing.JLabel();
         completeButton = new javax.swing.JButton();
         colourPreview = new javax.swing.JPanel();
+        ascDescSortButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         backButton.setText("Back");
+        backButton.setToolTipText("Returns to the main menu.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -155,7 +161,7 @@ public class TaskViewer extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         exitButton.setText("Exit");
-        exitButton.setToolTipText("");
+        exitButton.setToolTipText("Closes the program.");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -166,7 +172,7 @@ public class TaskViewer extends javax.swing.JFrame {
         jFrameTitleLabel.setText("Task Viewer");
 
         editButton.setText("Edit Selected");
-        editButton.setToolTipText("Edit the selected task");
+        editButton.setToolTipText("Edit the selected task.");
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editButtonActionPerformed(evt);
@@ -176,6 +182,7 @@ public class TaskViewer extends javax.swing.JFrame {
         sortLabel.setText("Sort By:");
 
         sortDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Date set", "Date due", "Category", "Time allotted", "Time used" }));
+        sortDropdown.setToolTipText("Defines what the list of tasks is sorted by.");
         sortDropdown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sortDropdownActionPerformed(evt);
@@ -184,6 +191,7 @@ public class TaskViewer extends javax.swing.JFrame {
 
         taskPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Tasks"));
 
+        taskList.setToolTipText("Select a task from the list to have its details displayed on the right.");
         taskList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 taskListValueChanged(evt);
@@ -193,6 +201,7 @@ public class TaskViewer extends javax.swing.JFrame {
 
         todoOrArchivedButtonGroup.add(todoButton);
         todoButton.setText("To-do");
+        todoButton.setToolTipText("Loads the list of incomplete tasks.");
         todoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 todoButtonActionPerformed(evt);
@@ -201,6 +210,7 @@ public class TaskViewer extends javax.swing.JFrame {
 
         todoOrArchivedButtonGroup.add(archivedButton);
         archivedButton.setText("Archived");
+        archivedButton.setToolTipText("Loads the list of complete tasks.");
         archivedButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 archivedButtonActionPerformed(evt);
@@ -238,6 +248,7 @@ public class TaskViewer extends javax.swing.JFrame {
         descriptionBox.setEditable(false);
         descriptionBox.setColumns(20);
         descriptionBox.setRows(5);
+        descriptionBox.setToolTipText("Displays the description of the selected task.");
         jScrollPane2.setViewportView(descriptionBox);
 
         javax.swing.GroupLayout descriptionPanelLayout = new javax.swing.GroupLayout(descriptionPanel);
@@ -258,6 +269,7 @@ public class TaskViewer extends javax.swing.JFrame {
         );
 
         deleteButton.setText("Delete");
+        deleteButton.setToolTipText("Deletes the selected task.");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -265,16 +277,22 @@ public class TaskViewer extends javax.swing.JFrame {
         });
 
         categoryLabel.setText("Category:");
+        categoryLabel.setToolTipText("Displays the category of the selected task.");
 
         dateSetLabel.setText("Date Set:");
+        dateSetLabel.setToolTipText("Displays the date the selected task was set on.");
 
         dateDueLabel.setText("Date Due:");
+        dateDueLabel.setToolTipText("Displays the date the selected task is due to be done for.");
 
         timeAllottedLabel.setText("Time Allotted:");
+        timeAllottedLabel.setToolTipText("Displays the time allocated by the program in hours to the task.");
 
         timeUsedLabel.setText("Time Used:");
+        timeUsedLabel.setToolTipText("Displays the number of hours that have been marked as completed for the selected task.");
 
         completeButton.setText("Complete");
+        completeButton.setToolTipText("Completes the selected task.");
         completeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 completeButtonActionPerformed(evt);
@@ -294,6 +312,17 @@ public class TaskViewer extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
+        ascDescSortButton.setText("Ascending");
+        ascDescSortButton.setToolTipText("Defines whether the list of tasks is sorted in ascending or descending order. The current text is the current order.");
+        ascDescSortButton.setMaximumSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.setMinimumSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.setPreferredSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ascDescSortButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -310,6 +339,8 @@ public class TaskViewer extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jFrameTitleLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ascDescSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sortLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -346,10 +377,12 @@ public class TaskViewer extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jFrameTitleLabel)
-                    .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sortLabel))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ascDescSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 21, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jFrameTitleLabel)
+                        .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(sortLabel)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(taskPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -447,8 +480,7 @@ public class TaskViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_completeButtonActionPerformed
 
-    //Displays relevant details when the user selects a task
-    private void taskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_taskListValueChanged
+    public void loadDetails(){
         Task selectedTask = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
 
         //Setting the labels
@@ -458,8 +490,9 @@ public class TaskViewer extends javax.swing.JFrame {
         timeAllottedLabel.setText("Time Allotted: " + selectedTask.getTimeModified());
         timeUsedLabel.setText("Time Used: " + selectedTask.getTimeUsed());
         descriptionBox.setText(selectedTask.getDescription());
-        colourPreview.setBackground(new Color(selectedTask.getColourCode()));    }//GEN-LAST:event_taskListValueChanged
-
+        colourPreview.setBackground(new Color(selectedTask.getColourCode()));
+    }
+    
     private void todoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todoButtonActionPerformed
         this.completeButton.setText("Complete");
         setUpList();
@@ -470,10 +503,23 @@ public class TaskViewer extends javax.swing.JFrame {
         setUpList();
     }//GEN-LAST:event_archivedButtonActionPerformed
 
+    private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
+        if (ascDescSortButton.getText().equals("Ascending")) {
+            ascDescSortButton.setText("Descending");
+        } else {
+            ascDescSortButton.setText("Ascending");
+        }
+        this.setUpList();
+    }//GEN-LAST:event_ascDescSortButtonActionPerformed
+
+    private void taskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_taskListValueChanged
+        loadDetails();
+    }//GEN-LAST:event_taskListValueChanged
 
     //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton archivedButton;
+    private javax.swing.JButton ascDescSortButton;
     private javax.swing.JButton backButton;
     private javax.swing.JLabel categoryLabel;
     private javax.swing.JPanel colourPreview;

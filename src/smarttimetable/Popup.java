@@ -48,6 +48,7 @@ public class Popup extends javax.swing.JFrame {
         jScrollPane1.setViewportView(popupMessageTextArea);
 
         okButton.setText("OK");
+        okButton.setToolTipText("Dismiss the popup.");
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);

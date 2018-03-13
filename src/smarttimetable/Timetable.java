@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -80,6 +79,7 @@ public class Timetable extends javax.swing.JFrame {
         selectTimetablePanel = new javax.swing.JPanel();
         timetableListScrollPanel = new javax.swing.JScrollPane();
         timetableList = new javax.swing.JList<>();
+        ascDescSortButton = new javax.swing.JButton();
         currentRadioButton = new javax.swing.JRadioButton();
         archivedRadioButton = new javax.swing.JRadioButton();
         changeButton = new javax.swing.JButton();
@@ -91,7 +91,7 @@ public class Timetable extends javax.swing.JFrame {
 
         timetableTable.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         timetableTable.setModel(new CustomTableModel());
-        timetableTable.setToolTipText("");
+        timetableTable.setToolTipText("Select a cell to display the details of that task or event on the right.");
         timetableTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         timetableTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         timetableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -112,7 +112,7 @@ public class Timetable extends javax.swing.JFrame {
         timetableScrollPanel.setViewportView(timetableTable);
 
         backButton.setText("Back");
-        backButton.setToolTipText("Back button");
+        backButton.setToolTipText("Returns to the main menu.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -122,7 +122,7 @@ public class Timetable extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         exitButton.setText("Exit");
-        exitButton.setToolTipText("Exit the program");
+        exitButton.setToolTipText("Closes the program.");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -149,9 +149,24 @@ public class Timetable extends javax.swing.JFrame {
         timeUsedLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         timeUsedLabel.setText("Time Used:");
 
+        nameContentsLabel.setToolTipText("The name of the event or task.");
+
+        categoryStartTimeContentsLabel.setToolTipText("The category of the task.");
+
+        dateSetEndTimeContentsLabel.setToolTipText("The date the task was set.");
+
+        dateDueEventTypeContentsLabel.setToolTipText("The date the task is due.");
+
+        timeAlottedContentsLabel.setToolTipText("The time allocated to the task by the program.");
+
+        timeUsedContentsLabel.setToolTipText("The time marked as complete for the task.");
+
         descriptionText.setEditable(false);
         descriptionText.setColumns(20);
+        descriptionText.setLineWrap(true);
         descriptionText.setRows(5);
+        descriptionText.setToolTipText("The description of the task or event.");
+        descriptionText.setWrapStyleWord(true);
         jScrollPane2.setViewportView(descriptionText);
 
         descriptionLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -184,7 +199,7 @@ public class Timetable extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(detailsPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 12, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         detailsPanelLayout.setVerticalGroup(
             detailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,6 +236,7 @@ public class Timetable extends javax.swing.JFrame {
 
         selectTimetablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Timetable"));
 
+        timetableList.setToolTipText("Select a timetable to load it into the table.");
         timetableList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 timetableListValueChanged(evt);
@@ -228,9 +244,21 @@ public class Timetable extends javax.swing.JFrame {
         });
         timetableListScrollPanel.setViewportView(timetableList);
 
+        ascDescSortButton.setText("Ascending");
+        ascDescSortButton.setToolTipText("Defines the order the list of timetable are displayed in.");
+        ascDescSortButton.setMaximumSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.setMinimumSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.setPreferredSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ascDescSortButtonActionPerformed(evt);
+            }
+        });
+
         currentOrArchivedGroup.add(currentRadioButton);
         currentRadioButton.setSelected(true);
         currentRadioButton.setText("Current");
+        currentRadioButton.setToolTipText("Loads latest generated timetables.");
         currentRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 currentRadioButtonActionPerformed(evt);
@@ -239,6 +267,7 @@ public class Timetable extends javax.swing.JFrame {
 
         currentOrArchivedGroup.add(archivedRadioButton);
         archivedRadioButton.setText("Archived");
+        archivedRadioButton.setToolTipText("Loads any old timetables.");
         archivedRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 archivedRadioButtonActionPerformed(evt);
@@ -255,20 +284,25 @@ public class Timetable extends javax.swing.JFrame {
                 .addComponent(currentRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(archivedRadioButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ascDescSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         selectTimetablePanelLayout.setVerticalGroup(
             selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(selectTimetablePanelLayout.createSequentialGroup()
-                .addGroup(selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(currentRadioButton)
-                    .addComponent(archivedRadioButton))
+                .addContainerGap()
+                .addGroup(selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ascDescSortButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(selectTimetablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(currentRadioButton)
+                        .addComponent(archivedRadioButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(timetableListScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(timetableListScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         changeButton.setText("Change");
+        changeButton.setToolTipText("Change the contents of the selected slot.");
         changeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeButtonActionPerformed(evt);
@@ -276,6 +310,7 @@ public class Timetable extends javax.swing.JFrame {
         });
 
         completeHoursButton.setText("Complete Hours");
+        completeHoursButton.setToolTipText("Complete hours for a task in the selected slot.");
         completeHoursButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 completeHoursButtonActionPerformed(evt);
@@ -382,10 +417,15 @@ public class Timetable extends javax.swing.JFrame {
                     this.completeHoursButton.setEnabled(false);
 
                     this.categoryStartTimeLabel.setText("Start Time:");
+                    this.categoryStartTimeContentsLabel.setToolTipText("The time the event starts at.");
                     this.dateSetEndTimeLabel.setText("End Time:");
+                    this.dateSetEndTimeLabel.setToolTipText("The time the event ends at.");
                     this.dateDueEventTypeLabel.setText("Event Type:");
+                    this.dateDueEventTypeLabel.setToolTipText("Whether the event is a one-off event or reccuring.");
                     this.timeAlottedLabel.setText(" ");
+                    this.timeAlottedLabel.setToolTipText("");
                     this.timeUsedLabel.setText(" ");
+                    this.timeUsedLabel.setToolTipText("");
 
                     String sql = "SELECT event.EventName, event.StartTime, event.EndTime, event.Description, event.Day\n"
                             + "FROM ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) INNER JOIN event ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (user.UserID = event.UserID)\n"
@@ -427,10 +467,15 @@ public class Timetable extends javax.swing.JFrame {
                     this.completeHoursButton.setEnabled(true);
 
                     this.categoryStartTimeLabel.setText("Category:");
+                    this.categoryStartTimeLabel.setToolTipText("The category of the selected task.");
                     this.dateSetEndTimeLabel.setText("Date Set:");
+                    this.dateSetEndTimeLabel.setToolTipText("The date the task was set on.");
                     this.dateDueEventTypeLabel.setText("Date Due:");
+                    this.dateDueEventTypeLabel.setToolTipText("The date the task is due in for.");
                     this.timeAlottedLabel.setText("Time Alloted:");
+                    this.timeAlottedLabel.setToolTipText("The time allocated to the task by the program.");
                     this.timeUsedLabel.setText("Time Used:");
+                    this.timeUsedLabel.setToolTipText("The time marked as complete for the selected task.");
 
                     String sql = "SELECT task.TaskID\n"
                             + "FROM timetable INNER JOIN (task INNER JOIN (timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) ON (timetableslot.TaskID = task.TaskID) AND (task.UserID = timetableslot.UserID) AND (task.UserID = user.UserID)) ON (timetableslot.UserID = timetable.UserID) AND (timetable.TimetableID = timetableslot.TimetableID) AND (timetable.UserID = user.UserID)\n"
@@ -459,11 +504,14 @@ public class Timetable extends javax.swing.JFrame {
 
     private void updateList() {
         this.timetableList.setModel(new DefaultListModel<>());
-        
+        String sort = "";
+        if (ascDescSortButton.getText().equals("Descending")) {
+            sort = " DESC";
+        }
         String sql = "SELECT timetable.TimetableID, timetable.StartDay\n"
                 + "FROM user INNER JOIN timetable ON user.UserID = timetable.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.Hidden)=" + archivedRadioButton.isSelected() + "))\n"
-                + "ORDER BY timetable.StartDay DESC;";
+                + "ORDER BY timetable.StartDay" + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
         this.timetableIDList.clear();
         DefaultListModel dlm = new DefaultListModel();
@@ -619,9 +667,19 @@ public class Timetable extends javax.swing.JFrame {
         updateList();
     }//GEN-LAST:event_archivedRadioButtonActionPerformed
 
+    private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
+        if (ascDescSortButton.getText().equals("Ascending")) {
+            ascDescSortButton.setText("Descending");
+        } else {
+            ascDescSortButton.setText("Ascending");
+        }
+        this.updateList();
+    }//GEN-LAST:event_ascDescSortButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton archivedRadioButton;
+    private javax.swing.JButton ascDescSortButton;
     private javax.swing.JButton backButton;
     private javax.swing.JLabel categoryStartTimeContentsLabel;
     private javax.swing.JLabel categoryStartTimeLabel;

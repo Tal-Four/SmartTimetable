@@ -53,7 +53,7 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         exitButton.setText("Exit");
-        exitButton.setToolTipText("Exit the program");
+        exitButton.setToolTipText("Closes the program.");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -61,7 +61,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         logoutButton.setText("Logout");
-        logoutButton.setToolTipText("Logout and return to the login screen");
+        logoutButton.setToolTipText("Logout and return to the login screen.");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutButtonActionPerformed(evt);
@@ -73,6 +73,7 @@ public class Menu extends javax.swing.JFrame {
         mainMenuPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Main Menu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
         createEventsButton.setText("Create Event");
+        createEventsButton.setToolTipText("Opens the create event screen.");
         createEventsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createEventsButtonActionPerformed(evt);
@@ -80,6 +81,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         viewEditEvents.setText("View/Edit Events");
+        viewEditEvents.setToolTipText("Opens the event viewer screen.");
         viewEditEvents.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewEditEventsActionPerformed(evt);
@@ -87,6 +89,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         generateTimetableButton.setText("Generate Timetable");
+        generateTimetableButton.setToolTipText("Starts the process of generating timetables.");
         generateTimetableButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateTimetableButtonActionPerformed(evt);
@@ -94,6 +97,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         viewEditTimetable.setText("View/Edit Timetable");
+        viewEditTimetable.setToolTipText("Opens the timetable screen.");
         viewEditTimetable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewEditTimetableActionPerformed(evt);
@@ -101,6 +105,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         createTaskButton.setText("Create Task");
+        createTaskButton.setToolTipText("Opens the task creator screen.");
         createTaskButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createTaskButtonActionPerformed(evt);
@@ -108,6 +113,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         viewEditTasks.setText("View/Edit Tasks");
+        viewEditTasks.setToolTipText("Opens the task viewer screen.");
         viewEditTasks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewEditTasksActionPerformed(evt);
@@ -115,6 +121,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         createCategoryButton.setText("Create Category");
+        createCategoryButton.setToolTipText("Opens the create category screen.");
         createCategoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createCategoryButtonActionPerformed(evt);
@@ -122,6 +129,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         viewEditCategoryButton.setText("View/Edit Category");
+        viewEditCategoryButton.setToolTipText("Opens the category viewer screen.");
         viewEditCategoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewEditCategoryButtonActionPerformed(evt);

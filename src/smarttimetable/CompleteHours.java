@@ -67,7 +67,7 @@ public class CompleteHours extends javax.swing.JFrame {
         completeHoursPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Complete Hours", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
         continueButton.setText("Continue");
-        continueButton.setToolTipText("Exit the program");
+        continueButton.setToolTipText("Completes the number of specified hours.");
         continueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continueButtonActionPerformed(evt);
@@ -77,7 +77,7 @@ public class CompleteHours extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         cancelButton.setText("Cancel");
-        cancelButton.setToolTipText("Logout and return to the login screen");
+        cancelButton.setToolTipText("Returns to the previous screen.");
         cancelButton.setMaximumSize(new java.awt.Dimension(84, 26));
         cancelButton.setMinimumSize(new java.awt.Dimension(84, 26));
         cancelButton.setPreferredSize(new java.awt.Dimension(84, 26));
@@ -90,6 +90,13 @@ public class CompleteHours extends javax.swing.JFrame {
         firstLineLabel.setText("Input the number of hours you'd like");
 
         secondLineLabel.setText("to complete on the selected task:");
+
+        inputField.setToolTipText("Enter the number of hours you'd like to complete for this task.");
+        inputField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout completeHoursPanelLayout = new javax.swing.GroupLayout(completeHoursPanel);
         completeHoursPanel.setLayout(completeHoursPanelLayout);
@@ -204,6 +211,10 @@ public class CompleteHours extends javax.swing.JFrame {
         lastFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void inputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

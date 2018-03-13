@@ -61,6 +61,7 @@ public class Login extends javax.swing.JFrame {
         existingUserPanel.setName("gdsg\\"); // NOI18N
 
             existingPasswordField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+            existingPasswordField.setToolTipText("Enter the password of the account.");
             existingPasswordField.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     existingPasswordFieldActionPerformed(evt);
@@ -68,7 +69,7 @@ public class Login extends javax.swing.JFrame {
             });
 
             loginButton.setText("Login");
-            loginButton.setToolTipText("Login with an existing account");
+            loginButton.setToolTipText("Attempts to log in with the given username and password.");
             loginButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     loginButtonActionPerformed(evt);
@@ -80,12 +81,14 @@ public class Login extends javax.swing.JFrame {
             existingUsernameLabel.setText("Username");
 
             existingUsernameField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+            existingUsernameField.setToolTipText("Enter the username of an existing account.");
 
             exisitingPasswordLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
             exisitingPasswordLabel.setLabelFor(existingPasswordField);
             exisitingPasswordLabel.setText("Password");
 
             changePasswordButton.setText("Change Password");
+            changePasswordButton.setToolTipText("Begins the change password process with the given username.");
             changePasswordButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     changePasswordButtonActionPerformed(evt);
@@ -139,7 +142,7 @@ public class Login extends javax.swing.JFrame {
             newUserPanel.setName("gdsg\\"); // NOI18N
 
                 createAccountButton.setText("Create Acount");
-                createAccountButton.setToolTipText("Creates a new account");
+                createAccountButton.setToolTipText("Creates a new account with the given username and password.");
                 createAccountButton.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         createAccountButtonActionPerformed(evt);
@@ -147,8 +150,10 @@ public class Login extends javax.swing.JFrame {
                 });
 
                 newPasswordField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+                newPasswordField.setToolTipText("Enter a password.");
 
                 newUsernameField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+                newUsernameField.setToolTipText("Enter a new username.");
 
                 newUsernameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
                 newUsernameLabel.setLabelFor(newUsernameField);
@@ -160,6 +165,7 @@ public class Login extends javax.swing.JFrame {
                 newConfirmPasswordLabel.setToolTipText("");
 
                 newConfirmPasswordField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+                newConfirmPasswordField.setToolTipText("Enter the same password.");
                 newConfirmPasswordField.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         newConfirmPasswordFieldActionPerformed(evt);
@@ -212,7 +218,7 @@ public class Login extends javax.swing.JFrame {
                 );
 
                 exitButton.setText("Exit");
-                exitButton.setToolTipText("Exit the program");
+                exitButton.setToolTipText("Closes the program.");
                 exitButton.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         exitButtonActionPerformed(evt);

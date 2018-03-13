@@ -62,7 +62,7 @@
                   </Group>
                   <Component id="descriptionPanel" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="41" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="saveButton" max="32767" attributes="0"/>
                   <Component id="backButton" max="32767" attributes="0"/>
@@ -204,8 +204,14 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JColorChooser" name="colourChooser">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Pick a colour to represent the event."/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="eventNameField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="The name of the event being created or edited."/>
+          </Properties>
           <Events>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="eventNameFieldKeyReleased"/>
           </Events>
@@ -223,6 +229,7 @@
                 <StringItem index="6" value="Sunday"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Selects the day of the week the event occurs on."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -258,6 +265,7 @@
                 <StringItem index="23" value="23"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the time the event starts."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -271,6 +279,7 @@
                 <StringItem index="1" value="30"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the time the event starts."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -306,6 +315,7 @@
                 <StringItem index="23" value="23"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the time the event ends."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -319,6 +329,7 @@
                 <StringItem index="1" value="30"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the time the event ends."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -336,6 +347,7 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Day:"/>
+            <Property name="toolTipText" type="java.lang.String" value="If selected, the event occurs every week on the selected day."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dayRadioButtonActionPerformed"/>
@@ -347,12 +359,16 @@
               <ComponentRef name="dayDateButtonGroup"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Date"/>
+            <Property name="toolTipText" type="java.lang.String" value="If selected then the event will occur once on the date specified."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dateRadioButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="dateField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the date the event will occur on in dd/mm/yyyy format."/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="dateFormatLabel">
           <Properties>
@@ -394,6 +410,7 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="toolTipText" type="java.lang.String" value="Enter a description of the event."/>
               </Properties>
             </Component>
           </SubComponents>
@@ -411,7 +428,7 @@
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Save"/>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="Saves the event with the current details to the database."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
@@ -425,6 +442,7 @@
     <Component class="javax.swing.JButton" name="backButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Back"/>
+        <Property name="toolTipText" type="java.lang.String" value="Returns to the previous screen."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>

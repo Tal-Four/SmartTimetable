@@ -58,7 +58,7 @@ public class WorkHoursInput extends javax.swing.JFrame {
         workTimePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Work Time", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
         cancelButton.setText("Cancel");
-        cancelButton.setToolTipText("Logout and return to the login screen");
+        cancelButton.setToolTipText("Stop generating a timetable and return to the main menu.");
         cancelButton.setMaximumSize(new java.awt.Dimension(84, 26));
         cancelButton.setMinimumSize(new java.awt.Dimension(84, 26));
         cancelButton.setPreferredSize(new java.awt.Dimension(84, 26));
@@ -71,7 +71,7 @@ public class WorkHoursInput extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         continueButton.setText("Continue");
-        continueButton.setToolTipText("Exit the program");
+        continueButton.setToolTipText("Generate timetables with the given constraints.");
         continueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continueButtonActionPerformed(evt);
@@ -81,16 +81,20 @@ public class WorkHoursInput extends javax.swing.JFrame {
         descriptionText.setText("Enter the range of time to plot tasks within:");
 
         fromHourDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        fromHourDropdown.setToolTipText("Select the time you would like to start working at.");
 
         fromMinuteDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
+        fromMinuteDropdown.setToolTipText("Select the time you would like to start working at.");
 
         untilLabel.setText("Until:");
 
         fromLabel.setText("From:");
 
         untilHourDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        untilHourDropdown.setToolTipText("Select the time you would like to stop working at.");
 
         untilMinuteDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
+        untilMinuteDropdown.setToolTipText("Select the time you would like to stop working at.");
 
         jLabel1.setText(":");
 

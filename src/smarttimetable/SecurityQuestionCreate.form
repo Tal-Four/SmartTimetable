@@ -56,7 +56,7 @@
     <Component class="javax.swing.JButton" name="confirmButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Confirm"/>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="Adds the security question and answer to your account."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmButtonActionPerformed"/>
@@ -121,6 +121,8 @@
                 <Property name="columns" type="int" value="20"/>
                 <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="toolTipText" type="java.lang.String" value="Enter the security question for this account."/>
+                <Property name="wrapStyleWord" type="boolean" value="true"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -136,12 +138,16 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="answerField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the answer to your security question."/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JButton" name="backButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Back"/>
+        <Property name="toolTipText" type="java.lang.String" value="Returns to the login screen."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>

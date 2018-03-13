@@ -136,6 +136,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="0"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the password of the account."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="existingPasswordFieldActionPerformed"/>
@@ -144,7 +145,7 @@
         <Component class="javax.swing.JButton" name="loginButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Login"/>
-            <Property name="toolTipText" type="java.lang.String" value="Login with an existing account"/>
+            <Property name="toolTipText" type="java.lang.String" value="Attempts to log in with the given username and password."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginButtonActionPerformed"/>
@@ -166,6 +167,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="0"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the username of an existing account."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="exisitingPasswordLabel">
@@ -182,6 +184,7 @@
         <Component class="javax.swing.JButton" name="changePasswordButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Change Password"/>
+            <Property name="toolTipText" type="java.lang.String" value="Begins the change password process with the given username."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="changePasswordButtonActionPerformed"/>
@@ -263,7 +266,7 @@
         <Component class="javax.swing.JButton" name="createAccountButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Acount"/>
-            <Property name="toolTipText" type="java.lang.String" value="Creates a new account"/>
+            <Property name="toolTipText" type="java.lang.String" value="Creates a new account with the given username and password."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createAccountButtonActionPerformed"/>
@@ -274,6 +277,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="0"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter a password."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="newUsernameField">
@@ -281,6 +285,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="0"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter a new username."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="newUsernameLabel">
@@ -311,6 +316,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="0"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the same password."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newConfirmPasswordFieldActionPerformed"/>
@@ -332,7 +338,7 @@
     <Component class="javax.swing.JButton" name="exitButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Exit"/>
-        <Property name="toolTipText" type="java.lang.String" value="Exit the program"/>
+        <Property name="toolTipText" type="java.lang.String" value="Closes the program."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitButtonActionPerformed"/>

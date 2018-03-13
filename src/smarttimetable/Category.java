@@ -51,6 +51,7 @@ public class Category {
         
         String sql = "UPDATE category, user SET Name = '" + this.name + "', Colour = " + this.colourCode + " WHERE CategoryID = " + this.categoryID + " AND category.UserID = user.UserID AND user.UserID = " + User.getUserID();
         int linesChanged = DatabaseHandle.update(sql);
+        new Popup(this.name + " edited.").setVisible(true);
         return linesChanged;
     }
 

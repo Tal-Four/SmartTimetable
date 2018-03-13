@@ -82,6 +82,7 @@
     <Component class="javax.swing.JButton" name="backButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Back"/>
+        <Property name="toolTipText" type="java.lang.String" value="Returns to the previous screen."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>
@@ -228,21 +229,34 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JColorChooser" name="colourChooser">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Pick a colour to represent the task."/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="nameField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the name of the task."/>
+          </Properties>
           <Events>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nameFieldKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="timeField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the time you expect to need to complete the task."/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="deadlineField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the date the task is due in for."/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="categoryDropdown">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Pick the category the task belongs to."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="categoryDropdownActionPerformed"/>
@@ -280,6 +294,7 @@
               <ComponentRef name="priorityGroup"/>
             </Property>
             <Property name="text" type="java.lang.String" value="High"/>
+            <Property name="toolTipText" type="java.lang.String" value="If selected this task willl be plotted automatically if not all tasks can be plotted."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="standardRadioButton">
@@ -289,6 +304,7 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Standard"/>
+            <Property name="toolTipText" type="java.lang.String" value="If selected this task willl need to be plotted manually if not all tasks can be plotted."/>
           </Properties>
         </Component>
       </SubComponents>
@@ -327,6 +343,7 @@
                 <Property name="columns" type="int" value="20"/>
                 <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="toolTipText" type="java.lang.String" value="Enter a description of the task."/>
                 <Property name="wrapStyleWord" type="boolean" value="true"/>
               </Properties>
             </Component>
@@ -345,7 +362,7 @@
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Save"/>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="Saves the task with the current details to the database."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>

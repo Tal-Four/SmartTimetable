@@ -36,6 +36,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jFrameTitleLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="ascDescSortButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="sortLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="sortDropdown" min="-2" pref="200" max="-2" attributes="0"/>
@@ -79,10 +81,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jFrameTitleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="sortDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="sortLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="ascDescSortButton" alignment="0" pref="21" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jFrameTitleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="sortDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="sortLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -136,6 +141,7 @@
     <Component class="javax.swing.JButton" name="backButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Back"/>
+        <Property name="toolTipText" type="java.lang.String" value="Returns to the main menu."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>
@@ -149,7 +155,7 @@
     <Component class="javax.swing.JButton" name="exitButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Exit"/>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="Closes the program."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitButtonActionPerformed"/>
@@ -178,6 +184,7 @@
             <StringItem index="3" value="End time"/>
           </StringArray>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Select the characteristic that you would like to sort the list of event by."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sortDropdownActionPerformed"/>
@@ -228,6 +235,7 @@
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="0"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Select an event for its details to be loaded into the right side."/>
               </Properties>
               <Events>
                 <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="eventListValueChanged"/>
@@ -282,6 +290,7 @@
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="toolTipText" type="java.lang.String" value="The description of the selected event."/>
               </Properties>
             </Component>
           </SubComponents>
@@ -308,7 +317,7 @@
     <Component class="javax.swing.JButton" name="editButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit Selected"/>
-        <Property name="toolTipText" type="java.lang.String" value="Edit the selected task"/>
+        <Property name="toolTipText" type="java.lang.String" value="Edit the selected event."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editButtonActionPerformed"/>
@@ -317,6 +326,7 @@
     <Component class="javax.swing.JButton" name="deleteButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Delete"/>
+        <Property name="toolTipText" type="java.lang.String" value="Delete the selected event."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButtonActionPerformed"/>
@@ -329,6 +339,7 @@
             <TitledBorder/>
           </Border>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="The colour of the event."/>
       </Properties>
 
       <Layout>
@@ -345,10 +356,37 @@
       </Layout>
     </Container>
     <Component class="javax.swing.JLabel" name="dayDateContentsLabel">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="The day or date the event occurs on."/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="endTimeContentsLabel">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="The time the event ends at."/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="startTimeContentsLabel">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="The time the event starts at."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="ascDescSortButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ascending"/>
+        <Property name="toolTipText" type="java.lang.String" value="Defines whether the sort is done in ascending or descending order.  The current text is the current order."/>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[101, 26]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[101, 26]"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[101, 26]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ascDescSortButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
