@@ -374,7 +374,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
-        for (int count = 0; count < this.categoryIDList.Length(); count++) {
+        for (int count = 0; count < this.categoryIDList.length(); count++) {
             String sql = "SELECT Name FROM category, user WHERE category.UserID = user.UserID AND user.UserID = "
                     + User.getUserID() + " AND CategoryID = " + this.categoryIDList.getDataAt(count);
             ResultSet rs = DatabaseHandle.query(sql);

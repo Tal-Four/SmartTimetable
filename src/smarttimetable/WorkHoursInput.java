@@ -2,7 +2,6 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.JFrame;
 
 /**
  *
@@ -10,14 +9,14 @@ import javax.swing.JFrame;
  */
 public class WorkHoursInput extends javax.swing.JFrame {
 
-    private final JFrame menu;
+    private final Menu menu;
 
     /**
      * Creates new form SleepInput
      *
      * @param menu
      */
-    public WorkHoursInput(JFrame menu) {
+    public WorkHoursInput(Menu menu) {
         initComponents();
 
         this.menu = menu;

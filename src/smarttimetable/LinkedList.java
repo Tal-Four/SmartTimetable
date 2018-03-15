@@ -70,7 +70,7 @@ public class LinkedList {
     }
 
     //Returns the number of nodes in the list
-    public int Length() {
+    public int length() {
         if (this.rootNode == null) {
             System.out.println("List empty.");
             return 0;
@@ -90,7 +90,7 @@ public class LinkedList {
     public int getDataAt(int location) {
         Node currentNode = this.rootNode;
 
-        if (currentNode == null || location >= Length()) {
+        if (currentNode == null || location >= length()) {
             return 0;
         }
 

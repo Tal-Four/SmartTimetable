@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class TaskViewer extends javax.swing.JFrame {
 
-    LinkedList taskIDList = new LinkedList();
+    private LinkedList taskIDList = new LinkedList();
 
     /**
      * Creates new form TaskViewer
@@ -92,7 +92,7 @@ public class TaskViewer extends javax.swing.JFrame {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
-        for (int count = 0; count < this.taskIDList.Length(); count++) {
+        for (int count = 0; count < this.taskIDList.length(); count++) {
             String sql = "SELECT task.Name\n"
                     + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
                     + "WHERE (((task.TaskID)=" + this.taskIDList.getDataAt(count) + ") AND ((user.UserID)=" + User.getUserID() + "));";
