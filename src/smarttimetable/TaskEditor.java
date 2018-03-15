@@ -18,9 +18,9 @@ import javax.swing.JFrame;
  */
 public class TaskEditor extends javax.swing.JFrame {
 
-    private boolean edit;
+    private final boolean edit;
     private Task oldTask;
-    private LinkedList categoryIDList = new LinkedList();
+    private final LinkedList categoryIDList = new LinkedList();
     private JFrame lastPanel;
 
     //Creates new form TaskEditor
@@ -399,7 +399,7 @@ public class TaskEditor extends javax.swing.JFrame {
             if (rs.next()) {
                 colourChooser.setColor(new Color(rs.getInt("Colour")));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e);
         }
     }//GEN-LAST:event_categoryDropdownActionPerformed

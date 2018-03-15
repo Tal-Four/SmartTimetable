@@ -13,6 +13,8 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
     
     /**
      * Creates new form SecurityQuestionAnswer
+     * @param username
+     * @param password
      */
     public SecurityQuestionCreate(String username, String password) {
         initComponents();

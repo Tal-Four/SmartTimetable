@@ -1,6 +1,7 @@
 package smarttimetable;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,7 +39,7 @@ public class Event {
                 this.endTime = rs.getFloat("EndTime");
                 this.date = rs.getString("Date");
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.err.println(ex);
         }
     }
@@ -93,7 +94,7 @@ public class Event {
         new Popup("Event " + this.eventName + " edited.").setVisible(true);
     }
 
-    //Updates a recurring existing record with new values
+    //Updates a one-off existing record with new values
     public void editEvent(String eventName, String description, int colour, String date, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
@@ -174,7 +175,7 @@ public class Event {
     }
 
     public String[] timeToString(int mode) {
-        double time = 0;
+        double time;
         if (mode == 0) {
             time = this.startTime;
         } else {
@@ -198,13 +199,13 @@ public class Event {
     //Converting raw text to SQL date format
     private String dateTextToSQLFormat(String dateText) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
+        Date dateToConvert = null;
         try {
-            date = df.parse(dateText);
+            dateToConvert = df.parse(dateText);
         } catch (ParseException e) {
             System.err.println(e);
         }
-        return dateToSQLFormat(date);
+        return dateToSQLFormat(dateToConvert);
     }
 
     //Formats the string from YYYY-MM-DD to DD/MM/YYYY

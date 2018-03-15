@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class EventViewer extends javax.swing.JFrame {
 
-    private LinkedList eventIDList = new LinkedList();
+    private final LinkedList eventIDList = new LinkedList();
 
     /**
      * Creates new form TaskViewer
@@ -40,7 +40,7 @@ public class EventViewer extends javax.swing.JFrame {
         this.eventIDList.clear();
 
         String selectedSort = sortDropdown.getSelectedItem().toString();
-        String sql = null;
+        String sql;
         String sort = "";
         if (ascDescSortButton.getText().equals("Descending")) {
             sort = " DESC";
@@ -83,7 +83,7 @@ public class EventViewer extends javax.swing.JFrame {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
-        for (int count = 0; count < this.eventIDList.Length(); count++) {
+        for (int count = 0; count < this.eventIDList.length(); count++) {
             String sql = "SELECT EventName FROM event, user WHERE event.UserID = user.UserID AND user.UserID = "
                     + User.getUserID() + " AND event.EventID = " + this.eventIDList.getDataAt(count);
             ResultSet rs = DatabaseHandle.query(sql);
@@ -91,7 +91,7 @@ public class EventViewer extends javax.swing.JFrame {
                 while (rs.next()) {
                     dlm.addElement(rs.getString("EventName"));
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.err.println(e);
             }
         }
@@ -428,7 +428,6 @@ public class EventViewer extends javax.swing.JFrame {
         }
         this.setUpList();
     }//GEN-LAST:event_ascDescSortButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ascDescSortButton;

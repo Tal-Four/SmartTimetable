@@ -92,11 +92,6 @@ public class CompleteHours extends javax.swing.JFrame {
         secondLineLabel.setText("to complete on the selected task:");
 
         inputField.setToolTipText("Enter the number of hours you'd like to complete for this task.");
-        inputField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputFieldActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout completeHoursPanelLayout = new javax.swing.GroupLayout(completeHoursPanel);
         completeHoursPanel.setLayout(completeHoursPanelLayout);
@@ -211,10 +206,6 @@ public class CompleteHours extends javax.swing.JFrame {
         lastFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void inputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

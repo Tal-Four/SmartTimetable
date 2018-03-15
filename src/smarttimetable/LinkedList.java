@@ -27,11 +27,10 @@ public class LinkedList {
 
     //Deletes a node with the specified data
     public void deleteNode(int dataToDelete) {
-        boolean deleted = false;
+        boolean deleted;
         Node currentNode = this.rootNode, nodeToDelete;
         if (currentNode.getData() == dataToDelete) {
             this.rootNode = currentNode.getNextNode();
-            currentNode = null;
             deleted = true;
         } else {
             while (currentNode.getNextNode().getData() != dataToDelete) {
@@ -39,7 +38,6 @@ public class LinkedList {
             }
             nodeToDelete = currentNode.getNextNode();
             currentNode.setNextNode(nodeToDelete.getNextNode());
-            nodeToDelete = null;
             deleted = true;
         }
         if (deleted) {
@@ -70,7 +68,7 @@ public class LinkedList {
     }
 
     //Returns the number of nodes in the list
-    public int Length() {
+    public int length() {
         if (this.rootNode == null) {
             System.out.println("List empty.");
             return 0;
@@ -90,7 +88,7 @@ public class LinkedList {
     public int getDataAt(int location) {
         Node currentNode = this.rootNode;
 
-        if (currentNode == null || location >= Length()) {
+        if (currentNode == null || location >= length()) {
             return 0;
         }
 
@@ -101,7 +99,7 @@ public class LinkedList {
         return currentNode.getData();
     }
     
-    public void clear(){
+    public final void clear(){
         this.rootNode = null;
     }
 }

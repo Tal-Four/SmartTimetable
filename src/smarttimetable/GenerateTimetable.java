@@ -97,16 +97,16 @@ public class GenerateTimetable {
         DatabaseHandle.update(sql);
     }
 
-    private boolean plotTasks(Task[] taskList, int timetableID, int sleepStart, int sleepEnd, boolean firstWeek) {
+    private boolean plotTasks(Task[] taskList, int timetableID, int workEnd, int workStart, boolean firstWeek) {
         boolean done = false;
 
         boolean[][] slotsFilled = new boolean[7][48];
 
         for (int sleepCounter = 0; sleepCounter < 7; sleepCounter++) {
-            for (int sleepStartCounter = sleepStart; sleepStartCounter < 48; sleepStartCounter++) {
+            for (int sleepStartCounter = workEnd; sleepStartCounter < 48; sleepStartCounter++) {
                 slotsFilled[sleepCounter][sleepStartCounter] = true;
             }
-            for (int sleepEndCounter = 0; sleepEndCounter < sleepEnd; sleepEndCounter++) {
+            for (int sleepEndCounter = 0; sleepEndCounter < workStart; sleepEndCounter++) {
                 slotsFilled[sleepCounter][sleepEndCounter] = true;
             }
         }
@@ -157,7 +157,7 @@ public class GenerateTimetable {
         }
                 
         for (int dayCounter = weekStartDay; dayCounter < 7; dayCounter++) {
-            for (int timeCounter = sleepEnd; timeCounter < sleepStart; timeCounter++) {
+            for (int timeCounter = workStart; timeCounter < workEnd; timeCounter++) {
                 if (!slotsFilled[dayCounter][timeCounter] && (currentTime < timeCounter || dayCounter > weekStartDay || !firstWeek)) {
                     freeSlots++;
                 }
@@ -180,7 +180,7 @@ public class GenerateTimetable {
             if (difference < (6 - weekStartDay)) {
                 slotsFreePerTask = 0;
                 for (int dayCounter = weekStartDay; dayCounter <= weekStartDay + difference; dayCounter++) {
-                    for (int timeCounter = sleepEnd; timeCounter < sleepStart; timeCounter++) {
+                    for (int timeCounter = workStart; timeCounter < workEnd; timeCounter++) {
                         if (slotsFilled[dayCounter][timeCounter] && (!firstWeek || currentTime < timeCounter || dayCounter > weekStartDay)) {
                             slotsFreePerTask++;
                         }
@@ -196,12 +196,12 @@ public class GenerateTimetable {
 
                 while (dayCounter < 7 && dayCounter - weekStartDay < difference && !assigned) {
 
-                    int slotCounter = sleepEnd;
+                    int slotCounter = workStart;
                     if (firstWeek && dayCounter == weekStartDay) {
                         slotCounter = currentTime;
                     }
 
-                    while (slotCounter < sleepStart && !assigned) {
+                    while (slotCounter < workEnd && !assigned) {
 
                         if (!slotsFilled[dayCounter][slotCounter]) {
                             if (freeCounter == assignedSlot) {
@@ -286,12 +286,12 @@ public class GenerateTimetable {
     //<editor-fold defaultstate="collapsed" desc=" Event Insertion ">
     private void plotEvents(int timetableID) {
 
-        plotReccuringEvents(timetableID);
+        plotRecurringEvents(timetableID);
 
         plotSingleEvents(timetableID);
     }
 
-    private void plotReccuringEvents(int timetableID) {
+    private void plotRecurringEvents(int timetableID) {
         String sql = "SELECT event.EventID, event.Day, event.StartTime, event.EndTime\n"
                 + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
                 + "WHERE (((user.UserID)= " + User.getUserID() + ") AND ((event.Date) Is Null) AND ((event.Hidden)=False))\n"
@@ -374,7 +374,7 @@ public class GenerateTimetable {
     }
     //</editor-fold>
 
-    private boolean checkTaskAssigningPossible(boolean highPriority, int sleepStart, int sleepEnd) {
+    private boolean checkTaskAssigningPossible(boolean highPriority, int workEnd, int workStart) {
         String sql;
         GregorianCalendar calendar = new GregorianCalendar();
         String todayDate = calendar.get(GregorianCalendar.YEAR) + "-"
@@ -405,7 +405,7 @@ public class GenerateTimetable {
                 int dayDifference = getDayDifference(new Date(), task.sqlDateToTextFormat(task.getDateDue()));
                 int totalSlotsRemainingToday = 48 - (int) (currentTime * 2);
                 int totalSlotsBeforeDeadline = (dayDifference * 48) + totalSlotsRemainingToday;
-                int slotsUsedByEvents = getSlotsUsedByEventsBeforeDate(dayDifference, sleepStart, sleepEnd);
+                int slotsUsedByEvents = getSlotsUsedByEventsBeforeDate(dayDifference, workEnd, workStart);
                 int slotsAvailableBeforeDeadline = totalSlotsBeforeDeadline - (slotsUsedByEvents + slotsUsedByPreviousTasks);
                 slotsAvailableBeforeDeadline = ((slotsAvailableBeforeDeadline / 5) * 4) + (slotsAvailableBeforeDeadline % 5);
                 if (slotsAvailableBeforeDeadline >= slotsToPlot) {

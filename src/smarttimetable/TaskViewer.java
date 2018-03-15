@@ -92,11 +92,11 @@ public class TaskViewer extends javax.swing.JFrame {
     }
 
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
-    public void setUpList() {
+    public final void setUpList() {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
-        for (int count = 0; count < this.taskIDList.Length(); count++) {
+        for (int count = 0; count < this.taskIDList.length(); count++) {
             String sql = "SELECT task.Name\n"
                     + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
                     + "WHERE (((task.TaskID)=" + this.taskIDList.getDataAt(count) + ") AND ((user.UserID)=" + User.getUserID() + "));";

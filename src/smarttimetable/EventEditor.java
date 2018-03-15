@@ -17,7 +17,7 @@ import javax.swing.JFrame;
  */
 public class EventEditor extends javax.swing.JFrame {
 
-    private boolean edit;
+    private final boolean edit;
     private int oldEventID;
     private JFrame lastPanel;
 
@@ -51,7 +51,7 @@ public class EventEditor extends javax.swing.JFrame {
         this.lastPanel = lastPanel;
 
         this.dateField.setEnabled(false);
-        
+
         //Centers the frame to the centre of the monitor 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -329,7 +329,6 @@ public class EventEditor extends javax.swing.JFrame {
             double endTime, startTime;
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
-           
 
             if (edit) {
                 //Edits an existing record

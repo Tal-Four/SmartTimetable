@@ -76,7 +76,7 @@ public class Task {
 
         String sql = "UPDATE smarttimetabledb.task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', "
                 + "Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + ", "
-                + "HighPriority = " + this.highPriority + " WHERE UserID = " + User.getUserID() + " AND TaskID = "  + this.taskID;
+                + "HighPriority = " + this.highPriority + " WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " edited.").setVisible(true);
     }

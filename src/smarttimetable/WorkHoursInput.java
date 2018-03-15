@@ -2,7 +2,6 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.JFrame;
 
 /**
  *
@@ -10,14 +9,14 @@ import javax.swing.JFrame;
  */
 public class WorkHoursInput extends javax.swing.JFrame {
 
-    private final JFrame menu;
+    private final Menu menu;
 
     /**
      * Creates new form SleepInput
      *
      * @param menu
      */
-    public WorkHoursInput(JFrame menu) {
+    public WorkHoursInput(Menu menu) {
         initComponents();
 
         this.menu = menu;
@@ -50,8 +49,8 @@ public class WorkHoursInput extends javax.swing.JFrame {
         fromLabel = new javax.swing.JLabel();
         untilHourDropdown = new javax.swing.JComboBox<>();
         untilMinuteDropdown = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        fromColonLabel = new javax.swing.JLabel();
+        untilColonLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,9 +95,9 @@ public class WorkHoursInput extends javax.swing.JFrame {
         untilMinuteDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
         untilMinuteDropdown.setToolTipText("Select the time you would like to stop working at.");
 
-        jLabel1.setText(":");
+        fromColonLabel.setText(":");
 
-        jLabel2.setText(":");
+        untilColonLabel.setText(":");
 
         javax.swing.GroupLayout workTimePanelLayout = new javax.swing.GroupLayout(workTimePanel);
         workTimePanel.setLayout(workTimePanelLayout);
@@ -121,11 +120,11 @@ public class WorkHoursInput extends javax.swing.JFrame {
                                 .addGap(5, 5, 5)
                                 .addGroup(workTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(workTimePanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel2)
+                                        .addComponent(untilColonLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(untilMinuteDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(workTimePanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel1)
+                                        .addComponent(fromColonLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(fromMinuteDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 100, Short.MAX_VALUE))
@@ -147,13 +146,13 @@ public class WorkHoursInput extends javax.swing.JFrame {
                     .addComponent(fromHourDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fromMinuteDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fromLabel)
-                    .addComponent(jLabel1))
+                    .addComponent(fromColonLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(workTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(untilHourDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(untilMinuteDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(untilLabel)
-                    .addComponent(jLabel2))
+                    .addComponent(untilColonLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(workTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(userLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -217,11 +216,11 @@ public class WorkHoursInput extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton continueButton;
     private javax.swing.JLabel descriptionText;
+    private javax.swing.JLabel fromColonLabel;
     private javax.swing.JComboBox<String> fromHourDropdown;
     private javax.swing.JLabel fromLabel;
     private javax.swing.JComboBox<String> fromMinuteDropdown;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel untilColonLabel;
     private javax.swing.JComboBox<String> untilHourDropdown;
     private javax.swing.JLabel untilLabel;
     private javax.swing.JComboBox<String> untilMinuteDropdown;

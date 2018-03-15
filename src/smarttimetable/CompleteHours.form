@@ -144,9 +144,6 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Enter the number of hours you&apos;d like to complete for this task."/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inputFieldActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>
