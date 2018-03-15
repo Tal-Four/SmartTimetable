@@ -57,7 +57,7 @@ public class Task {
         this.timeUsed = 0;
         this.highPriority = highPriority;
 
-        String sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`, `HighPriortiy`) "
+        String sql = "INSERT INTO smarttimetabledb.task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`, `HighPriority`) "
                 + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.category.getCategoryID() + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " + this.timeModified + ", " + this.highPriority + ")";
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " created.").setVisible(true);
@@ -105,7 +105,9 @@ public class Task {
 
     //Deletes this task from the DB
     public void deleteTask() {
-        String sql = "DELETE FROM timetableslot, task WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
+        String sql = "DELETE FROM timetableslot WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
+        DatabaseHandle.update(sql);
+        sql = "DELETE FROM task WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
         DatabaseHandle.update(sql);
     }
 

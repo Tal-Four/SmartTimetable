@@ -82,6 +82,7 @@ public class ChangeSlot extends javax.swing.JFrame {
         slotContainsText.setText("Slot currently contains:");
 
         backButton.setText("Back");
+        backButton.setToolTipText("Returns to the timetable.");
         backButton.setMaximumSize(new java.awt.Dimension(77, 26));
         backButton.setMinimumSize(new java.awt.Dimension(77, 26));
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -93,7 +94,7 @@ public class ChangeSlot extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         changeButton.setText("Change");
-        changeButton.setToolTipText("");
+        changeButton.setToolTipText("Changes the previously selected slot to the slot specified above.");
         changeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeButtonActionPerformed(evt);
@@ -102,10 +103,12 @@ public class ChangeSlot extends javax.swing.JFrame {
 
         changeToPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Change to:"));
 
+        taskEventList.setToolTipText("Select the task or event to replace the current slot.");
         taskEventListScrollPanel.setViewportView(taskEventList);
 
         eventOrTaskGroup.add(taskButton);
         taskButton.setText("Task");
+        taskButton.setToolTipText("Loads the list of tasks.");
         taskButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 taskButtonActionPerformed(evt);
@@ -114,6 +117,7 @@ public class ChangeSlot extends javax.swing.JFrame {
 
         eventOrTaskGroup.add(eventButton);
         eventButton.setText("Event");
+        eventButton.setToolTipText("Loads the list of events.");
         eventButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 eventButtonActionPerformed(evt);
@@ -122,6 +126,7 @@ public class ChangeSlot extends javax.swing.JFrame {
 
         eventOrTaskGroup.add(emptyRadioButton);
         emptyRadioButton.setText("Empty");
+        emptyRadioButton.setToolTipText("Replace the selected slot with an empty slot.");
         emptyRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emptyRadioButtonActionPerformed(evt);

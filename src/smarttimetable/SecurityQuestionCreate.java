@@ -13,6 +13,8 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
     
     /**
      * Creates new form SecurityQuestionAnswer
+     * @param username
+     * @param password
      */
     public SecurityQuestionCreate(String username, String password) {
         initComponents();
@@ -46,7 +48,7 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         confirmButton.setText("Confirm");
-        confirmButton.setToolTipText("");
+        confirmButton.setToolTipText("Adds the security question and answer to your account.");
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButtonActionPerformed(evt);
@@ -58,11 +60,15 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
         questionTextArea.setColumns(20);
         questionTextArea.setLineWrap(true);
         questionTextArea.setRows(5);
+        questionTextArea.setToolTipText("Enter the security question for this account.");
+        questionTextArea.setWrapStyleWord(true);
         questionScrollPane.setViewportView(questionTextArea);
 
         securityQuestionLabel.setText("Security Question:");
 
         answerLabel.setText("Answer:");
+
+        answerField.setToolTipText("Enter the answer to your security question.");
 
         javax.swing.GroupLayout questionCreatePanelLayout = new javax.swing.GroupLayout(questionCreatePanel);
         questionCreatePanel.setLayout(questionCreatePanelLayout);
@@ -94,6 +100,7 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
         );
 
         backButton.setText("Back");
+        backButton.setToolTipText("Returns to the login screen.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);

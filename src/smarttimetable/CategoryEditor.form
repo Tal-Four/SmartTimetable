@@ -98,7 +98,7 @@
                   <Component id="colourLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="colourChooser" min="-2" pref="311" max="-2" attributes="0"/>
-                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="backButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="userLabel" alignment="0" min="-2" pref="26" max="-2" attributes="0"/>
@@ -111,10 +111,14 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JColorChooser" name="colourChooser">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Pick a colour to represent the category."/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="backButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Back"/>
+            <Property name="toolTipText" type="java.lang.String" value="Returns to the previous screen without saving the currently entered details."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>
@@ -128,7 +132,7 @@
         <Component class="javax.swing.JButton" name="saveButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Save"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="toolTipText" type="java.lang.String" value="Saves the details to the database."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
@@ -145,6 +149,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="categoryNameField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Enter a name for the category. Maximum 15 characters."/>
+          </Properties>
           <Events>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="categoryNameFieldKeyReleased"/>
           </Events>

@@ -41,6 +41,7 @@ public class NewPassword extends javax.swing.JFrame {
         newPasswordPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New Password", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
         confirmPasswordField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        confirmPasswordField.setToolTipText("Enter the same password as entered above.");
         confirmPasswordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmPasswordFieldActionPerformed(evt);
@@ -48,6 +49,7 @@ public class NewPassword extends javax.swing.JFrame {
         });
 
         passwordField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        passwordField.setToolTipText("Enter a new password.");
 
         passwordLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         passwordLabel.setText("Password");
@@ -57,7 +59,7 @@ public class NewPassword extends javax.swing.JFrame {
         confirmPasswordLabel.setToolTipText("");
 
         changePasswordButton.setText("Change Password");
-        changePasswordButton.setToolTipText("Creates a new account");
+        changePasswordButton.setToolTipText("Changes the account's password to the new password.");
         changePasswordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changePasswordButtonActionPerformed(evt);

@@ -17,7 +17,7 @@ import javax.swing.JFrame;
  */
 public class EventEditor extends javax.swing.JFrame {
 
-    private boolean edit;
+    private final boolean edit;
     private int oldEventID;
     private JFrame lastPanel;
 
@@ -51,7 +51,7 @@ public class EventEditor extends javax.swing.JFrame {
         this.lastPanel = lastPanel;
 
         this.dateField.setEnabled(false);
-        
+
         //Centers the frame to the centre of the monitor 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -111,6 +111,9 @@ public class EventEditor extends javax.swing.JFrame {
         endTimeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         endTimeLabel.setText("End Time:");
 
+        colourChooser.setToolTipText("Pick a colour to represent the event.");
+
+        eventNameField.setToolTipText("The name of the event being created or edited.");
         eventNameField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 eventNameFieldKeyReleased(evt);
@@ -118,20 +121,26 @@ public class EventEditor extends javax.swing.JFrame {
         });
 
         daySelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
+        daySelection.setToolTipText("Selects the day of the week the event occurs on.");
 
         startHourDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        startHourDropdown.setToolTipText("Enter the time the event starts.");
 
         startMinuteDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
+        startMinuteDropdown.setToolTipText("Enter the time the event starts.");
 
         endHourDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        endHourDropdown.setToolTipText("Enter the time the event ends.");
 
         endMinuteDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "30" }));
+        endMinuteDropdown.setToolTipText("Enter the time the event ends.");
 
         eventNameCharsUsed.setText("0 out of 20 characters used");
 
         dayDateButtonGroup.add(dayRadioButton);
         dayRadioButton.setSelected(true);
         dayRadioButton.setText("Day:");
+        dayRadioButton.setToolTipText("If selected, the event occurs every week on the selected day.");
         dayRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dayRadioButtonActionPerformed(evt);
@@ -140,11 +149,14 @@ public class EventEditor extends javax.swing.JFrame {
 
         dayDateButtonGroup.add(dateRadioButton);
         dateRadioButton.setText("Date");
+        dateRadioButton.setToolTipText("If selected then the event will occur once on the date specified.");
         dateRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dateRadioButtonActionPerformed(evt);
             }
         });
+
+        dateField.setToolTipText("Enter the date the event will occur on in dd/mm/yyyy format.");
 
         dateFormatLabel.setText("dd/mm/yyyy format");
 
@@ -223,6 +235,7 @@ public class EventEditor extends javax.swing.JFrame {
 
         descriptionText.setColumns(20);
         descriptionText.setRows(5);
+        descriptionText.setToolTipText("Enter a description of the event.");
         descriptionScrollPane.setViewportView(descriptionText);
 
         javax.swing.GroupLayout descriptionPanelLayout = new javax.swing.GroupLayout(descriptionPanel);
@@ -240,7 +253,7 @@ public class EventEditor extends javax.swing.JFrame {
         jFrameTitle.setText("Event Editor");
 
         saveButton.setText("Save");
-        saveButton.setToolTipText("");
+        saveButton.setToolTipText("Saves the event with the current details to the database.");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -250,6 +263,7 @@ public class EventEditor extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         backButton.setText("Back");
+        backButton.setToolTipText("Returns to the previous screen.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -287,7 +301,7 @@ public class EventEditor extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(mainDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(descriptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(backButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -315,7 +329,6 @@ public class EventEditor extends javax.swing.JFrame {
             double endTime, startTime;
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
-           
 
             if (edit) {
                 //Edits an existing record
@@ -325,6 +338,7 @@ public class EventEditor extends javax.swing.JFrame {
                 } else {
                     event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
                 }
+                ((EventViewer) lastPanel).updateDetails();
             } else {
                 //Entering the event into the database
                 if (this.dateRadioButton.isSelected()) {

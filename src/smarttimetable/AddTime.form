@@ -98,7 +98,7 @@
         <Component class="javax.swing.JButton" name="continueButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Continue"/>
-            <Property name="toolTipText" type="java.lang.String" value="Exit the program"/>
+            <Property name="toolTipText" type="java.lang.String" value="Adds the specified time to the respective task."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="continueButtonActionPerformed"/>
@@ -112,7 +112,7 @@
         <Component class="javax.swing.JButton" name="cancelButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancel"/>
-            <Property name="toolTipText" type="java.lang.String" value="Logout and return to the login screen"/>
+            <Property name="toolTipText" type="java.lang.String" value="Cancels adding time and returns to the previous screen."/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[84, 26]"/>
             </Property>
@@ -133,6 +133,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Type the number of hours you want to add to the task here."/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

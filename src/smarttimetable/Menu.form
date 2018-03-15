@@ -61,7 +61,7 @@
     <Component class="javax.swing.JButton" name="exitButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Exit"/>
-        <Property name="toolTipText" type="java.lang.String" value="Exit the program"/>
+        <Property name="toolTipText" type="java.lang.String" value="Closes the program."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitButtonActionPerformed"/>
@@ -70,7 +70,7 @@
     <Component class="javax.swing.JButton" name="logoutButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Logout"/>
-        <Property name="toolTipText" type="java.lang.String" value="Logout and return to the login screen"/>
+        <Property name="toolTipText" type="java.lang.String" value="Logout and return to the login screen."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logoutButtonActionPerformed"/>
@@ -151,6 +151,7 @@
         <Component class="javax.swing.JButton" name="createEventsButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Event"/>
+            <Property name="toolTipText" type="java.lang.String" value="Opens the create event screen."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createEventsButtonActionPerformed"/>
@@ -159,6 +160,7 @@
         <Component class="javax.swing.JButton" name="viewEditEvents">
           <Properties>
             <Property name="text" type="java.lang.String" value="View/Edit Events"/>
+            <Property name="toolTipText" type="java.lang.String" value="Opens the event viewer screen."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditEventsActionPerformed"/>
@@ -167,6 +169,7 @@
         <Component class="javax.swing.JButton" name="generateTimetableButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Generate Timetable"/>
+            <Property name="toolTipText" type="java.lang.String" value="Starts the process of generating timetables."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateTimetableButtonActionPerformed"/>
@@ -175,6 +178,7 @@
         <Component class="javax.swing.JButton" name="viewEditTimetable">
           <Properties>
             <Property name="text" type="java.lang.String" value="View/Edit Timetable"/>
+            <Property name="toolTipText" type="java.lang.String" value="Opens the timetable screen."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditTimetableActionPerformed"/>
@@ -183,6 +187,7 @@
         <Component class="javax.swing.JButton" name="createTaskButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Task"/>
+            <Property name="toolTipText" type="java.lang.String" value="Opens the task creator screen."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createTaskButtonActionPerformed"/>
@@ -191,6 +196,7 @@
         <Component class="javax.swing.JButton" name="viewEditTasks">
           <Properties>
             <Property name="text" type="java.lang.String" value="View/Edit Tasks"/>
+            <Property name="toolTipText" type="java.lang.String" value="Opens the task viewer screen."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditTasksActionPerformed"/>
@@ -199,6 +205,7 @@
         <Component class="javax.swing.JButton" name="createCategoryButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Category"/>
+            <Property name="toolTipText" type="java.lang.String" value="Opens the create category screen."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createCategoryButtonActionPerformed"/>
@@ -207,6 +214,7 @@
         <Component class="javax.swing.JButton" name="viewEditCategoryButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="View/Edit Category"/>
+            <Property name="toolTipText" type="java.lang.String" value="Opens the category viewer screen."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewEditCategoryButtonActionPerformed"/>

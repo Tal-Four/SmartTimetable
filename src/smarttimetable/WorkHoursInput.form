@@ -74,12 +74,12 @@
                                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
-                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                          <Component id="untilColonLabel" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" max="-2" attributes="0"/>
                                           <Component id="untilMinuteDropdown" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
-                                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="fromColonLabel" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" max="-2" attributes="0"/>
                                           <Component id="fromMinuteDropdown" min="-2" max="-2" attributes="0"/>
                                       </Group>
@@ -110,14 +110,14 @@
                       <Component id="fromHourDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="fromMinuteDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="fromLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="fromColonLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="untilHourDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="untilMinuteDropdown" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="untilLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="untilColonLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -133,7 +133,7 @@
         <Component class="javax.swing.JButton" name="cancelButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancel"/>
-            <Property name="toolTipText" type="java.lang.String" value="Logout and return to the login screen"/>
+            <Property name="toolTipText" type="java.lang.String" value="Stop generating a timetable and return to the main menu."/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[84, 26]"/>
             </Property>
@@ -156,7 +156,7 @@
         <Component class="javax.swing.JButton" name="continueButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Continue"/>
-            <Property name="toolTipText" type="java.lang.String" value="Exit the program"/>
+            <Property name="toolTipText" type="java.lang.String" value="Generate timetables with the given constraints."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="continueButtonActionPerformed"/>
@@ -197,6 +197,7 @@
                 <StringItem index="23" value="23"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Select the time you would like to start working at."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -210,6 +211,7 @@
                 <StringItem index="1" value="30"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Select the time you would like to start working at."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -255,6 +257,7 @@
                 <StringItem index="23" value="23"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Select the time you would like to stop working at."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -268,17 +271,18 @@
                 <StringItem index="1" value="30"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Select the time you would like to stop working at."/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="fromColonLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value=":"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="untilColonLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value=":"/>
           </Properties>

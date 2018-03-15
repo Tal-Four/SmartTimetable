@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class EventViewer extends javax.swing.JFrame {
 
-    private LinkedList eventIDList = new LinkedList();
+    private final LinkedList eventIDList = new LinkedList();
 
     /**
      * Creates new form TaskViewer
@@ -40,7 +40,11 @@ public class EventViewer extends javax.swing.JFrame {
         this.eventIDList.clear();
 
         String selectedSort = sortDropdown.getSelectedItem().toString();
-        String sql = null;
+        String sql;
+        String sort = "";
+        if (ascDescSortButton.getText().equals("Descending")) {
+            sort = " DESC";
+        }
 
         //Setting the correct SQL
         switch (selectedSort) {
@@ -60,8 +64,10 @@ public class EventViewer extends javax.swing.JFrame {
                 selectedSort = "EventName";
                 break;
         }
-        sql = "SELECT EventID FROM event, user WHERE event.Hidden = 0 AND user.UserID = event.UserID AND user.UserID = " + User.getUserID() + " ORDER BY event." + selectedSort;
-
+        sql = "SELECT event.EventID\n"
+                + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.Hidden)=False))\n"
+                + "ORDER BY event." + selectedSort + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
@@ -85,7 +91,7 @@ public class EventViewer extends javax.swing.JFrame {
                 while (rs.next()) {
                     dlm.addElement(rs.getString("EventName"));
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.err.println(e);
             }
         }
@@ -123,10 +129,12 @@ public class EventViewer extends javax.swing.JFrame {
         dayDateContentsLabel = new javax.swing.JLabel();
         endTimeContentsLabel = new javax.swing.JLabel();
         startTimeContentsLabel = new javax.swing.JLabel();
+        ascDescSortButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         backButton.setText("Back");
+        backButton.setToolTipText("Returns to the main menu.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -136,7 +144,7 @@ public class EventViewer extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         exitButton.setText("Exit");
-        exitButton.setToolTipText("");
+        exitButton.setToolTipText("Closes the program.");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -149,6 +157,7 @@ public class EventViewer extends javax.swing.JFrame {
         sortLabel.setText("Sort By:");
 
         sortDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Date/Day", "Start time", "End time" }));
+        sortDropdown.setToolTipText("Select the characteristic that you would like to sort the list of event by.");
         sortDropdown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sortDropdownActionPerformed(evt);
@@ -157,6 +166,7 @@ public class EventViewer extends javax.swing.JFrame {
 
         eventPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Events"));
 
+        eventList.setToolTipText("Select an event for its details to be loaded into the right side.");
         eventList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 eventListValueChanged(evt);
@@ -186,6 +196,7 @@ public class EventViewer extends javax.swing.JFrame {
         descriptionBox.setEditable(false);
         descriptionBox.setColumns(20);
         descriptionBox.setRows(5);
+        descriptionBox.setToolTipText("The description of the selected event.");
         jScrollPane2.setViewportView(descriptionBox);
 
         javax.swing.GroupLayout descriptionPanelLayout = new javax.swing.GroupLayout(descriptionPanel);
@@ -214,7 +225,7 @@ public class EventViewer extends javax.swing.JFrame {
         dayDateLabel.setText("Day:");
 
         editButton.setText("Edit Selected");
-        editButton.setToolTipText("Edit the selected task");
+        editButton.setToolTipText("Edit the selected event.");
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editButtonActionPerformed(evt);
@@ -222,6 +233,7 @@ public class EventViewer extends javax.swing.JFrame {
         });
 
         deleteButton.setText("Delete");
+        deleteButton.setToolTipText("Delete the selected event.");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -229,6 +241,7 @@ public class EventViewer extends javax.swing.JFrame {
         });
 
         colourPreview.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        colourPreview.setToolTipText("The colour of the event.");
 
         javax.swing.GroupLayout colourPreviewLayout = new javax.swing.GroupLayout(colourPreview);
         colourPreview.setLayout(colourPreviewLayout);
@@ -240,6 +253,23 @@ public class EventViewer extends javax.swing.JFrame {
             colourPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        dayDateContentsLabel.setToolTipText("The day or date the event occurs on.");
+
+        endTimeContentsLabel.setToolTipText("The time the event ends at.");
+
+        startTimeContentsLabel.setToolTipText("The time the event starts at.");
+
+        ascDescSortButton.setText("Ascending");
+        ascDescSortButton.setToolTipText("Defines whether the sort is done in ascending or descending order.  The current text is the current order.");
+        ascDescSortButton.setMaximumSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.setMinimumSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.setPreferredSize(new java.awt.Dimension(101, 26));
+        ascDescSortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ascDescSortButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -257,6 +287,8 @@ public class EventViewer extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jFrameTitleLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ascDescSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sortLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -289,10 +321,12 @@ public class EventViewer extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jFrameTitleLabel)
-                    .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sortLabel))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ascDescSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 21, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jFrameTitleLabel)
+                        .addComponent(sortDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(sortLabel)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -367,6 +401,10 @@ public class EventViewer extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void eventListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventListValueChanged
+        updateDetails();
+    }//GEN-LAST:event_eventListValueChanged
+
+    public void updateDetails(){
         Event selectedEvent = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
 
         if (selectedEvent.getDate() == null) {
@@ -380,10 +418,19 @@ public class EventViewer extends javax.swing.JFrame {
         startTimeContentsLabel.setText(selectedEvent.timeToString(0)[0] + ":" + selectedEvent.timeToString(0)[1]);
         endTimeContentsLabel.setText(selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
         colourPreview.setBackground(new Color(selectedEvent.getColourCode()));
-    }//GEN-LAST:event_eventListValueChanged
-
+    }
+    
+    private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
+        if (ascDescSortButton.getText().equals("Ascending")) {
+            ascDescSortButton.setText("Descending");
+        } else {
+            ascDescSortButton.setText("Ascending");
+        }
+        this.setUpList();
+    }//GEN-LAST:event_ascDescSortButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ascDescSortButton;
     private javax.swing.JButton backButton;
     private javax.swing.JPanel colourPreview;
     private javax.swing.JLabel dayDateContentsLabel;

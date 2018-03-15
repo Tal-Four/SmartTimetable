@@ -27,11 +27,10 @@ public class LinkedList {
 
     //Deletes a node with the specified data
     public void deleteNode(int dataToDelete) {
-        boolean deleted = false;
+        boolean deleted;
         Node currentNode = this.rootNode, nodeToDelete;
         if (currentNode.getData() == dataToDelete) {
             this.rootNode = currentNode.getNextNode();
-            currentNode = null;
             deleted = true;
         } else {
             while (currentNode.getNextNode().getData() != dataToDelete) {
@@ -39,7 +38,6 @@ public class LinkedList {
             }
             nodeToDelete = currentNode.getNextNode();
             currentNode.setNextNode(nodeToDelete.getNextNode());
-            nodeToDelete = null;
             deleted = true;
         }
         if (deleted) {
@@ -101,7 +99,7 @@ public class LinkedList {
         return currentNode.getData();
     }
     
-    public void clear(){
+    public final void clear(){
         this.rootNode = null;
     }
 }

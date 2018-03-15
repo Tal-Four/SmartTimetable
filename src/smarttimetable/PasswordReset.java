@@ -27,7 +27,7 @@ public class PasswordReset extends javax.swing.JFrame {
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
         //Sets the user's name on screen and loads the list of events                
-        userLabel.setText("Reseting password for: " + User.getUsername());
+        userLabel.setText("Resetting password for: " + User.getUsername());
     }
 
     /**
@@ -57,11 +57,14 @@ public class PasswordReset extends javax.swing.JFrame {
         questionTextArea.setColumns(20);
         questionTextArea.setLineWrap(true);
         questionTextArea.setRows(5);
+        questionTextArea.setToolTipText("");
         questionScrollPane.setViewportView(questionTextArea);
 
         securityQuestionLabel.setText("Security Question:");
 
         answerLabel.setText("Answer:");
+
+        answerField.setToolTipText("Enter the answer to the security question.");
 
         javax.swing.GroupLayout passwordResetPanelLayout = new javax.swing.GroupLayout(passwordResetPanel);
         passwordResetPanel.setLayout(passwordResetPanelLayout);
@@ -93,6 +96,7 @@ public class PasswordReset extends javax.swing.JFrame {
         );
 
         backButton.setText("Back");
+        backButton.setToolTipText("Return to the login screen.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -102,7 +106,7 @@ public class PasswordReset extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         confirmButton.setText("Confirm");
-        confirmButton.setToolTipText("");
+        confirmButton.setToolTipText("Confirm your answer.");
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButtonActionPerformed(evt);

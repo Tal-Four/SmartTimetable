@@ -18,9 +18,9 @@ import javax.swing.JFrame;
  */
 public class TaskEditor extends javax.swing.JFrame {
 
-    private boolean edit;
+    private final boolean edit;
     private Task oldTask;
-    private LinkedList categoryIDList = new LinkedList();
+    private final LinkedList categoryIDList = new LinkedList();
     private JFrame lastPanel;
 
     //Creates new form TaskEditor
@@ -109,6 +109,7 @@ public class TaskEditor extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         backButton.setText("Back");
+        backButton.setToolTipText("Returns to the previous screen.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -132,12 +133,20 @@ public class TaskEditor extends javax.swing.JFrame {
         categoryLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         categoryLabel.setText("Category:");
 
+        colourChooser.setToolTipText("Pick a colour to represent the task.");
+
+        nameField.setToolTipText("Enter the name of the task.");
         nameField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 nameFieldKeyReleased(evt);
             }
         });
 
+        timeField.setToolTipText("Enter the time you expect to need to complete the task.");
+
+        deadlineField.setToolTipText("Enter the date the task is due in for.");
+
+        categoryDropdown.setToolTipText("Pick the category the task belongs to.");
         categoryDropdown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryDropdownActionPerformed(evt);
@@ -155,10 +164,12 @@ public class TaskEditor extends javax.swing.JFrame {
 
         priorityGroup.add(highRadioButton);
         highRadioButton.setText("High");
+        highRadioButton.setToolTipText("If selected this task willl be plotted automatically if not all tasks can be plotted.");
 
         priorityGroup.add(standardRadioButton);
         standardRadioButton.setSelected(true);
         standardRadioButton.setText("Standard");
+        standardRadioButton.setToolTipText("If selected this task willl need to be plotted manually if not all tasks can be plotted.");
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -237,6 +248,7 @@ public class TaskEditor extends javax.swing.JFrame {
         descriptionBox.setColumns(20);
         descriptionBox.setLineWrap(true);
         descriptionBox.setRows(5);
+        descriptionBox.setToolTipText("Enter a description of the task.");
         descriptionBox.setWrapStyleWord(true);
         descriptionScrollPanel.setViewportView(descriptionBox);
 
@@ -255,7 +267,7 @@ public class TaskEditor extends javax.swing.JFrame {
         titleLabel.setText("Task Editor");
 
         saveButton.setText("Save");
-        saveButton.setToolTipText("");
+        saveButton.setToolTipText("Saves the task with the current details to the database.");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -355,6 +367,7 @@ public class TaskEditor extends javax.swing.JFrame {
 
             if (edit) {
                 oldTask.editTask(taskName, description, categoryID, dateDueText, colourCode, timeSet, highPriority);
+                ((TaskViewer) lastPanel).loadDetails();
             } else {
                 new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet, highPriority);
             }
@@ -386,7 +399,7 @@ public class TaskEditor extends javax.swing.JFrame {
             if (rs.next()) {
                 colourChooser.setColor(new Color(rs.getInt("Colour")));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e);
         }
     }//GEN-LAST:event_categoryDropdownActionPerformed

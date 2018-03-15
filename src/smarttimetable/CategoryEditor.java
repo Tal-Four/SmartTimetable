@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 public class CategoryEditor extends javax.swing.JFrame {
 
     private boolean edit;
-    private int editedCategoryID;
+    private Category editedCategory;
     private JFrame lastPanel;
 
     /**
@@ -27,7 +27,7 @@ public class CategoryEditor extends javax.swing.JFrame {
 
     public CategoryEditor(int categoryID, JFrame lastPanel) {
         this.edit = true;
-        this.editedCategoryID = categoryID;
+        this.editedCategory = new Category(categoryID);
         frameSetup(lastPanel);
 
         String sql = "SELECT Name, Colour FROM category, user WHERE user.UserID = category.UserID AND user.UserID = " + User.getUserID() + " AND CategoryID = " + categoryID;
@@ -80,7 +80,10 @@ public class CategoryEditor extends javax.swing.JFrame {
 
         mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Category Editor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
+        colourChooser.setToolTipText("Pick a colour to represent the category.");
+
         backButton.setText("Back");
+        backButton.setToolTipText("Returns to the previous screen without saving the currently entered details.");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -90,7 +93,7 @@ public class CategoryEditor extends javax.swing.JFrame {
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         saveButton.setText("Save");
-        saveButton.setToolTipText("");
+        saveButton.setToolTipText("Saves the details to the database.");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -101,6 +104,7 @@ public class CategoryEditor extends javax.swing.JFrame {
 
         colourLabel.setText("Colour:");
 
+        categoryNameField.setToolTipText("Enter a name for the category. Maximum 15 characters.");
         categoryNameField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 categoryNameFieldKeyReleased(evt);
@@ -148,7 +152,7 @@ public class CategoryEditor extends javax.swing.JFrame {
                 .addComponent(colourLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(colourChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(backButton)
                     .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -186,9 +190,8 @@ public class CategoryEditor extends javax.swing.JFrame {
         String name = this.categoryNameField.getText();
 
         if (edit) {
-            Category category = new Category(this.editedCategoryID);
-            category.editCategory(name, colourCode);
-            new Popup(category.getName() + " edited.").setVisible(true);
+            editedCategory.editCategory(name, colourCode);
+            ((CategoryViewer) lastPanel).categoryListIndexSelected();
         } else {
             Category category = new Category(name, colourCode);
             new Popup(category.getName() + " created.").setVisible(true);
