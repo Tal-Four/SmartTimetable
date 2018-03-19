@@ -338,7 +338,7 @@ public class EventEditor extends javax.swing.JFrame {
                 } else {
                     event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
                 }
-                ((EventViewer) lastPanel).updateDetails();
+                ((EventViewer) lastPanel).update();
             } else {
                 //Entering the event into the database
                 if (this.dateRadioButton.isSelected()) {

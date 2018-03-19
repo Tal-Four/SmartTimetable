@@ -193,7 +193,7 @@ public class CategoryEditor extends javax.swing.JFrame {
         if (name.length() != 0) {
             if (edit) {
                 editedCategory.editCategory(name, colourCode);
-                ((CategoryViewer) lastPanel).categoryListIndexSelected();
+                ((CategoryViewer) lastPanel).update();
             } else {
                 new Category(name, colourCode);
             }

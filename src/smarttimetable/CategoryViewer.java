@@ -302,7 +302,12 @@ public class CategoryViewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void categoryListIndexSelected() {
+    public void update(){
+        this.setUpList();
+        this.categoryListIndexSelected();
+    }
+    
+    private void categoryListIndexSelected() {
         if (categoryList.getSelectedIndex() != -1) {
             nameVariableLabel.setText(categoryList.getSelectedValue());
 

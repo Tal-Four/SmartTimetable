@@ -368,7 +368,7 @@ public class TaskEditor extends javax.swing.JFrame {
 
             if (edit) {
                 oldTask.editTask(taskName, description, categoryID, dateDueText, colourCode, timeSet, highPriority);
-                ((TaskViewer) lastPanel).loadDetails();
+                ((TaskViewer) lastPanel).update();
             } else {
                 new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet, highPriority);
             }

@@ -482,7 +482,12 @@ public class TaskViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_completeButtonActionPerformed
 
-    public void loadDetails() {
+    public void update(){
+        this.loadDetails();
+        this.setUpList();
+    }
+    
+    private void loadDetails() {
         Task selectedTask = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
 
         //Setting the labels

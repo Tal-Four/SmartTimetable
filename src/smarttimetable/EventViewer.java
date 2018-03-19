@@ -406,7 +406,7 @@ public class EventViewer extends javax.swing.JFrame {
         updateDetails();
     }//GEN-LAST:event_eventListValueChanged
 
-    public void updateDetails() {
+    private void updateDetails() {
         Event selectedEvent = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
 
         if (selectedEvent.getDate() == null) {
@@ -420,6 +420,11 @@ public class EventViewer extends javax.swing.JFrame {
         startTimeContentsLabel.setText(selectedEvent.timeToString(0)[0] + ":" + selectedEvent.timeToString(0)[1]);
         endTimeContentsLabel.setText(selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
         colourPreview.setBackground(new Color(selectedEvent.getColourCode()));
+    }
+    
+    public void update(){
+        this.updateDetails();
+        this.setUpList();
     }
 
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
