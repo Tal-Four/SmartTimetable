@@ -10,6 +10,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JFrame;
 
 /**
@@ -358,10 +362,14 @@ public class TaskEditor extends javax.swing.JFrame {
         }
 
         //Checks to see if date entered is in the correct format (DD/MM/YYYY)
-        if (!(dateDueText.length() == 10 && dateDueText.charAt(2) == '/' && dateDueText.charAt(5) == '/')) {
+        try {
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            df.parse(dateDueText);
+        } catch (ParseException e) {
+            new Popup("Invalid date format.").setVisible(true);
             valid = false;
-            new Popup("Invalid date format").setVisible(true);
-        }//</editor-fold>
+        }
+        //</editor-fold>
 
         //Creates the task and changes screen back to the menu if the variables are valid
         if (valid) {
@@ -405,8 +413,6 @@ public class TaskEditor extends javax.swing.JFrame {
         }
         DatabaseHandle.disconnect();
     }//GEN-LAST:event_categoryDropdownActionPerformed
-
-    
 
     //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">
     // Variables declaration - do not modify//GEN-BEGIN:variables

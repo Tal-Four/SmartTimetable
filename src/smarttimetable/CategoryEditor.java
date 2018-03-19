@@ -197,12 +197,11 @@ public class CategoryEditor extends javax.swing.JFrame {
             } else {
                 new Category(name, colourCode);
             }
+            this.setVisible(false);
+            this.lastPanel.setVisible(true);
         } else {
             new Popup("Cannot create a category without a name.").setVisible(true);
         }
-        
-        this.setVisible(false);
-        this.lastPanel.setVisible(true);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void categoryNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_categoryNameFieldKeyReleased
