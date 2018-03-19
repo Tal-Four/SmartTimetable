@@ -31,6 +31,7 @@ public class Category {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
     }
 
     public Category(String name, int colourCode) {

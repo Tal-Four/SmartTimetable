@@ -40,6 +40,7 @@ public class CategoryEditor extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         nameCharCount();
     }
@@ -189,14 +190,17 @@ public class CategoryEditor extends javax.swing.JFrame {
         int colourCode = this.colourChooser.getColor().getRGB();
         String name = this.categoryNameField.getText();
 
-        if (edit) {
-            editedCategory.editCategory(name, colourCode);
-            ((CategoryViewer) lastPanel).categoryListIndexSelected();
+        if (name.length() != 0) {
+            if (edit) {
+                editedCategory.editCategory(name, colourCode);
+                ((CategoryViewer) lastPanel).categoryListIndexSelected();
+            } else {
+                new Category(name, colourCode);
+            }
         } else {
-            Category category = new Category(name, colourCode);
-            new Popup(category.getName() + " created.").setVisible(true);
+            new Popup("Cannot create a category without a name.").setVisible(true);
         }
-
+        
         this.setVisible(false);
         this.lastPanel.setVisible(true);
     }//GEN-LAST:event_saveButtonActionPerformed

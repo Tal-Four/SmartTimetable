@@ -300,6 +300,7 @@ public class ChangeSlot extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         this.taskEventList.setModel(dlm);
     }

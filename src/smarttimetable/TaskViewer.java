@@ -89,6 +89,7 @@ public class TaskViewer extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
+        DatabaseHandle.disconnect();
     }
 
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
@@ -108,6 +109,7 @@ public class TaskViewer extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
+            DatabaseHandle.disconnect();
         }
 
         this.taskList.setModel(dlm);
@@ -480,7 +482,7 @@ public class TaskViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_completeButtonActionPerformed
 
-    public void loadDetails(){
+    public void loadDetails() {
         Task selectedTask = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
 
         //Setting the labels
@@ -492,7 +494,7 @@ public class TaskViewer extends javax.swing.JFrame {
         descriptionBox.setText(selectedTask.getDescription());
         colourPreview.setBackground(new Color(selectedTask.getColourCode()));
     }
-    
+
     private void todoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todoButtonActionPerformed
         this.completeButton.setText("Complete");
         setUpList();

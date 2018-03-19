@@ -76,6 +76,7 @@ public class EventViewer extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
+        DatabaseHandle.disconnect();
     }
 
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
@@ -94,6 +95,7 @@ public class EventViewer extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
+            DatabaseHandle.disconnect();
         }
 
         this.eventList.setModel(dlm);
@@ -404,7 +406,7 @@ public class EventViewer extends javax.swing.JFrame {
         updateDetails();
     }//GEN-LAST:event_eventListValueChanged
 
-    public void updateDetails(){
+    public void updateDetails() {
         Event selectedEvent = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
 
         if (selectedEvent.getDate() == null) {
@@ -419,7 +421,7 @@ public class EventViewer extends javax.swing.JFrame {
         endTimeContentsLabel.setText(selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
         colourPreview.setBackground(new Color(selectedEvent.getColourCode()));
     }
-    
+
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
         if (ascDescSortButton.getText().equals("Ascending")) {
             ascDescSortButton.setText("Descending");

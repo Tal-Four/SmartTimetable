@@ -16,42 +16,55 @@ public class DatabaseHandle {
     private static Connection connection;
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
-    private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb";
+    private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb?useSSL=false";
 
     //Connects the program to the database
-    public static void connect() {
+    private static boolean connect() {
         try {
             connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
-            System.out.println("Database succesfully connected.");
+            return true;
         } catch (SQLException e) {
-            //Stops program as couldn't connect to database
-            System.err.println("Database connection failed: " + e);
-            System.err.println("Stopping program");
-            System.exit(0);
+            new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
+        }
+        return false;
+    }
+
+    public static void disconnect() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println(e);
         }
     }
 
     //Runs an query with the given SQL that returns a result set
     public static ResultSet query(String sql) {
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            return rs;
-        } catch (SQLException e) {
-            System.err.println("Query failed: " + e);
+        if (connect()) {
+            try {
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                return rs;
+            } catch (SQLException e) {
+                System.err.println("Query failed: " + e);
+            }
         }
+        disconnect();
         return null;
     }
 
     //Runs an update with the given SQL that returns a result set
     public static int update(String sql) {
-        try {
-            Statement stmt = connection.createStatement();
-            int rows = stmt.executeUpdate(sql);
-            return rows;
-        } catch (SQLException e) {
-            System.err.println("Update failed: " + e);
+        if (connect()) {
+            try {
+                Statement stmt = connection.createStatement();
+                int rows = stmt.executeUpdate(sql);
+                disconnect();
+                return rows;
+            } catch (SQLException e) {
+                System.err.println("Update failed: " + e);
+            }
         }
+        disconnect();
         return 0;
     }
 

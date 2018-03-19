@@ -462,6 +462,7 @@ public class Timetable extends javax.swing.JFrame {
                     } catch (SQLException e) {
                         System.err.println(e);
                     }
+                    DatabaseHandle.disconnect();
 
                 } else if (taskeventID != 0) {
                     this.completeHoursButton.setEnabled(true);
@@ -497,6 +498,7 @@ public class Timetable extends javax.swing.JFrame {
                     } catch (SQLException e) {
                         System.err.println(e);
                     }
+                    DatabaseHandle.disconnect();
                 }
             }
         }
@@ -526,6 +528,7 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
     }
 
     private String sqlDateToText(String sqlDate) {
@@ -555,6 +558,7 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         sql = "SELECT task.Name, timetableslot.Day, timetableslot.Time\n"
                 + "FROM task INNER JOIN ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = user.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (task.UserID = timetableslot.UserID) AND (task.TaskID = timetableslot.TaskID) AND (task.UserID = user.UserID)\n"
@@ -569,6 +573,7 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         render();
 
@@ -604,6 +609,7 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         return new Object[]{taskEventID, event};
     }

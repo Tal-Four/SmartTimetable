@@ -40,6 +40,7 @@ public class Task {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
     }
 
     //Constructor when called adds a task to the database
@@ -83,13 +84,13 @@ public class Task {
 
     //Converting date object to SQL date format
     private String dateToSQLFormat(Date date) {
-        return (date.getYear() + 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        return (date.getYear()+ 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate();
     }
 
     //Converting raw text to SQL date format
     private String dateTextToSQLFormat(String dateText) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
+        Date date = new Date();
         try {
             date = df.parse(dateText);
         } catch (ParseException e) {

@@ -47,6 +47,7 @@ public class GenerateTimetable {
             } catch (SQLException e) {
                 System.err.println(e);
             }
+        DatabaseHandle.disconnect();
 
             Task[] taskArray = new Task[arraySize];
 
@@ -73,6 +74,7 @@ public class GenerateTimetable {
             } catch (SQLException e) {
                 System.err.println(e);
             }
+        DatabaseHandle.disconnect();
 
             for (Task task : taskArray) {
                 task.resetSlots();
@@ -124,6 +126,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         int freeSlots = 0;
         int weekStartDay = 0;
@@ -155,7 +158,7 @@ public class GenerateTimetable {
                 }
             }
         }
-                
+
         for (int dayCounter = weekStartDay; dayCounter < 7; dayCounter++) {
             for (int timeCounter = workStart; timeCounter < workEnd; timeCounter++) {
                 if (!slotsFilled[dayCounter][timeCounter] && (currentTime < timeCounter || dayCounter > weekStartDay || !firstWeek)) {
@@ -171,6 +174,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         int counter = 0;
         Random rand = new Random();
@@ -316,6 +320,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
     }
 
@@ -336,6 +341,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
         calendar.setTime(startDay);
         String date;
 
@@ -368,6 +374,7 @@ public class GenerateTimetable {
             } catch (SQLException e) {
                 System.err.println(e);
             }
+        DatabaseHandle.disconnect();
             calendar.add(GregorianCalendar.DAY_OF_YEAR, 1);
         }
 
@@ -418,6 +425,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
         return possible;
     }
 
@@ -473,6 +481,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         sql = "SELECT StartTime, EndTime\n"
                 + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
@@ -482,19 +491,24 @@ public class GenerateTimetable {
 
         try {
             while (rs.next()) {
-                int counter = rs.getInt("StartTime");
-                if (counter < workStart) {
-                    counter = workStart;
-                }
+                int startTime = rs.getInt("StartTime");
                 int endTime = rs.getInt("EndTime");
-                while (counter < endTime && counter < workEnd) {
-                    slotsUsed++;
-                    counter++;
+                if (startTime < workStart) {
+                    startTime = workStart;
+                }
+                for (int weekCounter = 0; weekCounter < numberOfWeeks; weekCounter++) {
+                    int counter = startTime;
+                    while (counter < endTime && counter < workEnd) {
+                        slotsUsed++;
+                        counter++;
+                    }
                 }
             }
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
+
         //Get slots used by single events third
         String todayDate = getDate(cal);
 
@@ -525,6 +539,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
         //Take away events already passed today
         int currentTime = (int) (getCurrentTime() * 2);
         int day = 1 + ((new GregorianCalendar().get(GregorianCalendar.DAY_OF_WEEK) + 5) % 7);
@@ -546,6 +561,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
+        DatabaseHandle.disconnect();
 
         if (currentTime > workStart) {
             slotsUsed = slotsUsed - workStart;
