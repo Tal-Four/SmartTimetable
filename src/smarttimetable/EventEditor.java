@@ -8,6 +8,9 @@ package smarttimetable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
@@ -313,13 +316,25 @@ public class EventEditor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-
+        boolean valid = true;
+        
         //Checking to see if the name is valid
         if (eventNameField.getText().equals("") || eventNameField.getText().length() > 20) {
             new Popup("Name over 20 characters or blank").setVisible(true);
-        } else if (this.dateRadioButton.isSelected() && !(dateField.getText().length() == 10 && dateField.getText().charAt(2) == '/' && dateField.getText().charAt(5) == '/')) {
-            new Popup("Invalid date format").setVisible(true);
-        } else {
+            valid = false;
+        } else if (this.dateRadioButton.isSelected()) {
+            try {
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                df.parse(dateField.getText());
+            } catch (ParseException e) {
+                System.err.println(e);
+                valid = false;
+                new Popup("Invalid date format.").setVisible(true);
+            }
+        }
+        
+        if (valid) {
+
             Event event = new Event();
 
             //Assigning the value of day based on the dropdown
