@@ -73,7 +73,7 @@ public class TaskEditor extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        DatabaseHandle.disconnect();
+        
     }
 
     /**
@@ -411,7 +411,7 @@ public class TaskEditor extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        DatabaseHandle.disconnect();
+        
     }//GEN-LAST:event_categoryDropdownActionPerformed
 
     //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">

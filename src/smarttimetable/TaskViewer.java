@@ -89,7 +89,7 @@ public class TaskViewer extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-        DatabaseHandle.disconnect();
+        
     }
 
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
@@ -109,7 +109,7 @@ public class TaskViewer extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            DatabaseHandle.disconnect();
+            
         }
 
         this.taskList.setModel(dlm);

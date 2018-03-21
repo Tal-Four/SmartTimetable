@@ -312,7 +312,7 @@ public class Login extends javax.swing.JFrame {
                 } catch (SQLException e) {
                     System.err.println(e);
                 }
-                DatabaseHandle.disconnect();
+                
 
                 //Checking to see if username is available
                 if (!username.equals(UsernameCheck)) {
@@ -363,7 +363,7 @@ public class Login extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            DatabaseHandle.disconnect();
+            
         } else {
             new Popup("Please enter a username.").setVisible(true);
         }
@@ -373,6 +373,7 @@ public class Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        DatabaseHandle.connect();
         new Login().setVisible(true);
     }
 

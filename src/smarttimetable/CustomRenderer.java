@@ -69,7 +69,7 @@ public class CustomRenderer extends DefaultTableCellRenderer {
             } catch (Exception ex) {
                 System.err.println(ex);
             }
-        DatabaseHandle.disconnect();
+        
         } else {
             cell.setBackground(Color.WHITE);
             cell.setForeground(Color.BLACK);

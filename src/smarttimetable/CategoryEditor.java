@@ -40,7 +40,7 @@ public class CategoryEditor extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        DatabaseHandle.disconnect();
+        
 
         nameCharCount();
     }

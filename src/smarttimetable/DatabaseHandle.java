@@ -19,27 +19,16 @@ public class DatabaseHandle {
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb?useSSL=false";
 
     //Connects the program to the database
-    private static boolean connect() {
+    public static void connect() {
         try {
             connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
-            return true;
         } catch (SQLException e) {
             new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
-        }
-        return false;
-    }
-
-    public static void disconnect() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println(e);
         }
     }
 
     //Runs an query with the given SQL that returns a result set
     public static ResultSet query(String sql) {
-        if (connect()) {
             try {
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
@@ -47,24 +36,18 @@ public class DatabaseHandle {
             } catch (SQLException e) {
                 System.err.println("Query failed: " + e);
             }
-        }
-        disconnect();
         return null;
     }
 
     //Runs an update with the given SQL that returns a result set
     public static int update(String sql) {
-        if (connect()) {
             try {
                 Statement stmt = connection.createStatement();
                 int rows = stmt.executeUpdate(sql);
-                disconnect();
                 return rows;
             } catch (SQLException e) {
                 System.err.println("Update failed: " + e);
             }
-        }
-        disconnect();
         return 0;
     }
 

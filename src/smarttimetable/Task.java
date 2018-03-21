@@ -40,7 +40,7 @@ public class Task {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        DatabaseHandle.disconnect();
+        
     }
 
     //Constructor when called adds a task to the database

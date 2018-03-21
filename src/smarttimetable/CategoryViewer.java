@@ -322,7 +322,7 @@ public class CategoryViewer extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            DatabaseHandle.disconnect();
+            
         }
     }
 
@@ -403,7 +403,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-        DatabaseHandle.disconnect();
+        
     }
 
     private void setUpList() {
@@ -421,7 +421,7 @@ public class CategoryViewer extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            DatabaseHandle.disconnect();
+            
         }
 
         categoryList.setModel(dlm);

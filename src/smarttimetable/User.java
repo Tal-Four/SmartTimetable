@@ -26,7 +26,7 @@ public class User {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        DatabaseHandle.disconnect();
+        
 
         User.userID = newUserID;
 
@@ -59,7 +59,7 @@ public class User {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        DatabaseHandle.disconnect();
+        
     }
 
     //Loads that user's details based on the userID
@@ -79,7 +79,7 @@ public class User {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        DatabaseHandle.disconnect();
+        
     }
 
     //Changes the variables to null

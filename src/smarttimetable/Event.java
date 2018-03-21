@@ -42,7 +42,7 @@ public class Event {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-        DatabaseHandle.disconnect();
+        
     }
 
     //Creates a recurring event and inserts into a database given variables
