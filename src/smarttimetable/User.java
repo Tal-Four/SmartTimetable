@@ -31,10 +31,10 @@ public class User {
         User.userID = newUserID;
 
         if (User.password == null) {
-            sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`, `Question`, `Answer`) "
+            sql = "INSERT INTO `user` (`UserID`, `Username`, `Question`, `Answer`) "
                     + "VALUES(" + User.userID + ", '" + User.username + "', " + User.question + "', '" + User.answer + "')";
         } else {
-            sql = "INSERT INTO smarttimetabledb.`user` (`UserID`, `Username`,`Password`, `Question`, `Answer`) "
+            sql = "INSERT INTO `user` (`UserID`, `Username`,`Password`, `Question`, `Answer`) "
                     + "VALUES(" + User.userID + ", '" + User.username + "', '" + User.password + "', '" + User.question + "', '" + User.answer + "')";
         }
 

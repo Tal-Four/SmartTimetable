@@ -41,7 +41,7 @@ public class Category {
         this.name = name;
         this.colourCode = colourCode;
         
-        String sql = "INSERT INTO smarttimetabledb.`category` (`CategoryID`, `UserID`, `Name`, `Colour`) VALUES(" + this.categoryID + ", " + User.getUserID() + ", '" + this.name + "', " + this.colourCode + ")";
+        String sql = "INSERT INTO `category` (`CategoryID`, `UserID`, `Name`, `Colour`) VALUES(" + this.categoryID + ", " + User.getUserID() + ", '" + this.name + "', " + this.colourCode + ")";
         DatabaseHandle.update(sql);
         new Popup("Category " + this.name + " created").setVisible(true);
     }
@@ -59,7 +59,7 @@ public class Category {
     public void taskComplete(Task task) {
         this.taskCount++;
         calculateModifier(task);
-        String sql = "UPDATE smarttimetabledb.category "
+        String sql = "UPDATE category "
                 + "SET TasksCompleted = " + this.taskCount + ", Modifier = " + this.modifier + " "
                 + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
@@ -71,7 +71,7 @@ public class Category {
         Double oldMeanTotal = this.modifier * (this.taskCount + 1);
         this.modifier = (oldMeanTotal - timeMultiplier) / this.taskCount;
         
-        String sql = "UPDATE smarttimetabledb.category "
+        String sql = "UPDATE category "
                 + "SET TasksCompleted = " + this.taskCount + ", Modifier = " + this.modifier + " "
                 + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
