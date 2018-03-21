@@ -141,7 +141,7 @@ public class Login extends javax.swing.JFrame {
             newUserPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
             newUserPanel.setName("gdsg\\"); // NOI18N
 
-                createAccountButton.setText("Create Acount");
+                createAccountButton.setText("Create Account");
                 createAccountButton.setToolTipText("Creates a new account with the given username and password.");
                 createAccountButton.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -265,7 +265,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="createAccountButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Create Acount"/>
+            <Property name="text" type="java.lang.String" value="Create Account"/>
             <Property name="toolTipText" type="java.lang.String" value="Creates a new account with the given username and password."/>
           </Properties>
           <Events>
