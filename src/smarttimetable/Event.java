@@ -198,7 +198,7 @@ public class Event {
     }
 
     //Converting raw text to SQL date format
-    private String dateTextToSQLFormat(String dateText) {
+    public String dateTextToSQLFormat(String dateText) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date dateToConvert = null;
         try {

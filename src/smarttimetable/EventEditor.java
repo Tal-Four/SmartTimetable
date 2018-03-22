@@ -8,6 +8,8 @@ package smarttimetable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -317,12 +319,13 @@ public class EventEditor extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         boolean valid = true;
-        
+
         //Checking to see if the name is valid
         if (eventNameField.getText().equals("") || eventNameField.getText().length() > 20) {
             new Popup("Name over 20 characters or blank").setVisible(true);
             valid = false;
         } else if (this.dateRadioButton.isSelected()) {
+            //Checking to see if date entered is valid.
             try {
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 df.parse(dateField.getText());
@@ -331,8 +334,57 @@ public class EventEditor extends javax.swing.JFrame {
                 valid = false;
                 new Popup("Invalid date format.").setVisible(true);
             }
+
+            //Checking to see if overlaps.
+            Event event = new Event();
+            double endTime, startTime;
+            startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
+            endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
+            String date = dateField.getText();
+            date = event.dateTextToSQLFormat(date);
+            String sql = "SELECT COUNT(*)\n"
+                    + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
+                    + "WHERE (((event.Day) Is Null) AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date)='" + date + "') "
+                    + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
+
+            ResultSet rs = DatabaseHandle.query(sql);
+            try {
+                if (rs.next()) {
+                    int count = rs.getInt("COUNT(*)");
+                    if (count > 0) {
+                        valid = false;
+                        new Popup("Event overlaps with another event.").setVisible(true);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
+            }
+        } else {
+            //Checking to see if overlaps.
+            Event event = new Event();
+            double endTime, startTime;
+            startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
+            endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
+            int day = event.dayStringToInt(daySelection.getSelectedItem().toString());
+            String sql = "SELECT COUNT(*)\n"
+                    + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
+                    + "WHERE (((event.Day)=" + day + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date) Is Null) "
+                    + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
+
+            ResultSet rs = DatabaseHandle.query(sql);
+            try {
+                if (rs.next()) {
+                    int count = rs.getInt("COUNT(*)");
+                    if (count > 0) {
+                        valid = false;
+                        new Popup("Event overlaps with another event.").setVisible(true);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
+            }
         }
-        
+
         if (valid) {
 
             Event event = new Event();
