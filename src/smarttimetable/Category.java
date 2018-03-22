@@ -63,6 +63,9 @@ public class Category {
                 + "SET TasksCompleted = " + this.taskCount + ", Modifier = " + this.modifier + " "
                 + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
+        if (this.modifier >= 4) {
+            new Popup("You have amassed a modifier greater than 4 for " + this.name + ". It is advised you seek help with " + this.name + ".").setVisible(true);
+        }
     }
     
     public void taskTodo(Task task){

@@ -302,11 +302,11 @@ public class CategoryViewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void update(){
+    public void update() {
         this.setUpList();
         this.categoryListIndexSelected();
     }
-    
+
     private void categoryListIndexSelected() {
         if (categoryList.getSelectedIndex() != -1) {
             nameVariableLabel.setText(categoryList.getSelectedValue());
@@ -322,7 +322,7 @@ public class CategoryViewer extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            
+
         }
     }
 
@@ -355,7 +355,10 @@ public class CategoryViewer extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        System.exit(0);
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void timeModifierSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeModifierSortButtonActionPerformed
@@ -403,7 +406,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-        
+
     }
 
     private void setUpList() {
@@ -421,7 +424,7 @@ public class CategoryViewer extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            
+
         }
 
         categoryList.setModel(dlm);

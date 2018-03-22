@@ -7,6 +7,9 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,11 +22,11 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
-        
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        
+
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
     }
@@ -215,7 +218,10 @@ public class Menu extends javax.swing.JFrame {
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         //Stops the program
         User.logoutUser();
-        System.exit(0);
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void generateTimetableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTimetableButtonActionPerformed
@@ -225,9 +231,26 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_generateTimetableButtonActionPerformed
 
     private void viewEditTimetableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditTimetableActionPerformed
-        //Shows the timetable screen
-        new Timetable().setVisible(true);
+        //Shows the timetable screen if a timetable has been created
+        String sql = "SELECT COUNT(*)\n"
+                + "FROM user INNER JOIN timetable ON user.UserID = timetable.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + "));";
+        ResultSet rs = DatabaseHandle.query(sql);
+        int timetableCount = 0;
+        try {
+            if (rs.next()) {
+                timetableCount = rs.getInt("COUNT(*)");
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        
+        if (timetableCount > 0) {
+            new Timetable().setVisible(true);
         this.setVisible(false);
+        } else {
+            new Popup("You have no timetables, generate a timetable first.").setVisible(true);
+        } 
     }//GEN-LAST:event_viewEditTimetableActionPerformed
 
     private void viewEditEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditEventsActionPerformed
@@ -271,7 +294,6 @@ public class Menu extends javax.swing.JFrame {
         new CategoryViewer().setVisible(true);
     }//GEN-LAST:event_viewEditCategoryButtonActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createCategoryButton;

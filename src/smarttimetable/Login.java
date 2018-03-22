@@ -8,6 +8,7 @@ package smarttimetable;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -264,7 +265,10 @@ public class Login extends javax.swing.JFrame {
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         User.logoutUser();
-        System.exit(0);
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_exitButtonActionPerformed
 
     //Attempts to log in the user with the details provided

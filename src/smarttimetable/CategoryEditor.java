@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,7 +41,6 @@ public class CategoryEditor extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         nameCharCount();
     }
@@ -182,8 +182,11 @@ public class CategoryEditor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.setVisible(false);
-        this.lastPanel.setVisible(true);
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            this.setVisible(false);
+            this.lastPanel.setVisible(true);
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed

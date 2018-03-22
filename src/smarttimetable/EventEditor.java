@@ -15,13 +15,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Adam-PC
  */
 public class EventEditor extends javax.swing.JFrame {
-
+    
     private final boolean edit;
     private int oldEventID;
     private JFrame lastPanel;
@@ -49,12 +50,12 @@ public class EventEditor extends javax.swing.JFrame {
         endHourDropdown.setSelectedItem(event.timeToString(1)[0]);
         endMinuteDropdown.setSelectedItem(event.timeToString(1)[1]);
     }
-
+    
     private void initialise(JFrame lastPanel) {
         initComponents();
-
+        
         this.lastPanel = lastPanel;
-
+        
         this.dateField.setEnabled(false);
 
         //Centers the frame to the centre of the monitor 
@@ -346,7 +347,7 @@ public class EventEditor extends javax.swing.JFrame {
                     + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                     + "WHERE (((event.Day) Is Null) AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date)='" + date + "') "
                     + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
-
+            
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 if (rs.next()) {
@@ -370,7 +371,7 @@ public class EventEditor extends javax.swing.JFrame {
                     + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                     + "WHERE (((event.Day)=" + day + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date) Is Null) "
                     + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
-
+            
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 if (rs.next()) {
@@ -384,9 +385,9 @@ public class EventEditor extends javax.swing.JFrame {
                 System.err.println(e);
             }
         }
-
+        
         if (valid) {
-
+            
             Event event = new Event();
 
             //Assigning the value of day based on the dropdown
@@ -396,7 +397,7 @@ public class EventEditor extends javax.swing.JFrame {
             double endTime, startTime;
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
-
+            
             if (edit) {
                 //Edits an existing record
                 event = new Event(this.oldEventID);
@@ -441,8 +442,12 @@ public class EventEditor extends javax.swing.JFrame {
 
     //Returns the user to the menu screen
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.setVisible(false);
-        this.lastPanel.setVisible(true);
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            this.setVisible(false);
+            this.lastPanel.setVisible(true);
+        }
+        
     }//GEN-LAST:event_backButtonActionPerformed
 
     //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters    

@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -389,8 +390,11 @@ public class TaskEditor extends javax.swing.JFrame {
 
     //Returns back to menu screen, nothing is saved
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.setVisible(false);
-        this.lastPanel.setVisible(true);
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            this.setVisible(false);
+            this.lastPanel.setVisible(true);
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters

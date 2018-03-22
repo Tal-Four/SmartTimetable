@@ -428,7 +428,10 @@ public class TaskViewer extends javax.swing.JFrame {
 
     //Closes the program
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        System.exit(0);
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_exitButtonActionPerformed
 
     //Edits the selected task
