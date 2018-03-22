@@ -20,8 +20,6 @@ public class GenerateTimetable {
         if (checkTaskAssigningPossible(true, workEnd, workStart)) {
             boolean highPriority = !checkTaskAssigningPossible(false, workEnd, workStart);
 
-            archivePreviousTables();
-
             String sql;
             String todayDate = getDate(new GregorianCalendar());
 
@@ -47,48 +45,58 @@ public class GenerateTimetable {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-        
 
-            Task[] taskArray = new Task[arraySize];
+            if (arraySize != 0) {
 
-            if (highPriority) {
-                sql = "SELECT task.TaskID\n"
-                        + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
-                        + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.HighPriority)=True) AND ((task.DateDue)>'" + todayDate + "'))\n"
-                        + "ORDER BY task.DateDue;";
-            } else {
-                sql = "SELECT task.TaskID\n"
-                        + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
-                        + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.DateDue)>'" + todayDate + "'))\n"
-                        + "ORDER BY task.DateDue;";
-            }
+                archivePreviousTables();
 
-            rs = DatabaseHandle.query(sql);
+                Task[] taskArray = new Task[arraySize];
 
-            try {
-                int counter = 0;
-                while (rs.next()) {
-                    taskArray[counter] = new Task(rs.getInt("TaskID"));
-                    counter++;
+                if (highPriority) {
+                    sql = "SELECT task.TaskID\n"
+                            + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
+                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.HighPriority)=True) AND ((task.DateDue)>'" + todayDate + "'))\n"
+                            + "ORDER BY task.DateDue;";
+                } else {
+                    sql = "SELECT task.TaskID\n"
+                            + "FROM task INNER JOIN user ON task.UserID = user.UserID\n"
+                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=False) AND ((task.DateDue)>'" + todayDate + "'))\n"
+                            + "ORDER BY task.DateDue;";
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        
 
-            for (Task task : taskArray) {
-                task.resetSlots();
-            }
+                rs = DatabaseHandle.query(sql);
 
-            boolean firstWeek = true;
-            GregorianCalendar calendar = new GregorianCalendar();
-            int timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+                try {
+                    int counter = 0;
+                    while (rs.next()) {
+                        taskArray[counter] = new Task(rs.getInt("TaskID"));
+                        counter++;
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
+                }
 
-            while (!plotTasks(taskArray, timetableID, workEnd, workStart, firstWeek)) {
-                firstWeek = false;
-                calendar.add(GregorianCalendar.WEEK_OF_YEAR, 1);
-                timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+                for (Task task : taskArray) {
+                    task.resetSlots();
+                }
+
+                boolean firstWeek = true;
+                GregorianCalendar calendar = new GregorianCalendar();
+                int timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+
+                while (!plotTasks(taskArray, timetableID, workEnd, workStart, firstWeek)) {
+                    firstWeek = false;
+                    calendar.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+                    timetableID = createNewTimetable(getMondayDate(getDate(calendar)));
+                }
+                if (highPriority) {
+                    new Popup("Couldn't plot standard priority tasks, please plot these tasks manually.").setVisible(true);
+                }
+            } else {
+                new Popup("No high priority tasks found and couldn't plot standard priority tasks before deadline. No new timetables created. Adjust the time or deadlines for tasks.").setVisible(true);
             }
+        } else {
+            new Popup("Couldn't plot any tasks before deadline. No new timetables created. Adjust the time or deadlines for tasks.").setVisible(true);
         }
     }
 
@@ -126,7 +134,6 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         int freeSlots = 0;
         int weekStartDay = 0;
@@ -174,7 +181,6 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         int counter = 0;
         Random rand = new Random();
@@ -320,7 +326,6 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
     }
 
@@ -341,7 +346,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
         calendar.setTime(startDay);
         String date;
 
@@ -374,7 +379,7 @@ public class GenerateTimetable {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-        
+
             calendar.add(GregorianCalendar.DAY_OF_YEAR, 1);
         }
 
@@ -425,7 +430,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
         return possible;
     }
 
@@ -481,7 +486,6 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         sql = "SELECT StartTime, EndTime\n"
                 + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
@@ -507,7 +511,6 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         //Get slots used by single events third
         String todayDate = getDate(cal);
@@ -539,7 +542,7 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
         //Take away events already passed today
         int currentTime = (int) (getCurrentTime() * 2);
         int day = 1 + ((new GregorianCalendar().get(GregorianCalendar.DAY_OF_WEEK) + 5) % 7);
@@ -561,7 +564,6 @@ public class GenerateTimetable {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         if (currentTime > workStart) {
             slotsUsed = slotsUsed - workStart;
