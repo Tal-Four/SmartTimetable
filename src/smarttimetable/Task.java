@@ -162,7 +162,11 @@ public class Task {
     public void setCategory(Category category) {
         this.category = category;
     }
-
+    
+    public void setHighPriority(Boolean highPriority) {
+        this.highPriority = highPriority;
+    }
+    
     public void setTaskID(int taskID) {
         this.taskID = taskID;
     }
@@ -205,6 +209,10 @@ public class Task {
 
     public int getTaskID() {
         return this.taskID;
+    }
+
+    public Boolean getHighPriority() {
+        return highPriority;
     }
 
     public Category getCategory() {
