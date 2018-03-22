@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.swing.JFrame;
 
 /**
@@ -46,7 +45,10 @@ public class TaskEditor extends javax.swing.JFrame {
         descriptionBox.setText(this.oldTask.getDescription());
         timeField.setText(this.oldTask.getTimeSet() + "");
         colourChooser.setColor(new Color(this.oldTask.getColourCode()));
-
+        if (this.oldTask.getHighPriority()) {
+            this.highRadioButton.setSelected(true);
+            this.standardRadioButton.setSelected(false);
+        }
     }
 
     //Initialises components and sets some text box values
