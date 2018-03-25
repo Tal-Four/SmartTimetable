@@ -21,7 +21,7 @@ public class CustomTableModel extends DefaultTableModel {
     /**
      * Empties the data from the table except first column
      */
-    public void clear() {
+    public final void clear() {
         this.data = new Object[][]{
             {"00:00", null, null, null, null, null, null, null},
             {"00:30", null, null, null, null, null, null, null},
