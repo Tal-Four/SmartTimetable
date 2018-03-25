@@ -217,9 +217,9 @@ public class Menu extends javax.swing.JFrame {
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         //Stops the program
-        User.logoutUser();
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
-        if (result == 0) {
+        if (result == 0) { 
+            User.logoutUser();
             System.exit(0);
         }
     }//GEN-LAST:event_exitButtonActionPerformed

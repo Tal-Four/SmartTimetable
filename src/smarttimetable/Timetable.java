@@ -626,9 +626,9 @@ public class Timetable extends javax.swing.JFrame {
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         //Stops the program
-        User.logoutUser();
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
+            User.logoutUser();
             System.exit(0);
         }
     }//GEN-LAST:event_exitButtonActionPerformed
@@ -641,10 +641,10 @@ public class Timetable extends javax.swing.JFrame {
         int selectedColumn = this.timetableTable.getSelectedColumn();
         if (selectedColumn > 0) {
             int selectedRow = this.timetableTable.getSelectedRow();
-            Object temp = this.timetableTable.getValueAt(selectedRow, selectedColumn);
+            Object cellContents = this.timetableTable.getValueAt(selectedRow, selectedColumn);
             String previousContents = "";
-            if (temp != null) {
-                previousContents = temp.toString();
+            if (cellContents != null) {
+                previousContents = cellContents.toString();
             }
             int timetableID = this.timetableIDList.getDataAt(this.timetableList.getSelectedIndex());
 
