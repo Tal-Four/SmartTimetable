@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class CustomRenderer extends DefaultTableCellRenderer {
 
-    private int timetableID;
+    private final int timetableID;
 
     public CustomRenderer(int timetableID) {
         this.timetableID = timetableID;
