@@ -3,6 +3,7 @@ package smarttimetable;
 import java.awt.Color;
 import java.awt.Component;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -66,7 +67,7 @@ public class CustomRenderer extends DefaultTableCellRenderer {
                     }
                 }
 
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 System.err.println(ex);
             }
         
