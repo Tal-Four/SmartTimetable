@@ -171,7 +171,9 @@ public class Event {
 
     //Deletes this event from the DB
     public void deleteEvent() {
-        String sql = "DELETE FROM timetableSlot, event WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
+        String sql = "DELETE FROM timetableSlot WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
+        DatabaseHandle.update(sql);
+        sql = "DELETE FROM event WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
         DatabaseHandle.update(sql);
     }
 
@@ -198,7 +200,7 @@ public class Event {
     }
 
     //Converting raw text to SQL date format
-    public String dateTextToSQLFormat(String dateText) {
+    public final String dateTextToSQLFormat(String dateText) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date dateToConvert = null;
         try {
