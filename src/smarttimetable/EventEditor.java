@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author Adam-PC
  */
 public class EventEditor extends javax.swing.JFrame {
-    
+
     private final boolean edit;
     private int oldEventID;
     private JFrame lastPanel;
@@ -50,12 +50,12 @@ public class EventEditor extends javax.swing.JFrame {
         endHourDropdown.setSelectedItem(event.timeToString(1)[0]);
         endMinuteDropdown.setSelectedItem(event.timeToString(1)[1]);
     }
-    
+
     private void initialise(JFrame lastPanel) {
         initComponents();
-        
+
         this.lastPanel = lastPanel;
-        
+
         this.dateField.setEnabled(false);
 
         //Centers the frame to the centre of the monitor 
@@ -320,6 +320,7 @@ public class EventEditor extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         boolean valid = true;
+        Event event = new Event();
 
         //Checking to see if the name is valid
         if (eventNameField.getText().equals("") || eventNameField.getText().length() > 20) {
@@ -337,17 +338,22 @@ public class EventEditor extends javax.swing.JFrame {
             }
 
             //Checking to see if overlaps.
-            Event event = new Event();
             double endTime, startTime;
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
             String date = dateField.getText();
             date = event.dateTextToSQLFormat(date);
+
+            String editCondition = "";
+            if (edit) {
+                editCondition = "((event.EventID)!=" + this.oldEventID + ") AND ";
+            }
+
             String sql = "SELECT COUNT(*)\n"
                     + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
-                    + "WHERE (((event.Day) Is Null) AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date)='" + date + "') "
+                    + "WHERE (" + editCondition + "((event.Day) Is Null) AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date)='" + date + "') "
                     + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
-            
+
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 if (rs.next()) {
@@ -362,16 +368,21 @@ public class EventEditor extends javax.swing.JFrame {
             }
         } else {
             //Checking to see if overlaps.
-            Event event = new Event();
             double endTime, startTime;
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
             int day = event.dayStringToInt(daySelection.getSelectedItem().toString());
+
+            String editCondition = "";
+            if (edit) {
+                editCondition = "((event.EventID)!=" + this.oldEventID + ") AND ";
+            }
+
             String sql = "SELECT COUNT(*)\n"
                     + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
-                    + "WHERE (((event.Day)=" + day + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date) Is Null) "
+                    + "WHERE (" + editCondition + "((event.Day)=" + day + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date) Is Null) "
                     + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
-            
+
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 if (rs.next()) {
@@ -385,10 +396,8 @@ public class EventEditor extends javax.swing.JFrame {
                 System.err.println(e);
             }
         }
-        
+
         if (valid) {
-            
-            Event event = new Event();
 
             //Assigning the value of day based on the dropdown
             int day = event.dayStringToInt(daySelection.getSelectedItem().toString());
@@ -397,7 +406,7 @@ public class EventEditor extends javax.swing.JFrame {
             double endTime, startTime;
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
-            
+
             if (edit) {
                 //Edits an existing record
                 event = new Event(this.oldEventID);
@@ -447,7 +456,7 @@ public class EventEditor extends javax.swing.JFrame {
             this.setVisible(false);
             this.lastPanel.setVisible(true);
         }
-        
+
     }//GEN-LAST:event_backButtonActionPerformed
 
     //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters    
