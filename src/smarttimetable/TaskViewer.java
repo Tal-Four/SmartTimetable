@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class TaskViewer extends javax.swing.JFrame {
 
-    LinkedList taskIDList = new LinkedList();
+    private LinkedList taskIDList = new LinkedList();
 
     /**
      * Creates new form TaskViewer
@@ -93,7 +93,7 @@ public class TaskViewer extends javax.swing.JFrame {
     }
 
     //Sets the taskList to the user's tasks given an order (eg. alphabetical)
-    public final void setUpList() {
+    private void setUpList() {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 

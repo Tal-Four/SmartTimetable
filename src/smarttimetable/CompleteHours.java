@@ -180,7 +180,7 @@ public class CompleteHours extends javax.swing.JFrame {
                         if (timetable) {
                             ((Timetable) (this.lastFrame)).reloadTimetable();
                         } else {
-                            ((TaskViewer) (this.lastFrame)).setUpList();
+                            ((TaskViewer) (this.lastFrame)).update();
                         }
                         this.dispose();
                         break;
