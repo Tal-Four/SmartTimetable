@@ -48,25 +48,6 @@ public class LinkedList {
         }
     }
 
-    //Prints the entire list to the console
-    public void printList() {
-
-        if (this.rootNode == null) {
-            System.out.println("List empty.");
-            return;
-        }
-
-        Node currentNode = this.rootNode;
-
-        System.out.println(currentNode.getData());
-
-        while (currentNode.getNextNode() != null) {
-            currentNode = currentNode.getNextNode();
-
-            System.out.println(currentNode.getData());
-        }
-    }
-
     //Returns the number of nodes in the list
     public int length() {
         if (this.rootNode == null) {
