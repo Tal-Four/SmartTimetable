@@ -162,8 +162,6 @@ public class AddTime extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-   
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel addTimePanel;
     private javax.swing.JButton cancelButton;
