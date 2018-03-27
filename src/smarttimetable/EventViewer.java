@@ -36,17 +36,21 @@ public class EventViewer extends javax.swing.JFrame {
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
 
+    /**
+     * Retrieves the list of IDs and stores them in eventIDList
+     */
     private void updateIDList() {
         this.eventIDList.clear();
 
         String selectedSort = sortDropdown.getSelectedItem().toString();
         String sql;
         String sort = "";
+        //Determining the order of the sort
         if (ascDescSortButton.getText().equals("Descending")) {
             sort = " DESC";
         }
 
-        //Setting the correct SQL
+        //Setting the correct SQL for the sort
         switch (selectedSort) {
             case ("Name"):
                 selectedSort = "EventName";
@@ -71,15 +75,19 @@ public class EventViewer extends javax.swing.JFrame {
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
+                //Adding IDs to a list
                 this.eventIDList.addNode(rs.getInt("EventID"));
             }
-        } catch (SQLException ex) {
-            System.err.println(ex);
+        } catch (SQLException e) {
+            System.err.println(e);
         }
-        
+
     }
 
-    //Sets the taskList to the user's tasks given an order (eg. alphabetical)
+    /**
+     * Sets the eventList to the user's tasks given an order (eg. alphabetical)
+     *
+     */
     private void setUpList() {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
@@ -90,12 +98,13 @@ public class EventViewer extends javax.swing.JFrame {
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 while (rs.next()) {
+                    //Adding events to the list
                     dlm.addElement(rs.getString("EventName"));
                 }
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            
+
         }
 
         this.eventList.setModel(dlm);
@@ -367,11 +376,21 @@ public class EventViewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Returns the user to the menu
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
+    /**
+     * Closes the program after user confirmation
+     *
+     * @param evt
+     */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
@@ -379,10 +398,20 @@ public class EventViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exitButtonActionPerformed
 
+    /**
+     * Runs setUpList
+     *
+     * @param evt
+     */
     private void sortDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortDropdownActionPerformed
         setUpList();
     }//GEN-LAST:event_sortDropdownActionPerformed
 
+    /**
+     * Creates an event editor loading in the selected event's details
+     *
+     * @param evt
+     */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         if (eventList.getSelectedValue() != null) {
             new EventEditor(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()), this).setVisible(true);
@@ -392,6 +421,11 @@ public class EventViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
+    /**
+     * Runs the event's delete subroutine after user confirmation
+     *
+     * @param evt
+     */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         if (eventList.getSelectedValue() != null) {
             int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + eventList.getSelectedValue(), "Delete event", JOptionPane.YES_NO_OPTION);
@@ -405,13 +439,22 @@ public class EventViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    /**
+     * Runs updateDetails
+     *
+     * @param evt
+     */
     private void eventListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventListValueChanged
         updateDetails();
     }//GEN-LAST:event_eventListValueChanged
 
+    /**
+     * Sets the values of the details section to those of the selected task.
+     */
     private void updateDetails() {
         Event selectedEvent = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
 
+        //Changing the text of dayDateLabel depending on whether the event is a one off event (has a date) or a repeated event (has a day)
         if (selectedEvent.getDate() == null) {
             dayDateLabel.setText("Day:");
             dayDateContentsLabel.setText(selectedEvent.dayIntToString(selectedEvent.getDay()));
@@ -424,12 +467,20 @@ public class EventViewer extends javax.swing.JFrame {
         endTimeContentsLabel.setText(selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
         colourPreview.setBackground(new Color(selectedEvent.getColourCode()));
     }
-    
-    public void update(){
+
+    /**
+     * Reloads the details of the event and the list of events shown to the user
+     */
+    public void update() {
         this.updateDetails();
         this.setUpList();
     }
 
+    /**
+     * Changes the order the list is sorted in and the text on the button
+     *
+     * @param evt
+     */
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
         if (ascDescSortButton.getText().equals("Ascending")) {
             ascDescSortButton.setText("Descending");

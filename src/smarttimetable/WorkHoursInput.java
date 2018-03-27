@@ -184,6 +184,8 @@ public class WorkHoursInput extends javax.swing.JFrame {
      * Gets the time the user goes to sleep(index 0) and the time the user gets
      * up (index 1) in the form of slot times (0-47 for each half hour) and then
      * generates a new timetable
+     *
+     * @param evt
      */
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
         int workStart = (Integer.parseInt((String) this.fromHourDropdown.getSelectedItem())) * 2;
@@ -195,6 +197,7 @@ public class WorkHoursInput extends javax.swing.JFrame {
             workEnd++;
         }
 
+        //Checks to see that the start time preceeds end time and then creates a set of timetables in those time constraints
         if (workStart < workEnd) {
             this.setVisible(false);
             new GenerateTimetable(workEnd, workStart);
@@ -205,12 +208,16 @@ public class WorkHoursInput extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_continueButtonActionPerformed
 
+    /**
+     * Returns the user to the menu
+     *
+     * @param evt
+     */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
         menu.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
- 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

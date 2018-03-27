@@ -132,19 +132,28 @@ public class AddTime extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Attempts to add the entered number of hours into the database
+     *
+     * @param evt
+     */
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
         double input = 0;
         boolean accepted = true;
+
+        //Checking to see if the data entered is a number.
         try {
             input = Double.parseDouble(this.inputField.getText());
         } catch (NumberFormatException e) {
             accepted = false;
         }
 
+        //Checking to see if number is positive
         if (input < 0) {
             accepted = false;
         }
 
+        //Updating the database record
         if (accepted) {
             double time = task.getTimeModified() + input;
             String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.TimeModified = " + time + "\n"
@@ -157,6 +166,11 @@ public class AddTime extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_continueButtonActionPerformed
 
+    /**
+     * Returns the user to the last screen
+     *
+     * @param evt
+     */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.lastFrame.setVisible(true);
         this.dispose();

@@ -9,10 +9,11 @@ import java.awt.Toolkit;
  */
 public class SecurityQuestionCreate extends javax.swing.JFrame {
 
-    private final String username, password; 
-    
+    private final String username, password;
+
     /**
      * Creates new form SecurityQuestionAnswer
+     *
      * @param username
      * @param password
      */
@@ -21,7 +22,7 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
 
         this.username = username;
         this.password = password;
-        
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -136,6 +137,11 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Creates a user with the question, answer, username and password given
+     *
+     * @param evt
+     */
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         User.createNewUser(this.username, this.password, this.questionTextArea.getText(), this.answerField.getText());
         new Popup("User " + this.username + " created.").setVisible(true);
@@ -144,12 +150,16 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_confirmButtonActionPerformed
 
+    /**
+     * Returns the user to the login screen
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         User.logoutUser();
         new Login().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -384,11 +384,17 @@ public class Timetable extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Loads the details of the task or event in the selected cell
+     *
+     * @param evt
+     */
     private void timetableTableValueChanged(javax.swing.event.ListSelectionEvent evt) {
         int selectedColumn = timetableTable.getSelectedColumn();
         int selectedRow = timetableTable.getSelectedRow();
         int timetableID = timetableIDList.getDataAt(timetableList.getSelectedIndex());
 
+        //Checking the column isn't the time column and there is a timetable loaded
         if (selectedColumn == 0 || this.timetableList.isSelectionEmpty()) {
             this.changeButton.setEnabled(false);
             this.completeHoursButton.setEnabled(false);
@@ -407,6 +413,7 @@ public class Timetable extends javax.swing.JFrame {
         if (selectedColumn >= 0 && selectedColumn <= 7 && selectedRow >= 0 && selectedRow < 48) {
             if (this.timetableTable.getModel().getValueAt(selectedRow, selectedColumn) != null) {
 
+                //Fetches the ID of the item in the cell contents and checks if it is an event
                 Object[] cellIDAndEventCheck = this.getCellIDAndCheckEvent();
 
                 boolean event = (boolean) cellIDAndEventCheck[1];
@@ -416,6 +423,7 @@ public class Timetable extends javax.swing.JFrame {
 
                     this.completeHoursButton.setEnabled(false);
 
+                    //Setting the labels to category detail labels
                     this.categoryStartTimeLabel.setText("Start Time:");
                     this.categoryStartTimeContentsLabel.setToolTipText("The time the event starts at.");
                     this.dateSetEndTimeLabel.setText("End Time:");
@@ -427,6 +435,7 @@ public class Timetable extends javax.swing.JFrame {
                     this.timeUsedLabel.setText(" ");
                     this.timeUsedLabel.setToolTipText("");
 
+                    //Fetching the event's details
                     String sql = "SELECT event.EventName, event.StartTime, event.EndTime, event.Description, event.Day\n"
                             + "FROM ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) INNER JOIN event ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (user.UserID = event.UserID)\n"
                             + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
@@ -435,6 +444,7 @@ public class Timetable extends javax.swing.JFrame {
                     try {
                         if (rs.next()) {
 
+                            //Setting the details
                             nameContentsLabel.setText(rs.getString("event.EventName"));
 
                             float startTime = rs.getFloat("event.StartTime");
@@ -462,11 +472,11 @@ public class Timetable extends javax.swing.JFrame {
                     } catch (SQLException e) {
                         System.err.println(e);
                     }
-                    
 
                 } else if (taskeventID != 0) {
                     this.completeHoursButton.setEnabled(true);
 
+                    //Setting labels to task details labels
                     this.categoryStartTimeLabel.setText("Category:");
                     this.categoryStartTimeLabel.setToolTipText("The category of the selected task.");
                     this.dateSetEndTimeLabel.setText("Date Set:");
@@ -478,6 +488,7 @@ public class Timetable extends javax.swing.JFrame {
                     this.timeUsedLabel.setText("Time Used:");
                     this.timeUsedLabel.setToolTipText("The time marked as complete for the selected task.");
 
+                    //Fetching the task details
                     String sql = "SELECT task.TaskID\n"
                             + "FROM timetable INNER JOIN (task INNER JOIN (timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) ON (timetableslot.TaskID = task.TaskID) AND (task.UserID = timetableslot.UserID) AND (task.UserID = user.UserID)) ON (timetableslot.UserID = timetable.UserID) AND (timetable.TimetableID = timetableslot.TimetableID) AND (timetable.UserID = user.UserID)\n"
                             + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
@@ -486,6 +497,7 @@ public class Timetable extends javax.swing.JFrame {
 
                     try {
                         if (rs.next()) {
+                            //Setting the detail labels
                             Task task = new Task(rs.getInt("task.TaskID"));
                             nameContentsLabel.setText(task.getName());
                             descriptionText.setText(task.getDescription());
@@ -498,12 +510,15 @@ public class Timetable extends javax.swing.JFrame {
                     } catch (SQLException e) {
                         System.err.println(e);
                     }
-                    
+
                 }
             }
         }
     }
 
+    /**
+     * Loads the list of timetables
+     */
     private void updateList() {
         this.timetableList.setModel(new DefaultListModel<>());
         String sort = "";
@@ -528,29 +543,45 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
     }
 
+    /**
+     * Changes a date in yyyy-mm-dd format to dd-mm-yyyy
+     *
+     * @param sqlDate
+     * @return
+     */
     private String sqlDateToText(String sqlDate) {
         return (sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4));
     }
 
+    /**
+     * Reloads the currently selected timetable
+     */
     public void reloadTimetable() {
         int timetableID = this.timetableIDList.getDataAt(this.timetableList.getSelectedIndex());
         loadTimetable(timetableID);
     }
 
+    /**
+     * Loads the timetable with the given ID
+     *
+     * @param timetableID
+     */
     private void loadTimetable(int timetableID) {
 
         ((CustomTableModel) timetableTable.getModel()).clear();
         timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
 
+        //Retrieving the events
         String sql = "SELECT event.EventName, timetableslot.Day, timetableslot.Time\n"
                 + "FROM ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetable.UserID = user.UserID) AND (timetableslot.TimetableID = timetable.TimetableID) AND (timetableslot.UserID = timetable.UserID)) INNER JOIN event ON (event.UserID = user.UserID) AND (timetableslot.EventID = event.EventID) AND (timetableslot.UserID = event.UserID)\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)=" + timetableID + "));";
 
         ResultSet rs = DatabaseHandle.query(sql);
 
+        //Setting the contents of cells that are to be filled by events to display that event
         try {
             while (rs.next()) {
                 timetableTable.getModel().setValueAt(rs.getString("event.EventName"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
@@ -558,14 +589,15 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
+        //Retrieving the tasks
         sql = "SELECT task.Name, timetableslot.Day, timetableslot.Time\n"
                 + "FROM task INNER JOIN ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = user.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (task.UserID = timetableslot.UserID) AND (task.TaskID = timetableslot.TaskID) AND (task.UserID = user.UserID)\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)=" + timetableID + "));";
 
         rs = DatabaseHandle.query(sql);
 
+        //Setting the contents of cells that are to be filled by tasks to display that task 
         try {
             while (rs.next()) {
                 timetableTable.getModel().setValueAt(rs.getString("task.Name"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
@@ -573,12 +605,17 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         render();
 
     }
 
+    /**
+     * Returns the ID of the object in the cell and whether it is an event or
+     * not
+     *
+     * @return
+     */
     private Object[] getCellIDAndCheckEvent() {
         int selectedColumn = timetableTable.getSelectedColumn();
         int selectedRow = timetableTable.getSelectedRow();
@@ -586,16 +623,19 @@ public class Timetable extends javax.swing.JFrame {
         boolean event = false;
         int taskEventID = 0;
 
+        //Attempting to retrieve an ID for an event in the selected slot
         String sql = "SELECT event.EventID\n"
                 + "FROM event INNER JOIN ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (event.UserID = timetableslot.UserID) AND (event.EventID = timetableslot.EventID) AND (event.UserID = user.UserID)\n"
                 + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((timetableslot.TaskID) Is Null));";
         ResultSet rs = DatabaseHandle.query(sql);
 
         try {
+            //If it was an event there would be result from the SQL
             if (rs.next()) {
                 event = true;
                 taskEventID = rs.getInt("event.EventID");
             } else {
+                //Wasn't an event so now trying to find a task in that slot
                 sql = "SELECT task.TaskID\n"
                         + "FROM task INNER JOIN ((timetableslot INNER JOIN user ON timetableslot.UserID = user.UserID) INNER JOIN timetable ON (timetableslot.TimetableID = timetable.TimetableID) AND (user.UserID = timetable.UserID) AND (timetableslot.UserID = timetable.UserID)) ON (task.UserID = user.UserID) AND (task.TaskID = timetableslot.TaskID) AND (task.UserID = timetableslot.UserID)\n"
                         + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((timetableslot.EventID) Is Null));";
@@ -609,23 +649,34 @@ public class Timetable extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
+        //Returns the ID and then whether it's an event or not in that order in an array
         return new Object[]{taskEventID, event};
     }
 
+    /**
+     * Sets the default render for the table
+     */
     private void render() {
         timetableTable.setDefaultRenderer(Object.class, new CustomRenderer(timetableIDList.getDataAt(timetableList.getSelectedIndex())));
     }
 
+    /**
+     * Logs out user and returns to login screen
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        //Logs out user and returns to login screen
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
+    /**
+     * Closes the program after user confirmation
+     *
+     * @param evt
+     */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        //Stops the program
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
             User.logoutUser();
@@ -633,10 +684,21 @@ public class Timetable extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exitButtonActionPerformed
 
+    /**
+     * Loads the selected timetable into the JTable
+     *
+     * @param evt
+     */
     private void timetableListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_timetableListValueChanged
         loadTimetable(timetableIDList.getDataAt(timetableList.getSelectedIndex()));
     }//GEN-LAST:event_timetableListValueChanged
 
+    /**
+     * Creates a ChangeSlot form passing in the previous contents of the cell,
+     * the coordinates of the cell, and the ID of the timetable
+     *
+     * @param evt
+     */
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
         int selectedColumn = this.timetableTable.getSelectedColumn();
         if (selectedColumn > 0) {
@@ -653,6 +715,11 @@ public class Timetable extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_changeButtonActionPerformed
 
+    /**
+     * Creates a complete hours form or lets the user just complete the task
+     *
+     * @param evt
+     */
     private void completeHoursButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeHoursButtonActionPerformed
         Object[] options = {"Mark As Complete", "Complete Hours", "Cancel"};
         int result = JOptionPane.showOptionDialog(this, "Mark as complete to finish the task.\nComplete hours to add how much time you've completed.", "Task Completion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -668,14 +735,29 @@ public class Timetable extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_completeHoursButtonActionPerformed
 
+    /**
+     * Updates the timetable list with most recently generated timetables
+     *
+     * @param evt
+     */
     private void currentRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentRadioButtonActionPerformed
         updateList();
     }//GEN-LAST:event_currentRadioButtonActionPerformed
 
+    /**
+     * Updates the timetable list with all old timetables
+     *
+     * @param evt
+     */
     private void archivedRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivedRadioButtonActionPerformed
         updateList();
     }//GEN-LAST:event_archivedRadioButtonActionPerformed
 
+    /**
+     * Sorts the list in either ascending or descending order
+     *
+     * @param evt
+     */
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
         if (ascDescSortButton.getText().equals("Ascending")) {
             ascDescSortButton.setText("Descending");

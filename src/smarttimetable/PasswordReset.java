@@ -18,10 +18,10 @@ public class PasswordReset extends javax.swing.JFrame {
         initComponents();
 
         User.loadUser(userID);
-        
+
         //Setting the question
-        this.questionTextArea.setText(User.getQuestion());        
-        
+        this.questionTextArea.setText(User.getQuestion());
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -146,12 +146,23 @@ public class PasswordReset extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Returns the user to the login screen
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         User.logoutUser();
         new Login().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
+    /**
+     * Creates a newPassword screen given that the question was answered
+     * correctly
+     *
+     * @param evt
+     */
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         if (answerField.getText().equals(User.getAnswer())) {
             new NewPassword().setVisible(true);

@@ -215,23 +215,36 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Stops the program
+     *
+     * @param evt
+     */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         //Stops the program
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
-        if (result == 0) { 
+        if (result == 0) {
             User.logoutUser();
             System.exit(0);
         }
     }//GEN-LAST:event_exitButtonActionPerformed
 
+    /**
+     * Creates a timetable for the user
+     *
+     * @param evt
+     */
     private void generateTimetableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTimetableButtonActionPerformed
-        //Creates a timetable for the user
         new WorkHoursInput(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_generateTimetableButtonActionPerformed
 
+    /**
+     * Shows the timetable screen if a timetable has been created
+     *
+     * @param evt
+     */
     private void viewEditTimetableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditTimetableActionPerformed
-        //Shows the timetable screen if a timetable has been created
         String sql = "SELECT COUNT(*)\n"
                 + "FROM user INNER JOIN timetable ON user.UserID = timetable.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + "));";
@@ -244,51 +257,82 @@ public class Menu extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
+        //Checks to see if the user has any timetables
         if (timetableCount > 0) {
             new Timetable().setVisible(true);
-        this.setVisible(false);
+            this.setVisible(false);
         } else {
             new Popup("You have no timetables, generate a timetable first.").setVisible(true);
-        } 
+        }
     }//GEN-LAST:event_viewEditTimetableActionPerformed
 
+    /**
+     * Shows the event viewer screen
+     *
+     * @param evt
+     */
     private void viewEditEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditEventsActionPerformed
-        //Shows the event viewer screen
         this.setVisible(false);
         new EventViewer().setVisible(true);
     }//GEN-LAST:event_viewEditEventsActionPerformed
 
+    /**
+     * Shows the event editor screen
+     *
+     * @param evt
+     */
     private void createEventsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createEventsButtonActionPerformed
-        //Shows the event editor screen
         this.setVisible(false);
         new EventEditor(this).setVisible(true);
     }//GEN-LAST:event_createEventsButtonActionPerformed
 
+    /**
+     * Shows the task viewer screen
+     *
+     * @param evt
+     */
     private void viewEditTasksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditTasksActionPerformed
-        //Shows the task viewer screen
         this.setVisible(false);
         new TaskViewer().setVisible(true);
     }//GEN-LAST:event_viewEditTasksActionPerformed
 
+    /**
+     * Shows the task editor screen
+     *
+     * @param evt
+     */
     private void createTaskButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTaskButtonActionPerformed
-        //Shows the task editor screen
         this.setVisible(false);
         new TaskEditor(this).setVisible(true);
     }//GEN-LAST:event_createTaskButtonActionPerformed
 
+    /**
+     * Logs out user and returns to login screen
+     *
+     * @param evt
+     */
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        //Logs out user and returns to login screen
         User.logoutUser();
         this.setVisible(false);
         new Login().setVisible(true);
     }//GEN-LAST:event_logoutButtonActionPerformed
 
+    /**
+     * Creates a category creation screen
+     *
+     * @param evt
+     */
     private void createCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCategoryButtonActionPerformed
         this.setVisible(false);
         new CategoryEditor(this).setVisible(true);
     }//GEN-LAST:event_createCategoryButtonActionPerformed
 
+    /**
+     * Creates a category viewer screen
+     *
+     * @param evt
+     */
     private void viewEditCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditCategoryButtonActionPerformed
         this.setVisible(false);
         new CategoryViewer().setVisible(true);

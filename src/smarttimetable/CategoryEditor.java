@@ -20,12 +20,21 @@ public class CategoryEditor extends javax.swing.JFrame {
 
     /**
      * Creates new form CategoryEditor
+     *
+     * @param lastPanel
      */
     public CategoryEditor(JFrame lastPanel) {
         this.edit = false;
         frameSetup(lastPanel);
     }
 
+    /**
+     * Creates new form CategoryEditor Also reads in the passed in category's
+     * details into all the correct fields
+     *
+     * @param categoryID
+     * @param lastPanel
+     */
     public CategoryEditor(int categoryID, JFrame lastPanel) {
         this.edit = true;
         this.editedCategory = new Category(categoryID);
@@ -35,6 +44,7 @@ public class CategoryEditor extends javax.swing.JFrame {
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
+                //Setting the fields to the category's details
                 this.colourChooser.setColor(new Color(rs.getInt("Colour")));
                 this.categoryNameField.setText(rs.getString("Name"));
             }
@@ -45,6 +55,11 @@ public class CategoryEditor extends javax.swing.JFrame {
         nameCharCount();
     }
 
+    /**
+     * Runs the standard frame setup
+     *
+     * @param lastPanel
+     */
     private void frameSetup(JFrame lastPanel) {
         initComponents();
 
@@ -181,6 +196,12 @@ public class CategoryEditor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Asks the user if they wish to leave the form, if yes returns them to the
+     * previous screen. Otherwise carries on with this frame
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
@@ -189,11 +210,17 @@ public class CategoryEditor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_backButtonActionPerformed
 
+    /**
+     * Attempts to save the category in the database after error checking
+     *
+     * @param evt
+     */
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         int colourCode = this.colourChooser.getColor().getRGB();
         String name = this.categoryNameField.getText();
 
-        if (name.length() != 0) {
+        //Checking the name is not blank or too long
+        if (name.length() != 0 && name.length() <= 15) {
             if (edit) {
                 editedCategory.editCategory(name, colourCode);
                 ((CategoryViewer) lastPanel).update();
@@ -207,10 +234,21 @@ public class CategoryEditor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    /**
+     * Runs nameCharCount: Displays the number of characters used in the name
+     * field and if longer than 15 characters it sets the name to be the first
+     * 15 characters
+     *
+     * @param evt
+     */
     private void categoryNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_categoryNameFieldKeyReleased
         nameCharCount();
     }//GEN-LAST:event_categoryNameFieldKeyReleased
 
+    /**
+     * Displays the number of characters used in the name field and if longer
+     * than 15 characters it sets the name to be the first 15 characters
+     */
     private void nameCharCount() {
         int length = categoryNameField.getText().length();
         if (length > 15) {

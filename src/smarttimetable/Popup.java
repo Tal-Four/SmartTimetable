@@ -11,15 +11,16 @@ public class Popup extends javax.swing.JFrame {
 
     /**
      * Creates new form Popup
+     *
      * @param message
      */
     public Popup(String message) {
         initComponents();
-        
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-        
+
         popupMessageTextArea.setText(message);
         this.setAlwaysOnTop(true);
     }
@@ -81,11 +82,15 @@ public class Popup extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Closes the popup
+     *
+     * @param evt
+     */
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
- 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

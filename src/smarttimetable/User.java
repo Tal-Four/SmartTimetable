@@ -8,7 +8,15 @@ public class User {
     private static int userID;
     private static String username, password, question, answer;
 
-    //Creates a new User record and sets the variables to the variables provided
+    /**
+     * Creates a new User record and sets the variables to the variables
+     * provided
+     *
+     * @param username
+     * @param password
+     * @param question
+     * @param answer
+     */
     public static void createNewUser(String username, String password, String question, String answer) {
         User.username = username;
         User.password = password;
@@ -26,7 +34,6 @@ public class User {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         User.userID = newUserID;
 
@@ -42,7 +49,11 @@ public class User {
         DatabaseHandle.update(sql);
     }
 
-    //Loads that user's details based on the username
+    /**
+     * Loads that user's details based on the username
+     *
+     * @param username
+     */
     public static void loadUser(String username) {
         String sql = "SELECT * FROM user WHERE Username = '" + username + "';";
         User.username = username;
@@ -59,10 +70,14 @@ public class User {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
     }
 
-    //Loads that user's details based on the userID
+    /**
+     * Loads that user's details based on the userID
+     *
+     * @param userID
+     */
     public static void loadUser(int userID) {
         String sql = "SELECT * FROM user WHERE UserID = " + userID;
         User.userID = userID;
@@ -79,10 +94,13 @@ public class User {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
     }
 
-    //Changes the variables to null
+    /**
+     * Changes the variables to null
+     *
+     */
     public static void logoutUser() {
         User.userID = 0;
         User.username = null;

@@ -14,7 +14,7 @@ public class NewPassword extends javax.swing.JFrame {
      */
     public NewPassword() {
         initComponents();
-        
+
         //Centers the frame to the centre of the monitor
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -124,10 +124,21 @@ public class NewPassword extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Runs changePasswordButtonActionPerformed
+     *
+     * @param evt
+     */
     private void confirmPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmPasswordFieldActionPerformed
         changePasswordButtonActionPerformed(evt);
     }//GEN-LAST:event_confirmPasswordFieldActionPerformed
 
+    /**
+     * Changes the user's password to the new one supplied given both fields
+     * match
+     *
+     * @param evt
+     */
     private void changePasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePasswordButtonActionPerformed
         if (passwordField.getText().equals(confirmPasswordField.getText()) && passwordField.getText().length() <= 15) {
             String sql = "UPDATE user SET user.Password = \"" + passwordField.getText() + "\"\n"
@@ -141,7 +152,6 @@ public class NewPassword extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_changePasswordButtonActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton changePasswordButton;

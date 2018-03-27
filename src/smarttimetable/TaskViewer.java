@@ -38,6 +38,9 @@ public class TaskViewer extends javax.swing.JFrame {
         setUpList();
     }
 
+    /**
+     * Sorts the list of tasks by the new sort
+     */
     private void updateIDList() {
         this.taskIDList.clear();
 
@@ -48,6 +51,7 @@ public class TaskViewer extends javax.swing.JFrame {
         if (ascDescSortButton.getText().equals("Descending")) {
             sort = " DESC";
         }
+        //Selecteing the sort
         if (!selectedSort.equals("Category")) {
             switch (selectedSort) {
                 case ("Name"):
@@ -75,6 +79,7 @@ public class TaskViewer extends javax.swing.JFrame {
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=" + archive + "))\n"
                     + "ORDER BY task." + selectedSort + sort + ";";
         } else {
+            //Category needs it's own sort as SQL has to access category properties
             sql = "SELECT task.TaskID\n"
                     + "FROM task INNER JOIN (user INNER JOIN category ON user.UserID = category.UserID) ON (user.UserID = task.UserID) AND (task.CategoryID = category.CategoryID) AND (task.UserID = category.UserID)\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.Hidden)=" + archive + "))\n"
@@ -83,16 +88,20 @@ public class TaskViewer extends javax.swing.JFrame {
 
         ResultSet rs = DatabaseHandle.query(sql);
         try {
+            //Adding items to the list
             while (rs.next()) {
                 this.taskIDList.addNode(rs.getInt("TaskID"));
             }
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-        
+
     }
 
-    //Sets the taskList to the user's tasks given an order (eg. alphabetical)
+    /**
+     * Sets the taskList to the user's tasks given an order (eg. alphabetical)
+     *
+     */
     private void setUpList() {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
@@ -109,7 +118,7 @@ public class TaskViewer extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            
+
         }
 
         this.taskList.setModel(dlm);
@@ -420,13 +429,21 @@ public class TaskViewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Returns to main menu
+    /**
+     * Returns to main menu
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
-    //Closes the program
+    /**
+     * Closes the program
+     *
+     * @param evt
+     */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
@@ -434,7 +451,11 @@ public class TaskViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exitButtonActionPerformed
 
-    //Edits the selected task
+    /**
+     * Edits the selected task
+     *
+     * @param evt
+     */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         if (this.todoButton.isSelected()) {
             this.setVisible(false);
@@ -445,11 +466,20 @@ public class TaskViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
+    /**
+     * Sorts the list of tasks
+     *
+     * @param evt
+     */
     private void sortDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortDropdownActionPerformed
         setUpList();
     }//GEN-LAST:event_sortDropdownActionPerformed
 
-    //Deletes the selected task if the user confirms the choice
+    /**
+     * Deletes the selected task if the user confirms the choice
+     *
+     * @param evt
+     */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         if (taskList.getSelectedValue() != null) {
             int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + taskList.getSelectedValue(), "Delete task", JOptionPane.YES_NO_OPTION);
@@ -461,14 +491,20 @@ public class TaskViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    //Removes the task from the database and recalculates the category modifier
+    /**
+     * Removes the task from the database and recalculates the category modifier
+     *
+     * @param evt
+     */
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
         if (taskList.getSelectedValue() != null) {
             Task task = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
             if (this.completeButton.getText().equals("To-Do")) {
+                //Marking task as to-do
                 task.markAsTodo();
                 this.setUpList();
             } else {
+                //Creating a OptionPane to get the user's decision
                 Object[] options = {"Mark As Complete", "Complete Hours", "Cancel"};
                 int result = JOptionPane.showOptionDialog(this, "Mark as complete to finish the task.\nComplete hours to add how much time you've completed.", "Task Completion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
@@ -485,11 +521,17 @@ public class TaskViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_completeButtonActionPerformed
 
-    public void update(){
+    /**
+     * Reloads the list of tasks and the details of the current task
+     */
+    public void update() {
         this.loadDetails();
         this.setUpList();
     }
-    
+
+    /**
+     * Loads the details of the selected task into the details section
+     */
     private void loadDetails() {
         Task selectedTask = new Task(this.taskIDList.getDataAt(this.taskList.getSelectedIndex()));
 
@@ -503,16 +545,31 @@ public class TaskViewer extends javax.swing.JFrame {
         colourPreview.setBackground(new Color(selectedTask.getColourCode()));
     }
 
+    /**
+     * Loads the list of to-do tasks
+     *
+     * @param evt
+     */
     private void todoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todoButtonActionPerformed
         this.completeButton.setText("Complete");
         setUpList();
     }//GEN-LAST:event_todoButtonActionPerformed
 
+    /**
+     * Loads the list of complete tasks
+     *
+     * @param evt
+     */
     private void archivedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivedButtonActionPerformed
         this.completeButton.setText("To-Do");
         setUpList();
     }//GEN-LAST:event_archivedButtonActionPerformed
 
+    /**
+     * Changes the order of the list of tasks
+     *
+     * @param evt
+     */
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
         if (ascDescSortButton.getText().equals("Ascending")) {
             ascDescSortButton.setText("Descending");
@@ -522,6 +579,11 @@ public class TaskViewer extends javax.swing.JFrame {
         this.setUpList();
     }//GEN-LAST:event_ascDescSortButtonActionPerformed
 
+    /**
+     * Loads the details of the selected task
+     * 
+     * @param evt 
+     */
     private void taskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_taskListValueChanged
         loadDetails();
     }//GEN-LAST:event_taskListValueChanged

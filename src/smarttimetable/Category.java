@@ -14,7 +14,9 @@ public class Category {
     private double modifier;
     private int colourCode;
 
-    //Constructor when given a categoryID
+    /**
+     * Loads the category with the given ID into the class's fields
+     */
     public Category(int categoryID) {
         this.categoryID = categoryID;
         String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
@@ -31,31 +33,50 @@ public class Category {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
     }
 
+    /**
+     * Adds a category with the given details to the database
+     *
+     * @param name
+     * @param colourCode
+     */
     public Category(String name, int colourCode) {
         this.categoryID = DatabaseHandle.createID("category", "CategoryID");
         this.modifier = 1;
         this.taskCount = 0;
         this.name = name;
         this.colourCode = colourCode;
-        
+
         String sql = "INSERT INTO `category` (`CategoryID`, `UserID`, `Name`, `Colour`) VALUES(" + this.categoryID + ", " + User.getUserID() + ", '" + this.name + "', " + this.colourCode + ")";
         DatabaseHandle.update(sql);
         new Popup("Category " + this.name + " created").setVisible(true);
     }
-    
+
+    /**
+     * Updates this category to the given details and corrects the database
+     *
+     * @param name
+     * @param colourCode
+     * @return
+     */
     public int editCategory(String name, int colourCode) {
         this.colourCode = colourCode;
         this.name = name;
-        
+
         String sql = "UPDATE category, user SET Name = '" + this.name + "', Colour = " + this.colourCode + " WHERE CategoryID = " + this.categoryID + " AND category.UserID = user.UserID AND user.UserID = " + User.getUserID();
         int linesChanged = DatabaseHandle.update(sql);
         new Popup(this.name + " edited.").setVisible(true);
         return linesChanged;
     }
 
+    /**
+     * Increases the taskCount, corrects the modifier and then updates the
+     * database record
+     *
+     * @param task
+     */
     public void taskComplete(Task task) {
         this.taskCount++;
         calculateModifier(task);
@@ -64,22 +85,36 @@ public class Category {
                 + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
         if (this.modifier >= 4) {
+            //Suggests the user should seek aid with the category as they seem to be struggling
             new Popup("You have amassed a modifier greater than 4 for " + this.name + ". It is advised you seek help with " + this.name + ".").setVisible(true);
         }
     }
-    
-    public void taskTodo(Task task){
+
+    /**
+     * Decreases the taskCount, changes the modifier so that it doesn't include
+     * the task marked as todo in the modifier, then updates the database with
+     * these new values
+     *
+     * @param task
+     */
+    public void taskTodo(Task task) {
         this.taskCount--;
         Double timeMultiplier = task.getTimeUsed() / task.getTimeSet();
         Double oldMeanTotal = this.modifier * (this.taskCount + 1);
         this.modifier = (oldMeanTotal - timeMultiplier) / this.taskCount;
-        
+
         String sql = "UPDATE category "
                 + "SET TasksCompleted = " + this.taskCount + ", Modifier = " + this.modifier + " "
                 + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
         DatabaseHandle.update(sql);
     }
 
+    /**
+     * Averages the ratio of time used to time set for a task with the
+     * categories modifier
+     *
+     * @param task
+     */
     private void calculateModifier(Task task) {
         double timeMultiplier = task.getTimeUsed() / task.getTimeSet();
         double oldMeanTotal = this.modifier * (this.taskCount - 1);

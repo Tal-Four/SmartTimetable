@@ -263,6 +263,11 @@ public class Login extends javax.swing.JFrame {
                 pack();
             }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Closes the program after user confirmation
+     *
+     * @param evt
+     */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
@@ -271,7 +276,11 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exitButtonActionPerformed
 
-    //Attempts to log in the user with the details provided
+    /**
+     * Attempts to log in the user with the details provided
+     *
+     * @param evt
+     */
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
 
         String username, password;
@@ -292,7 +301,11 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
-    //Attemps to create a new account
+    /**
+     * Attempts to create a new account
+     *
+     * @param evt
+     */
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
 
         String username, password, passwordConfirm;
@@ -340,16 +353,29 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
-    //Runs login when enter is pressed in the existingPasswordField
+    /**
+     * Runs login when enter is pressed in the existingPasswordField
+     *
+     * @param evt
+     */
     private void existingPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_existingPasswordFieldActionPerformed
         loginButtonActionPerformed(evt);
     }//GEN-LAST:event_existingPasswordFieldActionPerformed
 
-    //Runs createAccount when enter is pressed in the newConfirmPasswordField
+    /**
+     * Runs createAccount when enter is pressed in the newConfirmPasswordField
+     *
+     * @param evt
+     */
     private void newConfirmPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newConfirmPasswordFieldActionPerformed
         createAccountButtonActionPerformed(evt);
     }//GEN-LAST:event_newConfirmPasswordFieldActionPerformed
 
+    /**
+     * Creates a PasswordReset screen passing in the provided username
+     * 
+     * @param evt 
+     */
     private void changePasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePasswordButtonActionPerformed
         if (!this.existingUsernameField.getText().equals("")) {
             String sql = "SELECT user.UserID\n"
@@ -373,6 +399,8 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_changePasswordButtonActionPerformed
 
     /**
+     * Starts the program
+     * 
      * @param args the command line arguments
      */
     public static void main(String args[]) {

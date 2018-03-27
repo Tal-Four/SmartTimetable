@@ -26,11 +26,23 @@ public class CompleteHours extends javax.swing.JFrame {
         this.initialise(lastFrame, task);
     }
 
+    /**
+     * Creates new form CompleteHours
+     *
+     * @param lastFrame
+     * @param task
+     */
     public CompleteHours(Timetable lastFrame, Task task) {
         this.timetable = true;
         this.initialise(lastFrame, task);
     }
 
+    /**
+     * Runs the standard frame setup
+     *
+     * @param lastFrame
+     * @param task
+     */
     private void initialise(JFrame lastFrame, Task task) {
         initComponents();
 
@@ -150,9 +162,16 @@ public class CompleteHours extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Attempts to add the given number of hours to the task
+     *
+     * @param evt
+     */
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
         double input = 0;
         boolean accepted = true;
+
+        //Checking it's a number
         try {
             input = Double.parseDouble(this.inputField.getText());
         } catch (NumberFormatException e) {
@@ -160,21 +179,27 @@ public class CompleteHours extends javax.swing.JFrame {
             System.err.println(e);
         }
 
+        //Checking it's positive
         if (input < 0) {
             accepted = false;
         }
 
         if (accepted) {
+            //Adding the hours to the task and its record
             task.setTimeUsed(task.getTimeUsed() + input);
             String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID "
                     + "SET task.TimeUsed = " + task.getTimeUsed() + "\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + task.getTaskID() + "));";
             DatabaseHandle.update(sql);
+
+            //Checking to see if task has completed more hours than it was set
             if (task.getTimeModified() <= task.getTimeUsed()) {
+                //More hours completed than was set for the task, creates a window for the user to resolve the issue
                 Object[] options = {"Mark as Complete", "Add Time", "Do Nothing"};
                 int result = JOptionPane.showOptionDialog(this, "The time spent on the task exceeds the allotted time.\nWould you like to mark the task as complete or add more time?\nTime exceeded by: " + (task.getTimeUsed() - task.getTimeModified()) + " hours", "Exceeded Time Set", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
                 switch (result) {
                     case (0):
+                        //Completes the task and returns to the last frame
                         task.complete();
                         this.lastFrame.setVisible(true);
                         if (timetable) {
@@ -185,16 +210,29 @@ public class CompleteHours extends javax.swing.JFrame {
                         this.dispose();
                         break;
                     case (1):
+                        //Creates a AddTime frame
                         new AddTime(this.lastFrame, this.task).setVisible(true);
                         this.dispose();
                         break;
                     default:
+                        //Returns to the last frame
                         this.lastFrame.setVisible(true);
+                        if (timetable) {
+                            ((Timetable) (this.lastFrame)).reloadTimetable();
+                        } else {
+                            ((TaskViewer) (this.lastFrame)).update();
+                        }
                         this.dispose();
                         break;
                 }
             } else {
+                //Returns to the last frame
                 this.lastFrame.setVisible(true);
+                if (timetable) {
+                    ((Timetable) (this.lastFrame)).reloadTimetable();
+                } else {
+                    ((TaskViewer) (this.lastFrame)).update();
+                }
                 this.dispose();
             }
         } else {
@@ -202,6 +240,11 @@ public class CompleteHours extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_continueButtonActionPerformed
 
+    /**
+     * Returns the user to the last frame
+     * 
+     * @param evt 
+     */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         lastFrame.setVisible(true);
         this.dispose();

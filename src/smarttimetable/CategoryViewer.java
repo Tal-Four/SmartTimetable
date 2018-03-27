@@ -19,6 +19,9 @@ public class CategoryViewer extends javax.swing.JFrame {
         frameSetup();
     }
 
+    /**
+     * Runs the setup for the frame.
+     */
     private void frameSetup() {
         initComponents();
 
@@ -302,20 +305,28 @@ public class CategoryViewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Reloads the list of tasks and the selected task's details.
+     */
     public void update() {
-        this.setUpList();
         this.categoryListIndexSelected();
+        this.setUpList();
     }
 
+    /**
+     * Loads the details of the category into the correct fields
+     */
     private void categoryListIndexSelected() {
         if (categoryList.getSelectedIndex() != -1) {
             nameVariableLabel.setText(categoryList.getSelectedValue());
 
+            //Fetching the details
             String sql = "SELECT Modifier, Colour FROM category, user WHERE user.UserID = category.UserID AND user.UserID = "
                     + User.getUserID() + " AND CategoryID = " + this.categoryIDList.getDataAt(categoryList.getSelectedIndex());
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 if (rs.next()) {
+                    //Setting the fields to the fetched values
                     timeModifierVariableLabel.setText("" + (rs.getInt("Modifier")));
                     colourPreview.setBackground(new Color(rs.getInt("Colour")));
                 }
@@ -326,6 +337,11 @@ public class CategoryViewer extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Marks the selected task as hidden after user confirmation.
+     *
+     * @param evt
+     */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         if (categoryList.getSelectedValue() != null) {
             int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + categoryList.getSelectedValue(), "Delete category", JOptionPane.YES_NO_OPTION);
@@ -340,6 +356,11 @@ public class CategoryViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    /**
+     * Creates a CategoryEditor, passing in the ID of the selected category
+     *
+     * @param evt
+     */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         if (categoryList.getSelectedValue() != null) {
             this.setVisible(false);
@@ -349,11 +370,21 @@ public class CategoryViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
+    /**
+     * Returns the user to the menu
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
+    /**
+     * After user confirmation closes the program
+     *
+     * @param evt
+     */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
@@ -361,18 +392,39 @@ public class CategoryViewer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exitButtonActionPerformed
 
+    /**
+     * Runs setUpList
+     *
+     * @param evt
+     */
     private void timeModifierSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeModifierSortButtonActionPerformed
         setUpList();
     }//GEN-LAST:event_timeModifierSortButtonActionPerformed
 
+    /**
+     * Runs setUpList
+     *
+     * @param evt
+     */
     private void nameSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameSortButtonActionPerformed
         setUpList();
     }//GEN-LAST:event_nameSortButtonActionPerformed
 
+    /**
+     * Runs categoryListIndexSelected
+     *
+     * @param evt
+     */
     private void categoryListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_categoryListValueChanged
         categoryListIndexSelected();
     }//GEN-LAST:event_categoryListValueChanged
 
+    /**
+     * Changes the text on the button to the other order and then sorts the list
+     * of categories using the new order
+     *
+     * @param evt
+     */
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
         if (ascDescSortButton.getText().equals("Ascending")) {
             ascDescSortButton.setText("Descending");
@@ -382,9 +434,13 @@ public class CategoryViewer extends javax.swing.JFrame {
         this.setUpList();
     }//GEN-LAST:event_ascDescSortButtonActionPerformed
 
+    /**
+     * Fills the categoryIDList with the fetched categories's IDs
+     */
     private void updateIDList() {
         this.categoryIDList.clear();
 
+        //Determining the sort
         String sort = "";
         if (nameSortButton.isSelected()) {
             sort = "Name";
@@ -394,6 +450,8 @@ public class CategoryViewer extends javax.swing.JFrame {
         if (ascDescSortButton.getText().equals("Descending")) {
             sort = sort + " DESC";
         }
+
+        //Fetching IDs
         String sql = "SELECT category.CategoryID\n"
                 + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.Hidden)=False))\n"
@@ -401,6 +459,7 @@ public class CategoryViewer extends javax.swing.JFrame {
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
+                //Filling list
                 this.categoryIDList.addNode(rs.getInt("CategoryID"));
             }
         } catch (SQLException ex) {
@@ -409,6 +468,10 @@ public class CategoryViewer extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Runs updateIDList and then uses this list to load the list of category
+     * names that is displayed to the user
+     */
     private void setUpList() {
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();

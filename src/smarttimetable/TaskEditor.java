@@ -27,13 +27,22 @@ public class TaskEditor extends javax.swing.JFrame {
     private final LinkedList categoryIDList = new LinkedList();
     private JFrame lastPanel;
 
-    //Creates new form TaskEditor
+    /**
+     * Creates new form TaskEditor
+     *
+     * @param lastPanel
+     */
     public TaskEditor(JFrame lastPanel) {
         initialise(lastPanel);
         this.edit = false;
     }
 
-    //Creates new form TaskEditor with given variables
+    /**
+     * Creates new form TaskEditor with given variables
+     *
+     * @param task
+     * @param lastPanel
+     */
     public TaskEditor(Task task, JFrame lastPanel) {
         initialise(lastPanel);
         this.edit = true;
@@ -52,7 +61,11 @@ public class TaskEditor extends javax.swing.JFrame {
         }
     }
 
-    //Initialises components and sets some text box values
+    /**
+     * Initialises components and sets some text box values
+     *
+     * @param lastPanel
+     */
     private void initialise(JFrame lastPanel) {
         initComponents();
 
@@ -76,7 +89,7 @@ public class TaskEditor extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
     }
 
     /**
@@ -329,7 +342,11 @@ public class TaskEditor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Attempts to create a task with given variables 
+    /**
+     * Attempts to create a task with given variables
+     *
+     * @param evt
+     */
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
 
         //Retrieving variable values from GUI
@@ -388,7 +405,11 @@ public class TaskEditor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    //Returns back to menu screen, nothing is saved
+    /**
+     * Returns back to menu screen after user confirmation
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
@@ -397,7 +418,12 @@ public class TaskEditor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_backButtonActionPerformed
 
-    //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters
+    /**
+     * After the key press it tells the user how many characters they can use
+     * and restricts taskName to 20 characters
+     *
+     * @param evt
+     */
     private void nameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyReleased
         int length = nameField.getText().length();
         if (length > 20) {
@@ -407,6 +433,12 @@ public class TaskEditor extends javax.swing.JFrame {
         nameCharsUsed.setText(length + " out of 20 characters used");
     }//GEN-LAST:event_nameFieldKeyReleased
 
+    /**
+     * Changes the colour of the colour picker to the colour of the selected
+     * category
+     *
+     * @param evt
+     */
     private void categoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryDropdownActionPerformed
         String SQL = "SELECT Colour FROM category, user WHERE category.CategoryID = " + categoryIDList.getDataAt(categoryDropdown.getSelectedIndex()) + " AND category.UserID = user.UserID AND user.UserID = " + User.getUserID();
         ResultSet rs = DatabaseHandle.query(SQL);
@@ -417,7 +449,7 @@ public class TaskEditor extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
+
     }//GEN-LAST:event_categoryDropdownActionPerformed
 
     //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">

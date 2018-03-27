@@ -219,11 +219,21 @@ public class ChangeSlot extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Returns user to the timetable
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.timetable.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
+    /**
+     * Changes the contents of the selected item in the frame
+     *
+     * @param evt
+     */
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
         if (!this.taskEventList.isSelectionEmpty()) {
 
@@ -232,6 +242,7 @@ public class ChangeSlot extends javax.swing.JFrame {
 
             String sql;
 
+            //Checking if slot record already exists (I.E. not blank)
             if (!this.previousContents.equals("")) {
                 if (event) {
                     sql = "UPDATE (timetable INNER JOIN timetableslot ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = timetableslot.UserID)) INNER JOIN user ON timetable.UserID = user.UserID "
@@ -254,17 +265,23 @@ public class ChangeSlot extends javax.swing.JFrame {
 
             DatabaseHandle.update(sql);
 
+            //Returning to timetable
             this.timetable.setVisible(true);
             this.timetable.reloadTimetable();
             this.dispose();
 
+            //Checking to see if the user wants to empty the slot
         } else if (this.emptyRadioButton.isSelected()) {
 
-            String sql = "DELETE FROM timetableSlot\n"
-                    + "WHERE (((UserID)=" + User.getUserID() + ") AND ((TimetableID)=" + this.timetableID + ") AND ((Day)=" + this.day + ") AND ((Time)= " + this.time + "));";
+            //If already empty then no record exists so don't have to delete anything
+            if (!this.previousContents.equals("")) {
+                String sql = "DELETE FROM timetableSlot\n"
+                        + "WHERE (((UserID)=" + User.getUserID() + ") AND ((TimetableID)=" + this.timetableID + ") AND ((Day)=" + this.day + ") AND ((Time)= " + this.time + "));";
 
-            DatabaseHandle.update(sql);
+                DatabaseHandle.update(sql);
+            }
 
+            //Returning to timetable
             this.timetable.setVisible(true);
             this.timetable.reloadTimetable();
             this.dispose();
@@ -274,10 +291,18 @@ public class ChangeSlot extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_changeButtonActionPerformed
 
+    /**
+     * Runs taskButtonPressed
+     *
+     * @param evt
+     */
     private void taskButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_taskButtonActionPerformed
         taskButtonPressed();
     }//GEN-LAST:event_taskButtonActionPerformed
 
+    /**
+     * Loads the list of tasks
+     */
     private void taskButtonPressed() {
         String sql = "SELECT task.TaskID AS ID, task.Name\n"
                 + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
@@ -286,6 +311,12 @@ public class ChangeSlot extends javax.swing.JFrame {
         updateList(sql);
     }
 
+    /**
+     * Loads the items (events/tasks) given by the SQL into both the idList and
+     * the list shown to the user
+     *
+     * @param sql
+     */
     private void updateList(String sql) {
         ResultSet rs = DatabaseHandle.query(sql);
 
@@ -300,11 +331,15 @@ public class ChangeSlot extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.err.println(e);
         }
-        
 
         this.taskEventList.setModel(dlm);
     }
 
+    /**
+     * Loads the list of events
+     *
+     * @param evt
+     */
     private void eventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventButtonActionPerformed
         String sql = "SELECT event.EventID AS ID, event.EventName AS Name\n"
                 + "FROM event INNER JOIN user ON event.UserID = user.UserID\n"
@@ -313,8 +348,12 @@ public class ChangeSlot extends javax.swing.JFrame {
         updateList(sql);
     }//GEN-LAST:event_eventButtonActionPerformed
 
+    /**
+     * Empties both lists
+     */
     private void emptyRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emptyRadioButtonActionPerformed
         this.taskEventList.setModel(new DefaultListModel());
+        this.idList.clear();
     }//GEN-LAST:event_emptyRadioButtonActionPerformed
 
 

@@ -11,6 +11,9 @@ public class CustomTableModel extends DefaultTableModel {
     private Object[][] data;
     private String[] headers;
 
+    /**
+     * Sets up a blank table
+     */
     public CustomTableModel() {
         this.headers = new String[]{
             "Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
@@ -75,7 +78,13 @@ public class CustomTableModel extends DefaultTableModel {
         setDataVector(this.data, this.headers);
     }
 
-    //Sets the table to uneditable
+    /**
+     * Sets the table to uneditable
+     *
+     * @param row
+     * @param column
+     * @return
+     */
     @Override
     public boolean isCellEditable(int row, int column) {
         return false;

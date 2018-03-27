@@ -5,7 +5,12 @@ public class Node {
     private int data;
     private Node nextNode;
 
-    //Creates a node
+    /**
+     * Creates a node
+     *
+     * @param data
+     * @param nextNode
+     */
     public Node(int data, Node nextNode) {
         this.data = data;
         this.nextNode = nextNode;

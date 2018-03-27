@@ -18,11 +18,18 @@ public class Event {
     private double startTime, endTime;
     public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7, START = 0, END = 1;
 
+    /**
+     * Creates a blank event
+     */
     public Event() {
 
     }
 
-    //Constructor to retrieve event details from the database given an ID
+    /**
+     * Constructor to retrieve event details from the database given an ID
+     *
+     * @param eventID
+     */
     public Event(int eventID) {
         this.eventID = eventID;
 
@@ -30,6 +37,7 @@ public class Event {
         ResultSet rs = DatabaseHandle.query(sql);
 
         try {
+            //Filling out the attributes of the object
             if (rs.next()) {
                 this.eventName = rs.getString("EventName");
                 this.description = rs.getString("Description");
@@ -39,13 +47,22 @@ public class Event {
                 this.endTime = rs.getFloat("EndTime");
                 this.date = rs.getString("Date");
             }
-        } catch (SQLException ex) {
-            System.err.println(ex);
+        } catch (SQLException e) {
+            System.err.println(e);
         }
-        
+
     }
 
-    //Creates a recurring event and inserts into a database given variables
+    /**
+     * Creates a recurring event and inserts into a database given variables
+     *
+     * @param eventName
+     * @param description
+     * @param colour
+     * @param day
+     * @param endTime
+     * @param startTime
+     */
     public Event(String eventName, String description, int colour, int day, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
@@ -62,7 +79,16 @@ public class Event {
         new Popup("Event " + this.eventName + " created.").setVisible(true);
     }
 
-    //Creates a one-off event and inserts into a database given variables
+    /**
+     * Creates a one-off event and inserts into a database given variables
+     *
+     * @param eventName
+     * @param description
+     * @param colour
+     * @param date
+     * @param endTime
+     * @param startTime
+     */
     public Event(String eventName, String description, int colour, String date, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
@@ -79,7 +105,16 @@ public class Event {
         new Popup("Event " + this.eventName + " created.").setVisible(true);
     }
 
-    //Updates a recurring existing record with new values
+    /**
+     * Updates a recurring existing record with new values
+     *
+     * @param eventName
+     * @param description
+     * @param colour
+     * @param day
+     * @param endTime
+     * @param startTime
+     */
     public void editEvent(String eventName, String description, int colour, int day, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
@@ -95,7 +130,16 @@ public class Event {
         new Popup("Event " + this.eventName + " edited.").setVisible(true);
     }
 
-    //Updates a one-off existing record with new values
+    /**
+     * Updates a one-off existing record with new values
+     *
+     * @param eventName
+     * @param description
+     * @param colour
+     * @param date
+     * @param endTime
+     * @param startTime
+     */
     public void editEvent(String eventName, String description, int colour, String date, double endTime, double startTime) {
         this.eventName = eventName;
         this.description = description;
@@ -111,7 +155,13 @@ public class Event {
         new Popup("Event " + this.eventName + " edited.").setVisible(true);
     }
 
-    //Converts the String of a day, eg. Monday, into a representive number, eg. Monday --> 1
+    /**
+     * Converts the String of a day, eg. Monday, into a representive number, eg.
+     * Monday --> 1
+     *
+     * @param dayString
+     * @return
+     */
     public int dayStringToInt(String dayString) {
         int dayInt = 0;
         switch (dayString) {
@@ -140,7 +190,13 @@ public class Event {
         return dayInt;
     }
 
-    //Converts the int of a day, eg. 1, into the represented String, eg. 1 --> Monday
+    /**
+     * Converts the int of a day, eg. 1, into the represented String, eg. 1 -->
+     * Monday
+     *
+     * @param dayInt
+     * @return
+     */
     public String dayIntToString(int dayInt) {
         String dayString = "";
         switch (dayInt) {
@@ -169,7 +225,10 @@ public class Event {
         return dayString;
     }
 
-    //Deletes this event from the DB
+    /**
+     * Deletes this event from the DB
+     *
+     */
     public void deleteEvent() {
         String sql = "DELETE FROM timetableSlot WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
         DatabaseHandle.update(sql);
@@ -177,6 +236,14 @@ public class Event {
         DatabaseHandle.update(sql);
     }
 
+    /**
+     * Converts time is decimal to hours and minutes text. Mode determines
+     * whether startTime or endTime is processed. 0 means startTime is processed
+     * and any other number means endTime is processed
+     *
+     * @param mode
+     * @return
+     */
     public String[] timeToString(int mode) {
         double time;
         if (mode == 0) {
@@ -194,12 +261,22 @@ public class Event {
         return timeString;
     }
 
-    //Converting date object to SQL date format
+    /**
+     * Converting date object to SQL date format
+     *
+     * @param date
+     * @return
+     */
     private String dateToSQLFormat(Date date) {
         return (date.getYear() + 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate();
     }
 
-    //Converting raw text to SQL date format
+    /**
+     * Converting raw text to SQL date format
+     *
+     * @param dateText
+     * @return
+     */
     public final String dateTextToSQLFormat(String dateText) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date dateToConvert = null;
@@ -211,7 +288,12 @@ public class Event {
         return dateToSQLFormat(dateToConvert);
     }
 
-    //Formats the string from YYYY-MM-DD to DD/MM/YYYY
+    /**
+     * Formats the string from YYYY-MM-DD to DD/MM/YYYY
+     *
+     * @param sqlDate
+     * @return
+     */
     public String sqlDateToTextFormat(String sqlDate) {
         return sqlDate.substring(8, 10) + "/" + sqlDate.substring(5, 7) + "/" + sqlDate.substring(0, 4);
     }

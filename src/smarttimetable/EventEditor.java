@@ -27,13 +27,22 @@ public class EventEditor extends javax.swing.JFrame {
     private int oldEventID;
     private JFrame lastPanel;
 
-    //Creates a blank EventEditor form
+    /**
+     * Creates a blank EventEditor form
+     *
+     * @param lastPanel
+     */
     public EventEditor(JFrame lastPanel) {
         initialise(lastPanel);
         this.edit = false;
     }
 
-    //Creates a prefilled EventEditor form
+    /**
+     * Creates a prefilled EventEditor form
+     *
+     * @param oldEventID
+     * @param lastPanel
+     */
     public EventEditor(int oldEventID, JFrame lastPanel) {
         initialise(lastPanel);
         this.edit = true;
@@ -51,6 +60,11 @@ public class EventEditor extends javax.swing.JFrame {
         endMinuteDropdown.setSelectedItem(event.timeToString(1)[1]);
     }
 
+    /**
+     * Runs the standard frame setup
+     *
+     * @param lastPanel
+     */
     private void initialise(JFrame lastPanel) {
         initComponents();
 
@@ -318,6 +332,11 @@ public class EventEditor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Attempts to save the data entered to the database
+     *
+     * @param evt
+     */
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         boolean valid = true;
         Event event = new Event();
@@ -345,6 +364,7 @@ public class EventEditor extends javax.swing.JFrame {
             date = event.dateTextToSQLFormat(date);
 
             String editCondition = "";
+            //If it is an edit the SQL musn't detect the event's already existing slots for overlap
             if (edit) {
                 editCondition = "((event.EventID)!=" + this.oldEventID + ") AND ";
             }
@@ -358,6 +378,7 @@ public class EventEditor extends javax.swing.JFrame {
             try {
                 if (rs.next()) {
                     int count = rs.getInt("COUNT(*)");
+                    //If count isn't 0 it means there is an event that overlaps with the one being created or edited
                     if (count > 0) {
                         valid = false;
                         new Popup("Event overlaps with another event.").setVisible(true);
@@ -374,6 +395,7 @@ public class EventEditor extends javax.swing.JFrame {
             int day = event.dayStringToInt(daySelection.getSelectedItem().toString());
 
             String editCondition = "";
+            //If it is an edit the SQL musn't detect the event's already existing slots for overlap
             if (edit) {
                 editCondition = "((event.EventID)!=" + this.oldEventID + ") AND ";
             }
@@ -387,6 +409,7 @@ public class EventEditor extends javax.swing.JFrame {
             try {
                 if (rs.next()) {
                     int count = rs.getInt("COUNT(*)");
+                    //If count isn't 0 it means there is an event that overlaps with the one being created or edited
                     if (count > 0) {
                         valid = false;
                         new Popup("Event overlaps with another event.").setVisible(true);
@@ -431,13 +454,24 @@ public class EventEditor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    //Converts the dropdown options to a time
+    /**
+     * Converts the dropdown options to a time
+     *
+     * @param hour
+     * @param minute
+     * @return
+     */
     private double dropdownsToDecimal(JComboBox hour, JComboBox minute) {
         double decimalTime = Integer.parseInt(hour.getSelectedItem().toString()) + minutesToDecimal(minute.getSelectedItem().toString());
         return decimalTime;
     }
 
-    //Changes minutes to decimal
+    /**
+     * Changes minutes to decimal
+     *
+     * @param numberString
+     * @return
+     */
     private double minutesToDecimal(String numberString) {
         double numberDouble = 0;
         //Attempts to parse the String to an int and then divides it by 60
@@ -449,7 +483,11 @@ public class EventEditor extends javax.swing.JFrame {
         return numberDouble;
     }
 
-    //Returns the user to the menu screen
+    /**
+     * Returns the user to the menu screen
+     *
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
@@ -459,7 +497,12 @@ public class EventEditor extends javax.swing.JFrame {
 
     }//GEN-LAST:event_backButtonActionPerformed
 
-    //After the key press it tells the user how many characters they can use and restricts taskName to 20 characters    
+    /**
+     * After the key press it tells the user how many characters they can use
+     * and restricts taskName to 20 characters
+     *
+     * @param evt
+     */
     private void eventNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eventNameFieldKeyReleased
         int length = eventNameField.getText().length();
         if (length > 20) {
@@ -469,11 +512,22 @@ public class EventEditor extends javax.swing.JFrame {
         eventNameCharsUsed.setText(length + " out of 20 characters used");
     }//GEN-LAST:event_eventNameFieldKeyReleased
 
+    /**
+     * Enables the user to select items from the day selection drop down and
+     * locks the date field
+     *
+     * @param evt
+     */
     private void dayRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayRadioButtonActionPerformed
         this.dateField.setEnabled(false);
         this.daySelection.setEnabled(true);
     }//GEN-LAST:event_dayRadioButtonActionPerformed
 
+    /**
+     * Allows the user to edit the date field and locks the day selection
+     *
+     * @param evt
+     */
     private void dateRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateRadioButtonActionPerformed
         this.daySelection.setEnabled(false);
         this.dateField.setEnabled(true);
