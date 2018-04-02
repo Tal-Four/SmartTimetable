@@ -244,14 +244,12 @@ public class ChangeSlot extends javax.swing.JFrame {
 
             //Checking if slot record already exists (I.E. not blank)
             if (!this.previousContents.equals("")) {
+                String sqlStart = "UPDATE (timetable INNER JOIN timetableslot ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = timetableslot.UserID)) INNER JOIN user ON timetable.UserID = user.UserID ";
+                String sqlEnd = "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)= " + this.timetableID + ") AND ((timetableslot.Day)=" + this.day + ") AND ((timetableslot.Time)=" + this.time + "));";
                 if (event) {
-                    sql = "UPDATE (timetable INNER JOIN timetableslot ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = timetableslot.UserID)) INNER JOIN user ON timetable.UserID = user.UserID "
-                            + "SET timetableslot.EventID = " + id + ", timetableslot.TaskID = Null\n"
-                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)= " + this.timetableID + ") AND ((timetableslot.Day)=" + this.day + ") AND ((timetableslot.Time)=" + this.time + "));";
+                    sql = sqlStart + "SET timetableslot.EventID = " + id + ", timetableslot.TaskID = Null\n" + sqlEnd;
                 } else {
-                    sql = "UPDATE (timetable INNER JOIN timetableslot ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = timetableslot.UserID)) INNER JOIN user ON timetable.UserID = user.UserID "
-                            + "SET timetableslot.EventID = Null, timetableslot.TaskID = " + id + "\n"
-                            + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)= " + this.timetableID + ") AND ((timetableslot.Day)=" + this.day + ") AND ((timetableslot.Time)=" + this.time + "));";
+                    sql = sqlStart + "SET timetableslot.EventID = Null, timetableslot.TaskID = " + id + "\n" + sqlEnd;
                 }
             } else {
                 if (event) {
