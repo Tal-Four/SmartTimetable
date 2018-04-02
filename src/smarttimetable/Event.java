@@ -16,7 +16,12 @@ public class Event {
     private String eventName, description, date;
     private int day, colourCode, eventID;
     private double startTime, endTime;
-    public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7, START = 0, END = 1;
+    /**
+     * Recurring events in the database are given a number for the day they are
+     * on, 1 --> 7 for Monday --> Sunday respectively. Therefore constants are
+     * used to represent these numbers.
+     */
+    public final int MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6, SUN = 7;
 
     /**
      * Creates a blank event
