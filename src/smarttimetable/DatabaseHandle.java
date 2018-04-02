@@ -73,7 +73,9 @@ public class DatabaseHandle {
      */
     public static int createID(String table, String idColumnName) {
         int newID = 0;
-        String sql = "SELECT " + idColumnName + " FROM " + table + " WHERE UserID = " + User.getUserID() + " ORDER BY " + idColumnName;
+        String sql = "SELECT " + table + "." + idColumnName + "\n"
+                + "FROM user INNER JOIN " + table + " ON user.UserID = " + table + ".UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + "));";
         ResultSet rs = query(sql);
         try {
             //Loops through results until it finds an ID not being used

@@ -26,7 +26,9 @@ public class Task {
      */
     public Task(int taskID) {
         this.taskID = taskID;
-        String sql = "SELECT * FROM task WHERE TaskID = " + this.taskID + " AND UserID = " + User.getUserID();
+        String sql = "SELECT task.*\n"
+                + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
@@ -99,9 +101,8 @@ public class Task {
         this.timeModified = calcModifiedTime();
         this.highPriority = highPriority;
 
-        String sql = "UPDATE task SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', "
-                + "Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + ", "
-                + "HighPriority = " + this.highPriority + " WHERE UserID = " + User.getUserID() + " AND TaskID = " + this.taskID;
+        String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + ", HighPriority = " + this.highPriority + "\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
         DatabaseHandle.update(sql);
         new Popup("Task " + this.name + " edited.").setVisible(true);
     }

@@ -93,8 +93,9 @@ public class EventViewer extends javax.swing.JFrame {
         DefaultListModel dlm = new DefaultListModel();
 
         for (int count = 0; count < this.eventIDList.length(); count++) {
-            String sql = "SELECT EventName FROM event, user WHERE event.UserID = user.UserID AND user.UserID = "
-                    + User.getUserID() + " AND event.EventID = " + this.eventIDList.getDataAt(count);
+            String sql = "SELECT event.EventName\n"
+                    + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
+                    + "WHERE (((event.EventID)=" + this.eventIDList.getDataAt(count) + ") AND ((user.UserID)=" + User.getUserID() + "));";
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 while (rs.next()) {

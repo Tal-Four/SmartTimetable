@@ -19,7 +19,9 @@ public class Category {
      */
     public Category(int categoryID) {
         this.categoryID = categoryID;
-        String sql = "SELECT * FROM category WHERE UserID = " + User.getUserID();
+        String sql = "SELECT category.*\n"
+                + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + "));";
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
@@ -64,8 +66,8 @@ public class Category {
     public int editCategory(String name, int colourCode) {
         this.colourCode = colourCode;
         this.name = name;
-
-        String sql = "UPDATE category, user SET Name = '" + this.name + "', Colour = " + this.colourCode + " WHERE CategoryID = " + this.categoryID + " AND category.UserID = user.UserID AND user.UserID = " + User.getUserID();
+        String sql = "UPDATE user INNER JOIN category ON user.UserID = category.UserID SET category.Name = \"" + this.name + "\", category.Colour = " + this.colourCode + "\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
         int linesChanged = DatabaseHandle.update(sql);
         new Popup(this.name + " edited.").setVisible(true);
         return linesChanged;
@@ -80,9 +82,9 @@ public class Category {
     public void taskComplete(Task task) {
         this.taskCount++;
         calculateModifier(task);
-        String sql = "UPDATE category "
-                + "SET TasksCompleted = " + this.taskCount + ", Modifier = " + this.modifier + " "
-                + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
+        String sql = "UPDATE user INNER JOIN category ON user.UserID = category.UserID SET category.TasksCompleted =" + this.taskCount + ", category.Modifier =" + this.modifier
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
+
         DatabaseHandle.update(sql);
         if (this.modifier >= 4) {
             //Suggests the user should seek aid with the category as they seem to be struggling
@@ -103,9 +105,8 @@ public class Category {
         Double oldMeanTotal = this.modifier * (this.taskCount + 1);
         this.modifier = (oldMeanTotal - timeMultiplier) / this.taskCount;
 
-        String sql = "UPDATE category "
-                + "SET TasksCompleted = " + this.taskCount + ", Modifier = " + this.modifier + " "
-                + "WHERE CategoryID = " + this.categoryID + " AND UserID = " + User.getUserID();
+        String sql = "UPDATE user INNER JOIN category ON user.UserID = category.UserID SET category.TasksCompleted =" + this.taskCount + ", category.Modifier =" + this.modifier
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
         DatabaseHandle.update(sql);
     }
 

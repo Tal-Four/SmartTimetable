@@ -40,7 +40,9 @@ public class CategoryEditor extends javax.swing.JFrame {
         this.editedCategory = new Category(categoryID);
         frameSetup(lastPanel);
 
-        String sql = "SELECT Name, Colour FROM category, user WHERE user.UserID = category.UserID AND user.UserID = " + User.getUserID() + " AND CategoryID = " + categoryID;
+        String sql = "SELECT category.Name, category.Colour\n"
+                + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + categoryID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {

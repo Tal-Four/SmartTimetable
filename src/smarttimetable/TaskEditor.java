@@ -79,7 +79,10 @@ public class TaskEditor extends javax.swing.JFrame {
         userLabel.setText("Logged in as: " + User.getUsername());
 
         //Setting the combo box up
-        String sql = "SELECT Name, CategoryID FROM user, category WHERE user.UserID = category.UserID AND user.UserID = " + User.getUserID() + " ORDER BY Name";
+        String sql = "SELECT category.CategoryID, category.Name\n"
+                + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + "))\n"
+                + "ORDER BY category.Name;";
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             while (rs.next()) {
@@ -440,7 +443,9 @@ public class TaskEditor extends javax.swing.JFrame {
      * @param evt
      */
     private void categoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryDropdownActionPerformed
-        String SQL = "SELECT Colour FROM category, user WHERE category.CategoryID = " + categoryIDList.getDataAt(categoryDropdown.getSelectedIndex()) + " AND category.UserID = user.UserID AND user.UserID = " + User.getUserID();
+        String SQL = "SELECT category.Colour\n"
+                + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + categoryIDList.getDataAt(categoryDropdown.getSelectedIndex()) + "));";
         ResultSet rs = DatabaseHandle.query(SQL);
         try {
             if (rs.next()) {

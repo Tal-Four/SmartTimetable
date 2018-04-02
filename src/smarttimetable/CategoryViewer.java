@@ -321,8 +321,9 @@ public class CategoryViewer extends javax.swing.JFrame {
             nameVariableLabel.setText(categoryList.getSelectedValue());
 
             //Fetching the details
-            String sql = "SELECT Modifier, Colour FROM category, user WHERE user.UserID = category.UserID AND user.UserID = "
-                    + User.getUserID() + " AND CategoryID = " + this.categoryIDList.getDataAt(categoryList.getSelectedIndex());
+            String sql = "SELECT category.Modifier, category.Colour\n"
+                    + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
+                    + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryIDList.getDataAt(categoryList.getSelectedIndex()) + "));";
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 if (rs.next()) {
@@ -477,8 +478,9 @@ public class CategoryViewer extends javax.swing.JFrame {
         DefaultListModel dlm = new DefaultListModel();
 
         for (int count = 0; count < this.categoryIDList.length(); count++) {
-            String sql = "SELECT Name FROM category, user WHERE category.UserID = user.UserID AND user.UserID = "
-                    + User.getUserID() + " AND CategoryID = " + this.categoryIDList.getDataAt(count);
+            String sql = "SELECT category.Name\n"
+                    + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
+                    + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryIDList.getDataAt(count) + "));";
             ResultSet rs = DatabaseHandle.query(sql);
             try {
                 while (rs.next()) {

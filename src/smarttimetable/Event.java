@@ -33,7 +33,9 @@ public class Event {
     public Event(int eventID) {
         this.eventID = eventID;
 
-        String sql = "SELECT event.* from event, user where event.EventID = " + this.eventID + " AND user.UserID = event.UserID AND user.UserID = " + User.getUserID();
+        String sql = "SELECT event.*\n"
+                + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
 
         try {
@@ -124,7 +126,8 @@ public class Event {
         this.endTime = endTime;
         this.date = null;
 
-        String sql = "UPDATE event SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = " + this.day + ", Date = NULL , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + " WHERE EventID = " + this.eventID + " AND UserID = " + User.getUserID();
+        String sql = "UPDATE user INNER JOIN event ON user.UserID = event.UserID SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = " + this.day + ", Date = NULL , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + "\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
         DatabaseHandle.update(sql);
 
         new Popup("Event " + this.eventName + " edited.").setVisible(true);
@@ -149,7 +152,8 @@ public class Event {
         this.startTime = startTime;
         this.endTime = endTime;
 
-        String sql = "UPDATE event SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = NULL, Date = " + this.date + ", StartTime = " + this.startTime + ", EndTime  = " + this.endTime + " WHERE EventID = " + this.eventID + " AND UserID = " + User.getUserID();
+        String sql = "UPDATE user INNER JOIN event ON user.UserID = event.UserID SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = NULL, Date = " + this.date + " , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + "\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
         DatabaseHandle.update(sql);
 
         new Popup("Event " + this.eventName + " edited.").setVisible(true);

@@ -319,7 +319,7 @@ public class Login extends javax.swing.JFrame {
             if (password.equals(passwordConfirm) && password.length() <= 15) {
 
                 //Checking to see if record in database has the same username
-                String sql = "SELECT * FROM user WHERE Username = '" + username + "'";
+                String sql = "SELECT Username FROM user WHERE Username = '" + username + "'";
                 ResultSet rs = DatabaseHandle.query(sql);
                 String UsernameCheck = null;
                 try {

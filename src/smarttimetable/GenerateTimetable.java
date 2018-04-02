@@ -427,9 +427,9 @@ public class GenerateTimetable {
     private void plotSingleEvents(int timetableID) {
 
         //Selects the start day of a timetable with the given ID
-        String sql = "SELECT timetable.StartDay FROM user, timetable WHERE timetable.UserID = user.UserID "
-                + "AND user.UserID = " + User.getUserID() + " AND timetable.Hidden = 0 "
-                + "AND timetable.TimetableID = " + timetableID;
+        String sql = "SELECT timetable.StartDay\n"
+                + "FROM ser INNER JOIN timetable ON user.UserID = timetable.UserID\n"
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)=" + timetableID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
 
         //Creates a calendar that is set to the day the passed in timetable starts
@@ -450,9 +450,10 @@ public class GenerateTimetable {
             date = calendar.get(GregorianCalendar.YEAR) + "-"
                     + (1 + calendar.get(GregorianCalendar.MONTH)) + "-"
                     + calendar.get(GregorianCalendar.DATE);
-            sql = "SELECT event.* FROM event, user"
-                    + " WHERE user.UserID = event.UserID AND user.UserID = " + User.getUserID()
-                    + " AND event.Date = '" + date + "' ORDER BY event.StartTime";
+            sql = "SELECT event.*\n"
+                    + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
+                    + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.Date)='" + date + "'))\n"
+                    + "ORDER BY event.StartTime;";
             rs = DatabaseHandle.query(sql);
 
             try {
