@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class DatabaseHandle {
 

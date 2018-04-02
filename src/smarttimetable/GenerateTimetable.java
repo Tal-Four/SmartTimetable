@@ -11,7 +11,7 @@ import java.util.Random;
 
 /**
  *
- * @author crazy
+ * @author AdamPlatt
  */
 public class GenerateTimetable {
 

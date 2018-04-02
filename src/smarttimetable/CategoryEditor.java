@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author crazy
+ * @author AdamPlatt
  */
 public class CategoryEditor extends javax.swing.JFrame {
 

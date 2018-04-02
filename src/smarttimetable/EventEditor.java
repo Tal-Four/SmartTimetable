@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class EventEditor extends javax.swing.JFrame {
 

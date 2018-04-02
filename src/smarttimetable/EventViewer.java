@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class EventViewer extends javax.swing.JFrame {
 

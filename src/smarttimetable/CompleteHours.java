@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author crazy
+ * @author AdamPlatt
  */
 public class CompleteHours extends javax.swing.JFrame {
 

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class Category {
 

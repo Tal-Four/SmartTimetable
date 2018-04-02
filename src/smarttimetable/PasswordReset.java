@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author crazy
+ * @author AdamPlatt
  */
 public class PasswordReset extends javax.swing.JFrame {
 

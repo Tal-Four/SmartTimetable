@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class Popup extends javax.swing.JFrame {
 

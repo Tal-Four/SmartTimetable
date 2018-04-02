@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class Task {
 

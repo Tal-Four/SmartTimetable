@@ -3,6 +3,10 @@ package smarttimetable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ *
+ * @author AdamPlatt
+ */
 public class User {
 
     private static int userID;

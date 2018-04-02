@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class TaskViewer extends javax.swing.JFrame {
 

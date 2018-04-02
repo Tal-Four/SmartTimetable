@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author crazy
+ * @author AdamPlatt
  */
 public class AddTime extends javax.swing.JFrame {
 

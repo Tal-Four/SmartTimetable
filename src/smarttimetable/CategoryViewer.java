@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author AdamPlatt
+ */
 public class CategoryViewer extends javax.swing.JFrame {
 
     /**

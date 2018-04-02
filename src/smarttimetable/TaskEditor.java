@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class TaskEditor extends javax.swing.JFrame {
 

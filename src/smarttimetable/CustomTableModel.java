@@ -4,7 +4,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author crazy
+ * @author AdamPlatt
  */
 public class CustomTableModel extends DefaultTableModel {
 

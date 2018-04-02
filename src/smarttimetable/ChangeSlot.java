@@ -8,7 +8,7 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author crazy
+ * @author AdamPlatt
  */
 public class ChangeSlot extends javax.swing.JFrame {
 

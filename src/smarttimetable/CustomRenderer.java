@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
- * @author crazy
+ * @author AdamPlatt
  */
 public class CustomRenderer extends DefaultTableCellRenderer {
 

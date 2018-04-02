@@ -1,5 +1,9 @@
 package smarttimetable;
 
+/**
+ *
+ * @author AdamPlatt
+ */
 public class Node {
 
     private int data;

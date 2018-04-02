@@ -17,7 +17,7 @@ import javax.swing.event.ListSelectionEvent;
 
 /**
  *
- * @author Adam-PC
+ * @author AdamPlatt
  */
 public class Timetable extends javax.swing.JFrame {
 
