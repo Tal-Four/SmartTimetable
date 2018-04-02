@@ -9,6 +9,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
+ * A form used to manage and view details about category records in the
+ * database.
  *
  * @author AdamPlatt
  */

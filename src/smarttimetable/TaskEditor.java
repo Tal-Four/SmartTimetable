@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
+ * A form that allows the user to create or edit task records in the database.
  *
  * @author AdamPlatt
  */

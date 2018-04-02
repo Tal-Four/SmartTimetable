@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 import java.util.Random;
 
 /**
+ * A class that generates a set of timetables for the user using both their task
+ * and event records and stores these timetables in the database.
  *
  * @author AdamPlatt
  */

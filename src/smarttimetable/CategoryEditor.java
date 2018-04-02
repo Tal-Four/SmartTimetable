@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
+ * A form used to edit or create a category record in the database.
  *
  * @author AdamPlatt
  */

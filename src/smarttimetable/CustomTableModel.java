@@ -3,6 +3,8 @@ package smarttimetable;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * A class that extends DefaultTableModel and is used to store the data of
+ * JTable in Timetable.
  *
  * @author AdamPlatt
  */

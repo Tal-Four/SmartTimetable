@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 /**
+ * A form used to add time to a specific task that is passed into the class.
  *
  * @author AdamPlatt
  */

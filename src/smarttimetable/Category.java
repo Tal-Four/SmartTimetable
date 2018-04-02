@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * A class used to manipulate and store details about category entities in the
+ * database.
  *
  * @author AdamPlatt
  */

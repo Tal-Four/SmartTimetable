@@ -9,12 +9,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
+ * A form used to manage and display details about the user’s tasks.
  *
  * @author AdamPlatt
  */
 public class TaskViewer extends javax.swing.JFrame {
 
-    private LinkedList taskIDList = new LinkedList();
+    private final LinkedList taskIDList = new LinkedList();
 
     /**
      * Creates new form TaskViewer
@@ -576,8 +577,8 @@ public class TaskViewer extends javax.swing.JFrame {
 
     /**
      * Loads the details of the selected task
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void taskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_taskListValueChanged
         loadDetails();

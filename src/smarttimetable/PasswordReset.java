@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 /**
+ * A form that allows the user to answer their security question and if they
+ * provide the correct answer allows the user to change their password.
  *
  * @author AdamPlatt
  */

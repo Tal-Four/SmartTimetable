@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 /**
+ * A form used to specify the hours between which the timetable will plot tasks
+ * in.
  *
  * @author AdamPlatt
  */

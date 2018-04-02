@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 /**
+ * A form used after the username and password have been provided for a new user
+ * account that allows the user to create a security question and answer that
+ * can be later used to reset their password.
  *
  * @author AdamPlatt
  */

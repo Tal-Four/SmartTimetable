@@ -1,6 +1,7 @@
 package smarttimetable;
 
 /**
+ * A series of nodes used to store the list of item IDs that are being viewed.
  *
  * @author AdamPlatt
  */

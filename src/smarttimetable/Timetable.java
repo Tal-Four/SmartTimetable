@@ -11,6 +11,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
 /**
+ * A form used to display and manage the user’s timetables and their contents.
  *
  * @author AdamPlatt
  */

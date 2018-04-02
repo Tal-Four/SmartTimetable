@@ -4,6 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * A static class used to store the details of the currently logged in user. It
+ * is static as only one user can be logged in at once and so other classes can
+ * retrieve details about the user without having to create an object of the
+ * class.
  *
  * @author AdamPlatt
  */

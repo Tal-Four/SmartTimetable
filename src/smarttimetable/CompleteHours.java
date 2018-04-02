@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
+ * A form used to mark hours of a specific task which is passed into the form as
+ * complete.
  *
  * @author AdamPlatt
  */
@@ -242,8 +244,8 @@ public class CompleteHours extends javax.swing.JFrame {
 
     /**
      * Returns the user to the last frame
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         lastFrame.setVisible(true);

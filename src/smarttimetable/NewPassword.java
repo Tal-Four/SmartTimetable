@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 /**
+ * A form that updates the user’s record with a new password.
  *
  * @author AdamPlatt
  */

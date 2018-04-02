@@ -9,6 +9,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
+ * A class which extends DefaultTableCellRenderer which is then used to set the
+ * colours of each cell in the JTable of Timetable.
  *
  * @author AdamPlatt
  */

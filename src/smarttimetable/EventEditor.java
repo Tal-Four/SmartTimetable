@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
+ * A form used to edit or create event records in the database.
  *
  * @author AdamPlatt
  */

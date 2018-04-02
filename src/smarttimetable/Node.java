@@ -1,8 +1,8 @@
 package smarttimetable;
 
 /**
- * A node object is used to store the data and the pointer to the next node in a
- * linked list
+ * A class used in the LinkedList class to store an ID and the position of the
+ * next node in the list.
  *
  * @author AdamPlatt
  */

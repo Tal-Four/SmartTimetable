@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
+ * A form used as the central hub for the program, all the important forms, such
+ * as item viewers and editors, can be accessed through this form.
  *
  * @author AdamPlatt
  */

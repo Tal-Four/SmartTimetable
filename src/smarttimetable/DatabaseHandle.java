@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * A static class used to handle any database interactions in the program, these
+ * consist of SQL updates and SQL queries. The class is static so any other
+ * class can access the methods in the class without having to create an object
+ * of it.
  *
  * @author AdamPlatt
  */

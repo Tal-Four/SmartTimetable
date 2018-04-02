@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import javax.swing.DefaultListModel;
 
 /**
+ * A form used to alter the contents of a cell in the timetable to be another
+ * task, category, or an empty slot.
  *
  * @author AdamPlatt
  */

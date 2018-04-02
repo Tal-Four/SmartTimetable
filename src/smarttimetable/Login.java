@@ -6,6 +6,8 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 /**
+ * A form used to create new user accounts and log in any existing users given
+ * their details.
  *
  * @author AdamPlatt
  */
@@ -368,8 +370,8 @@ public class Login extends javax.swing.JFrame {
 
     /**
      * Creates a PasswordReset screen passing in the provided username
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void changePasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePasswordButtonActionPerformed
         if (!this.existingUsernameField.getText().equals("")) {
@@ -395,7 +397,7 @@ public class Login extends javax.swing.JFrame {
 
     /**
      * Starts the program
-     * 
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {

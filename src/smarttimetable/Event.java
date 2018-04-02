@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * A class used to manipulate and store data about the event records in the
+ * database.
  *
  * @author AdamPlatt
  */

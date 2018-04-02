@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * A class used to store details about and manipulate task records in the
+ * database.
  *
  * @author AdamPlatt
  */
