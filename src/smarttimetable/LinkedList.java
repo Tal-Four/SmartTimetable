@@ -56,12 +56,6 @@ public class LinkedList {
             currentNode.setNextNode(nodeToDelete.getNextNode());
             deleted = true;
         }
-        if (deleted) {
-            System.out.println("Deleting " + dataToDelete + " from the list.");
-        } else {
-            // If not actually in the list.
-            System.out.println(dataToDelete + " not in list.");
-        }
     }
 
     /**
@@ -71,7 +65,6 @@ public class LinkedList {
      */
     public int length() {
         if (this.rootNode == null) {
-            System.out.println("List empty.");
             return 0;
         }
 
