@@ -23,15 +23,28 @@ public class DatabaseHandle {
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb?useSSL=false";
 
     /**
-     * Connects the program to the database
+     * Attempts to connect the program to the database
      *
+     * @return
      */
-    public static void connect() {
+    private static boolean connect() {
+        boolean connected = true;
         try {
-            connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
+            //Checks to see if database is not connected
+            if (connection == null || !connection.isValid(1)) {
+                try {
+                    //Connects to the database
+                    connection = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
+                    connected = true;
+                } catch (SQLException e) {
+                    connected = false;
+                }
+            }
         } catch (SQLException e) {
-            new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
+            System.err.println(e);
+            connected = false;
         }
+        return connected;
     }
 
     /**
@@ -41,12 +54,19 @@ public class DatabaseHandle {
      * @return
      */
     public static ResultSet query(String sql) {
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            return rs;
-        } catch (SQLException e) {
-            System.err.println("Query failed: " + e);
+        //Checks to see if connected and if not attempts to connect
+        boolean connected = connect();
+        //If connected to the database it runs the query, otherwise it creates an error window
+        if (connected) {
+            try {
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                return rs;
+            } catch (SQLException e) {
+                System.err.println("Query failed: " + e);
+            }
+        } else {
+            new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
         }
         return null;
     }
@@ -58,12 +78,19 @@ public class DatabaseHandle {
      * @return
      */
     public static int update(String sql) {
-        try {
-            Statement stmt = connection.createStatement();
-            int rows = stmt.executeUpdate(sql);
-            return rows;
-        } catch (SQLException e) {
-            System.err.println("Update failed: " + e);
+        //Checks to see if connected and if not attempts to connect
+        boolean connected = connect();
+        //If connected to the database it runs the query, otherwise it creates an error window
+        if (connected) {
+            try {
+                Statement stmt = connection.createStatement();
+                int rows = stmt.executeUpdate(sql);
+                return rows;
+            } catch (SQLException e) {
+                System.err.println("Update failed: " + e);
+            }
+        } else {
+            new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
         }
         return 0;
     }
