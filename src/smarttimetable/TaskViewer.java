@@ -83,15 +83,16 @@ public class TaskViewer extends javax.swing.JFrame {
         }
 
         ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            //Adding items to the list
-            while (rs.next()) {
-                this.taskIDList.addNode(rs.getInt("TaskID"));
+        if (rs != null) {
+            try {
+                //Adding items to the list
+                while (rs.next()) {
+                    this.taskIDList.addNode(rs.getInt("TaskID"));
+                }
+            } catch (SQLException ex) {
+                System.err.println(ex);
             }
-        } catch (SQLException ex) {
-            System.err.println(ex);
         }
-
     }
 
     /**
@@ -107,14 +108,15 @@ public class TaskViewer extends javax.swing.JFrame {
                     + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
                     + "WHERE (((task.TaskID)=" + this.taskIDList.getDataAt(count) + ") AND ((user.UserID)=" + User.getUserID() + "));";
             ResultSet rs = DatabaseHandle.query(sql);
-            try {
-                while (rs.next()) {
-                    dlm.addElement(rs.getString("Name"));
+            if (rs != null) {
+                try {
+                    while (rs.next()) {
+                        dlm.addElement(rs.getString("Name"));
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
             }
-
         }
 
         this.taskList.setModel(dlm);

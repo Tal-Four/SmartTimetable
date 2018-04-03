@@ -50,12 +50,14 @@ public class GenerateTimetable {
 
             //Setting the size of the array equal to the number of tasks to plot
             int arraySize = 0;
-            try {
-                if (rs.next()) {
-                    arraySize = rs.getInt("COUNT(*)");
+            if (rs != null) {
+                try {
+                    if (rs.next()) {
+                        arraySize = rs.getInt("COUNT(*)");
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
             }
 
             //Checking the program has tasks to plot
@@ -80,15 +82,17 @@ public class GenerateTimetable {
 
                 rs = DatabaseHandle.query(sql);
 
-                try {
-                    int counter = 0;
-                    //Filling the taskArray with Task objects
-                    while (rs.next()) {
-                        taskArray[counter] = new Task(rs.getInt("TaskID"));
-                        counter++;
+                if (rs != null) {
+                    try {
+                        int counter = 0;
+                        //Filling the taskArray with Task objects
+                        while (rs.next()) {
+                            taskArray[counter] = new Task(rs.getInt("TaskID"));
+                            counter++;
+                        }
+                    } catch (SQLException e) {
+                        System.err.println(e);
                     }
-                } catch (SQLException e) {
-                    System.err.println(e);
                 }
 
                 //Setting the number of slots assigned to each task equal to the number of hours completed

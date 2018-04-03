@@ -159,9 +159,11 @@ public class AddTime extends javax.swing.JFrame {
             double time = task.getTimeModified() + input;
             String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.TimeModified = " + time + "\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + task.getTaskID() + "));";
-            DatabaseHandle.update(sql);
-            this.lastFrame.setVisible(true);
-            this.dispose();
+            int rowsAffected = DatabaseHandle.update(sql);
+            if (rowsAffected != 0) {
+                this.lastFrame.setVisible(true);
+                this.dispose();
+            }
         } else {
             new Popup("Please enter a number above 0.").setVisible(true);
         }

@@ -371,17 +371,19 @@ public class EventEditor extends javax.swing.JFrame {
                     + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
 
             ResultSet rs = DatabaseHandle.query(sql);
-            try {
-                if (rs.next()) {
-                    int count = rs.getInt("COUNT(*)");
-                    //If count isn't 0 it means there is an event that overlaps with the one being created or edited
-                    if (count > 0) {
-                        valid = false;
-                        new Popup("Event overlaps with another event.").setVisible(true);
+            if (rs != null) {
+                try {
+                    if (rs.next()) {
+                        int count = rs.getInt("COUNT(*)");
+                        //If count isn't 0 it means there is an event that overlaps with the one being created or edited
+                        if (count > 0) {
+                            valid = false;
+                            new Popup("Event overlaps with another event.").setVisible(true);
+                        }
                     }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
             }
         } else {
             //Checking to see if overlaps.
@@ -402,17 +404,19 @@ public class EventEditor extends javax.swing.JFrame {
                     + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
 
             ResultSet rs = DatabaseHandle.query(sql);
-            try {
-                if (rs.next()) {
-                    int count = rs.getInt("COUNT(*)");
-                    //If count isn't 0 it means there is an event that overlaps with the one being created or edited
-                    if (count > 0) {
-                        valid = false;
-                        new Popup("Event overlaps with another event.").setVisible(true);
+            if (rs != null) {
+                try {
+                    if (rs.next()) {
+                        int count = rs.getInt("COUNT(*)");
+                        //If count isn't 0 it means there is an event that overlaps with the one being created or edited
+                        if (count > 0) {
+                            valid = false;
+                            new Popup("Event overlaps with another event.").setVisible(true);
+                        }
                     }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
             }
         }
 

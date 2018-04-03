@@ -437,38 +437,39 @@ public class Timetable extends javax.swing.JFrame {
                             + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
 
                     ResultSet rs = DatabaseHandle.query(sql);
-                    try {
-                        if (rs.next()) {
+                    if (rs != null) {
+                        try {
+                            if (rs.next()) {
 
-                            //Setting the details
-                            nameContentsLabel.setText(rs.getString("event.EventName"));
+                                //Setting the details
+                                nameContentsLabel.setText(rs.getString("event.EventName"));
 
-                            float startTime = rs.getFloat("event.StartTime");
-                            if ((startTime * 2) % 2 == 0) {
-                                categoryStartTimeContentsLabel.setText((int) startTime + ":00");
-                            } else {
-                                categoryStartTimeContentsLabel.setText((int) startTime + ":30");
+                                float startTime = rs.getFloat("event.StartTime");
+                                if ((startTime * 2) % 2 == 0) {
+                                    categoryStartTimeContentsLabel.setText((int) startTime + ":00");
+                                } else {
+                                    categoryStartTimeContentsLabel.setText((int) startTime + ":30");
+                                }
+
+                                float endTime = (float) (rs.getFloat("event.EndTime") + 0.5);
+                                if ((endTime * 2) % 2 == 0) {
+                                    dateSetEndTimeContentsLabel.setText((int) endTime + ":00");
+                                } else {
+                                    dateSetEndTimeContentsLabel.setText((int) endTime + ":30");
+                                }
+
+                                descriptionText.setText(rs.getString("event.Description"));
+
+                                if (rs.getInt("Day") != 0) {
+                                    dateDueEventTypeContentsLabel.setText("Weekly Event");
+                                } else {
+                                    dateDueEventTypeContentsLabel.setText("Single Event");
+                                }
                             }
-
-                            float endTime = (float) (rs.getFloat("event.EndTime") + 0.5);
-                            if ((endTime * 2) % 2 == 0) {
-                                dateSetEndTimeContentsLabel.setText((int) endTime + ":00");
-                            } else {
-                                dateSetEndTimeContentsLabel.setText((int) endTime + ":30");
-                            }
-
-                            descriptionText.setText(rs.getString("event.Description"));
-
-                            if (rs.getInt("Day") != 0) {
-                                dateDueEventTypeContentsLabel.setText("Weekly Event");
-                            } else {
-                                dateDueEventTypeContentsLabel.setText("Single Event");
-                            }
+                        } catch (SQLException e) {
+                            System.err.println(e);
                         }
-                    } catch (SQLException e) {
-                        System.err.println(e);
                     }
-
                 } else if (taskeventID != 0) {
                     this.completeHoursButton.setEnabled(true);
 
@@ -491,22 +492,23 @@ public class Timetable extends javax.swing.JFrame {
 
                     ResultSet rs = DatabaseHandle.query(sql);
 
-                    try {
-                        if (rs.next()) {
-                            //Setting the detail labels
-                            Task task = new Task(rs.getInt("task.TaskID"));
-                            nameContentsLabel.setText(task.getName());
-                            descriptionText.setText(task.getDescription());
-                            timeUsedContentsLabel.setText("" + task.getTimeUsed());
-                            timeAlottedContentsLabel.setText("" + task.getTimeModified());
-                            dateDueEventTypeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateDue()));
-                            dateSetEndTimeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateSet()));
-                            categoryStartTimeContentsLabel.setText(task.getCategory().getName());
+                    if (rs != null) {
+                        try {
+                            if (rs.next()) {
+                                //Setting the detail labels
+                                Task task = new Task(rs.getInt("task.TaskID"));
+                                nameContentsLabel.setText(task.getName());
+                                descriptionText.setText(task.getDescription());
+                                timeUsedContentsLabel.setText("" + task.getTimeUsed());
+                                timeAlottedContentsLabel.setText("" + task.getTimeModified());
+                                dateDueEventTypeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateDue()));
+                                dateSetEndTimeContentsLabel.setText(task.sqlDateToTextFormat(task.getDateSet()));
+                                categoryStartTimeContentsLabel.setText(task.getCategory().getName());
+                            }
+                        } catch (SQLException e) {
+                            System.err.println(e);
                         }
-                    } catch (SQLException e) {
-                        System.err.println(e);
                     }
-
                 }
             }
         }
@@ -526,18 +528,20 @@ public class Timetable extends javax.swing.JFrame {
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.Hidden)=" + archivedRadioButton.isSelected() + "))\n"
                 + "ORDER BY timetable.StartDay" + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
-        this.timetableIDList.clear();
-        DefaultListModel dlm = new DefaultListModel();
+        if (rs != null) {
+            this.timetableIDList.clear();
+            DefaultListModel dlm = new DefaultListModel();
 
-        try {
-            while (rs.next()) {
-                this.timetableIDList.addNode(rs.getInt("TimetableID"));
-                String date = rs.getDate("StartDay").toString();
-                dlm.addElement(sqlDateToText(date));
+            try {
+                while (rs.next()) {
+                    this.timetableIDList.addNode(rs.getInt("TimetableID"));
+                    String date = rs.getDate("StartDay").toString();
+                    dlm.addElement(sqlDateToText(date));
+                }
+                this.timetableList.setModel(dlm);
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-            this.timetableList.setModel(dlm);
-        } catch (SQLException e) {
-            System.err.println(e);
         }
 
     }

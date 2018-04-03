@@ -331,16 +331,17 @@ public class CategoryViewer extends javax.swing.JFrame {
                     + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryIDList.getDataAt(categoryList.getSelectedIndex()) + "));";
             ResultSet rs = DatabaseHandle.query(sql);
-            try {
-                if (rs.next()) {
-                    //Setting the fields to the fetched values
-                    timeModifierVariableLabel.setText("" + (rs.getInt("Modifier")));
-                    colourPreview.setBackground(new Color(rs.getInt("Colour")));
+            if (rs != null) {
+                try {
+                    if (rs.next()) {
+                        //Setting the fields to the fetched values
+                        timeModifierVariableLabel.setText("" + (rs.getInt("Modifier")));
+                        colourPreview.setBackground(new Color(rs.getInt("Colour")));
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
             }
-
         }
     }
 
@@ -464,15 +465,16 @@ public class CategoryViewer extends javax.swing.JFrame {
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.Hidden)=False))\n"
                 + "ORDER BY category." + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            while (rs.next()) {
-                //Filling list
-                this.categoryIDList.addNode(rs.getInt("CategoryID"));
+        if (rs != null) {
+            try {
+                while (rs.next()) {
+                    //Filling list
+                    this.categoryIDList.addNode(rs.getInt("CategoryID"));
+                }
+            } catch (SQLException ex) {
+                System.err.println(ex);
             }
-        } catch (SQLException ex) {
-            System.err.println(ex);
         }
-
     }
 
     /**
@@ -488,16 +490,16 @@ public class CategoryViewer extends javax.swing.JFrame {
                     + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryIDList.getDataAt(count) + "));";
             ResultSet rs = DatabaseHandle.query(sql);
-            try {
-                while (rs.next()) {
-                    dlm.addElement(rs.getString("Name"));
+            if (rs != null) {
+                try {
+                    while (rs.next()) {
+                        dlm.addElement(rs.getString("Name"));
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
             }
-
         }
-
         categoryList.setModel(dlm);
     }
 

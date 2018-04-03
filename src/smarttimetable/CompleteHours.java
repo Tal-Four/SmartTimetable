@@ -192,50 +192,53 @@ public class CompleteHours extends javax.swing.JFrame {
             String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID "
                     + "SET task.TimeUsed = " + task.getTimeUsed() + "\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + task.getTaskID() + "));";
-            DatabaseHandle.update(sql);
+            int rowsAffected = DatabaseHandle.update(sql);
 
-            //Checking to see if task has completed more hours than it was set
-            if (task.getTimeModified() <= task.getTimeUsed()) {
-                //More hours completed than was set for the task, creates a window for the user to resolve the issue
-                Object[] options = {"Mark as Complete", "Add Time", "Do Nothing"};
-                int result = JOptionPane.showOptionDialog(this, "The time spent on the task exceeds the allotted time.\nWould you like to mark the task as complete or add more time?\nTime exceeded by: " + (task.getTimeUsed() - task.getTimeModified()) + " hours", "Exceeded Time Set", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-                switch (result) {
-                    case (0):
-                        //Completes the task and returns to the last frame
-                        task.complete();
-                        this.lastFrame.setVisible(true);
-                        if (timetable) {
-                            ((Timetable) (this.lastFrame)).reloadTimetable();
-                        } else {
-                            ((TaskViewer) (this.lastFrame)).update();
-                        }
-                        this.dispose();
-                        break;
-                    case (1):
-                        //Creates a AddTime frame
-                        new AddTime(this.lastFrame, this.task).setVisible(true);
-                        this.dispose();
-                        break;
-                    default:
-                        //Returns to the last frame
-                        this.lastFrame.setVisible(true);
-                        if (timetable) {
-                            ((Timetable) (this.lastFrame)).reloadTimetable();
-                        } else {
-                            ((TaskViewer) (this.lastFrame)).update();
-                        }
-                        this.dispose();
-                        break;
-                }
-            } else {
-                //Returns to the last frame
-                this.lastFrame.setVisible(true);
-                if (timetable) {
-                    ((Timetable) (this.lastFrame)).reloadTimetable();
+            if (rowsAffected != 0) {
+
+                //Checking to see if task has completed more hours than it was set
+                if (task.getTimeModified() <= task.getTimeUsed()) {
+                    //More hours completed than was set for the task, creates a window for the user to resolve the issue
+                    Object[] options = {"Mark as Complete", "Add Time", "Do Nothing"};
+                    int result = JOptionPane.showOptionDialog(this, "The time spent on the task exceeds the allotted time.\nWould you like to mark the task as complete or add more time?\nTime exceeded by: " + (task.getTimeUsed() - task.getTimeModified()) + " hours", "Exceeded Time Set", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+                    switch (result) {
+                        case (0):
+                            //Completes the task and returns to the last frame
+                            task.complete();
+                            this.lastFrame.setVisible(true);
+                            if (timetable) {
+                                ((Timetable) (this.lastFrame)).reloadTimetable();
+                            } else {
+                                ((TaskViewer) (this.lastFrame)).update();
+                            }
+                            this.dispose();
+                            break;
+                        case (1):
+                            //Creates a AddTime frame
+                            new AddTime(this.lastFrame, this.task).setVisible(true);
+                            this.dispose();
+                            break;
+                        default:
+                            //Returns to the last frame
+                            this.lastFrame.setVisible(true);
+                            if (timetable) {
+                                ((Timetable) (this.lastFrame)).reloadTimetable();
+                            } else {
+                                ((TaskViewer) (this.lastFrame)).update();
+                            }
+                            this.dispose();
+                            break;
+                    }
                 } else {
-                    ((TaskViewer) (this.lastFrame)).update();
+                    //Returns to the last frame
+                    this.lastFrame.setVisible(true);
+                    if (timetable) {
+                        ((Timetable) (this.lastFrame)).reloadTimetable();
+                    } else {
+                        ((TaskViewer) (this.lastFrame)).update();
+                    }
+                    this.dispose();
                 }
-                this.dispose();
             }
         } else {
             new Popup("Enter a number above 0.").setVisible(true);

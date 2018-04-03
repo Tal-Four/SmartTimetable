@@ -18,6 +18,8 @@ public class Category {
 
     /**
      * Loads the category with the given ID into the class's fields
+     *
+     * @param categoryID
      */
     public Category(int categoryID) {
         this.categoryID = categoryID;
@@ -25,19 +27,20 @@ public class Category {
                 + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + "));";
         ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            while (rs.next()) {
-                if (this.categoryID == (rs.getInt("CategoryID"))) {
-                    this.name = rs.getString("Name");
-                    this.modifier = rs.getFloat("Modifier");
-                    this.taskCount = rs.getInt("TasksCompleted");
-                    this.colourCode = rs.getInt("Colour");
+        if (rs != null) {
+            try {
+                while (rs.next()) {
+                    if (this.categoryID == (rs.getInt("CategoryID"))) {
+                        this.name = rs.getString("Name");
+                        this.modifier = rs.getFloat("Modifier");
+                        this.taskCount = rs.getInt("TasksCompleted");
+                        this.colourCode = rs.getInt("Colour");
+                    }
                 }
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
         }
-
     }
 
     /**
@@ -54,8 +57,10 @@ public class Category {
         this.colourCode = colourCode;
 
         String sql = "INSERT INTO `category` (`CategoryID`, `UserID`, `Name`, `Colour`) VALUES(" + this.categoryID + ", " + User.getUserID() + ", '" + this.name + "', " + this.colourCode + ")";
-        DatabaseHandle.update(sql);
-        new Popup("Category " + this.name + " created").setVisible(true);
+        int rowsAffected = DatabaseHandle.update(sql);
+        if (rowsAffected != 0) {
+            new Popup("Category " + this.name + " created").setVisible(true);
+        }
     }
 
     /**
@@ -71,7 +76,9 @@ public class Category {
         String sql = "UPDATE user INNER JOIN category ON user.UserID = category.UserID SET category.Name = \"" + this.name + "\", category.Colour = " + this.colourCode + "\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
         int linesChanged = DatabaseHandle.update(sql);
-        new Popup(this.name + " edited.").setVisible(true);
+        if (linesChanged != 0) {
+            new Popup(this.name + " edited.").setVisible(true);
+        }
         return linesChanged;
     }
 
@@ -87,10 +94,12 @@ public class Category {
         String sql = "UPDATE user INNER JOIN category ON user.UserID = category.UserID SET category.TasksCompleted =" + this.taskCount + ", category.Modifier =" + this.modifier
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
 
-        DatabaseHandle.update(sql);
-        if (this.modifier >= 4) {
-            //Suggests the user should seek aid with the category as they seem to be struggling
-            new Popup("You have amassed a modifier greater than 4 for " + this.name + ". It is advised you seek help with " + this.name + ".").setVisible(true);
+        int rowsAffected = DatabaseHandle.update(sql);
+        if (rowsAffected != 0) {
+            if (this.modifier >= 4) {
+                //Suggests the user should seek aid with the category as they seem to be struggling
+                new Popup("You have amassed a modifier greater than 4 for " + this.name + ". It is advised you seek help with " + this.name + ".").setVisible(true);
+            }
         }
     }
 

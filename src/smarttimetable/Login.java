@@ -319,24 +319,26 @@ public class Login extends javax.swing.JFrame {
                 String sql = "SELECT Username FROM user WHERE Username = '" + username + "'";
                 ResultSet rs = DatabaseHandle.query(sql);
                 String UsernameCheck = null;
-                try {
-                    if (rs.next()) {
-                        UsernameCheck = rs.getString("Username").toLowerCase();
+                if (rs != null) {
+                    try {
+                        if (rs.next()) {
+                            UsernameCheck = rs.getString("Username").toLowerCase();
+                        }
+                    } catch (SQLException e) {
+                        System.err.println(e);
                     }
-                } catch (SQLException e) {
-                    System.err.println(e);
-                }
 
-                //Checking to see if username is available
-                if (!username.equals(UsernameCheck)) {
+                    //Checking to see if username is available
+                    if (!username.equals(UsernameCheck)) {
 
-                    new SecurityQuestionCreate(username, password).setVisible(true);
-                    this.dispose();
+                        new SecurityQuestionCreate(username, password).setVisible(true);
+                        this.dispose();
 
-                } else {
-                    //Username taken
-                    System.err.println("Username taken");
-                    new Popup("Username taken").setVisible(true);
+                    } else {
+                        //Username taken
+                        System.err.println("Username taken");
+                        new Popup("Username taken").setVisible(true);
+                    }
                 }
             } else {
                 //Passwords don't match or are too long

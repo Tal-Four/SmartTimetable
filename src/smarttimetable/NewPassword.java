@@ -144,10 +144,12 @@ public class NewPassword extends javax.swing.JFrame {
         if (passwordField.getText().equals(confirmPasswordField.getText()) && passwordField.getText().length() <= 15) {
             String sql = "UPDATE user SET user.Password = \"" + passwordField.getText() + "\"\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + "));";
-            DatabaseHandle.update(sql);
-            new Popup("Password changed.").setVisible(true);
-            new Login().setVisible(true);
-            this.dispose();
+            int rowsAffected = DatabaseHandle.update(sql);
+            if (rowsAffected != 0) {
+                new Popup("Password changed.").setVisible(true);
+                new Login().setVisible(true);
+                this.dispose();
+            }
         } else {
             new Popup("Passwords do not match or are over 15 characters").setVisible(true);
         }

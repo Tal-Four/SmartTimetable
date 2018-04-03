@@ -45,14 +45,16 @@ public class CategoryEditor extends javax.swing.JFrame {
                 + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + categoryID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            if (rs.next()) {
-                //Setting the fields to the category's details
-                this.colourChooser.setColor(new Color(rs.getInt("Colour")));
-                this.categoryNameField.setText(rs.getString("Name"));
+        if (rs != null) {
+            try {
+                if (rs.next()) {
+                    //Setting the fields to the category's details
+                    this.colourChooser.setColor(new Color(rs.getInt("Colour")));
+                    this.categoryNameField.setText(rs.getString("Name"));
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
         }
 
         nameCharCount();

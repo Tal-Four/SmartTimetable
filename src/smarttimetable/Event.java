@@ -44,22 +44,22 @@ public class Event {
                 + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
-
-        try {
-            //Filling out the attributes of the object
-            if (rs.next()) {
-                this.eventName = rs.getString("EventName");
-                this.description = rs.getString("Description");
-                this.colourCode = rs.getInt("Colour");
-                this.day = rs.getInt("Day");
-                this.startTime = rs.getFloat("StartTime");
-                this.endTime = rs.getFloat("EndTime");
-                this.date = rs.getString("Date");
+        if (rs != null) {
+            try {
+                //Filling out the attributes of the object
+                if (rs.next()) {
+                    this.eventName = rs.getString("EventName");
+                    this.description = rs.getString("Description");
+                    this.colourCode = rs.getInt("Colour");
+                    this.day = rs.getInt("Day");
+                    this.startTime = rs.getFloat("StartTime");
+                    this.endTime = rs.getFloat("EndTime");
+                    this.date = rs.getString("Date");
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
         }
-
     }
 
     /**
@@ -83,9 +83,11 @@ public class Event {
 
         String sql = "INSERT INTO event (`EventID`, `UserID`, `EventName`, `Description`, `Day`, `Colour`, `StartTime`, `EndTime`) "
                 + "VALUES (" + this.eventID + ", " + User.getUserID() + ", '" + this.eventName + "', '" + this.description + "', " + this.day + ", " + this.colourCode + ", " + this.startTime + ", " + this.endTime + ")";
-        DatabaseHandle.update(sql);
+        int rowsAffected = DatabaseHandle.update(sql);
 
-        new Popup("Event " + this.eventName + " created.").setVisible(true);
+        if (rowsAffected != 0) {
+            new Popup("Event " + this.eventName + " created.").setVisible(true);
+        }
     }
 
     /**
@@ -109,9 +111,11 @@ public class Event {
 
         String sql = "INSERT INTO event (`EventID`, `UserID`, `EventName`, `Description`, `Date`, `Colour`, `StartTime`, `EndTime`) "
                 + "VALUES (" + this.eventID + ", " + User.getUserID() + ", '" + this.eventName + "', '" + this.description + "', " + this.date + ", " + this.colourCode + ", " + this.startTime + ", " + this.endTime + ")";
-        DatabaseHandle.update(sql);
+        int rowsAffected = DatabaseHandle.update(sql);
 
-        new Popup("Event " + this.eventName + " created.").setVisible(true);
+        if (rowsAffected != 0) {
+            new Popup("Event " + this.eventName + " created.").setVisible(true);
+        }
     }
 
     /**
@@ -135,9 +139,11 @@ public class Event {
 
         String sql = "UPDATE user INNER JOIN event ON user.UserID = event.UserID SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = " + this.day + ", Date = NULL , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + "\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
-        DatabaseHandle.update(sql);
+        int rowsAffected = DatabaseHandle.update(sql);
 
-        new Popup("Event " + this.eventName + " edited.").setVisible(true);
+        if (rowsAffected != 0) {
+            new Popup("Event " + this.eventName + " edited.").setVisible(true);
+        }
     }
 
     /**
@@ -161,9 +167,11 @@ public class Event {
 
         String sql = "UPDATE user INNER JOIN event ON user.UserID = event.UserID SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = NULL, Date = " + this.date + " , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + "\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
-        DatabaseHandle.update(sql);
+        int rowsAffected = DatabaseHandle.update(sql);
 
-        new Popup("Event " + this.eventName + " edited.").setVisible(true);
+        if (rowsAffected != 0) {
+            new Popup("Event " + this.eventName + " edited.").setVisible(true);
+        }
     }
 
     /**

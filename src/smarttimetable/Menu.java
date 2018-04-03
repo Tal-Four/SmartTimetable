@@ -247,20 +247,22 @@ public class Menu extends javax.swing.JFrame {
                 + "WHERE (((user.UserID)=" + User.getUserID() + "));";
         ResultSet rs = DatabaseHandle.query(sql);
         int timetableCount = 0;
-        try {
-            if (rs.next()) {
-                timetableCount = rs.getInt("COUNT(*)");
+        if (rs != null) {
+            try {
+                if (rs.next()) {
+                    timetableCount = rs.getInt("COUNT(*)");
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
 
-        //Checks to see if the user has any timetables
-        if (timetableCount > 0) {
-            new Timetable().setVisible(true);
-            this.setVisible(false);
-        } else {
-            new Popup("You have no timetables, generate a timetable first.").setVisible(true);
+            //Checks to see if the user has any timetables
+            if (timetableCount > 0) {
+                new Timetable().setVisible(true);
+                this.setVisible(false);
+            } else {
+                new Popup("You have no timetables, generate a timetable first.").setVisible(true);
+            }
         }
     }//GEN-LAST:event_viewEditTimetableActionPerformed
 

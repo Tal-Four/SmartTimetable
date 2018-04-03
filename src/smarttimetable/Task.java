@@ -32,23 +32,24 @@ public class Task {
                 + "FROM user INNER JOIN task ON user.UserID = task.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            if (rs.next()) {
-                this.category = new Category(rs.getInt("CategoryID"));
-                this.colourCode = rs.getInt("Colour");
-                this.timeSet = rs.getFloat("TimeSet");
-                this.timeModified = rs.getFloat("TimeModified");
-                this.timeUsed = rs.getFloat("timeUsed");
-                this.description = rs.getString("Description");
-                this.name = rs.getString("Name");
-                this.dateSet = rs.getString("DateSet");
-                this.dateDue = rs.getString("DateDue");
-                this.highPriority = rs.getBoolean("HighPriority");
+        if (rs != null) {
+            try {
+                if (rs.next()) {
+                    this.category = new Category(rs.getInt("CategoryID"));
+                    this.colourCode = rs.getInt("Colour");
+                    this.timeSet = rs.getFloat("TimeSet");
+                    this.timeModified = rs.getFloat("TimeModified");
+                    this.timeUsed = rs.getFloat("timeUsed");
+                    this.description = rs.getString("Description");
+                    this.name = rs.getString("Name");
+                    this.dateSet = rs.getString("DateSet");
+                    this.dateDue = rs.getString("DateDue");
+                    this.highPriority = rs.getBoolean("HighPriority");
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
         }
-
     }
 
     /**
@@ -78,8 +79,10 @@ public class Task {
 
         String sql = "INSERT INTO task (`TaskID`, `Name`, `Description`, `UserID`, `CategoryID`, `DateSet`, `DateDue`, `Colour`, `TimeSet`, `TimeModified`, `HighPriority`) "
                 + "VALUES (" + this.taskID + ", '" + this.name + "', '" + this.description + "', " + User.getUserID() + ", " + this.category.getCategoryID() + ", '" + this.dateSet + "', '" + this.dateDue + "', " + this.colourCode + ", " + this.timeSet + ", " + this.timeModified + ", " + this.highPriority + ")";
-        DatabaseHandle.update(sql);
-        new Popup("Task " + this.name + " created.").setVisible(true);
+        int rowsAffected = DatabaseHandle.update(sql);
+        if (rowsAffected != 0) {
+            new Popup("Task " + this.name + " created.").setVisible(true);
+        }
     }
 
     /**
@@ -105,8 +108,11 @@ public class Task {
 
         String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET Name = '" + this.name + "', Description = '" + this.description + "', dateDue = '" + this.dateDue + "', Colour = " + this.colourCode + ", CategoryID = " + this.category.getCategoryID() + ", TimeSet = " + this.timeSet + ", TimeModified = " + this.timeModified + ", HighPriority = " + this.highPriority + "\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
-        DatabaseHandle.update(sql);
-        new Popup("Task " + this.name + " edited.").setVisible(true);
+        int rowsAffected = DatabaseHandle.update(sql);
+
+        if (rowsAffected != 0) {
+            new Popup("Task " + this.name + " edited.").setVisible(true);
+        }
     }
 
     /**
@@ -207,12 +213,14 @@ public class Task {
     public void complete() {
         String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.Hidden = True\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
-        DatabaseHandle.update(sql);
+        int rowsAffected = DatabaseHandle.update(sql);
+        if (rowsAffected != 0) {
 
-        this.category.taskComplete(this);
+            this.category.taskComplete(this);
 
-        sql = "DELETE FROM timetableslot WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
-        DatabaseHandle.update(sql);
+            sql = "DELETE FROM timetableslot WHERE (((UserID)=" + User.getUserID() + ") AND ((TaskID)=" + this.taskID + "));";
+            DatabaseHandle.update(sql);
+        }
     }
 
     /**
@@ -221,9 +229,11 @@ public class Task {
     public void markAsTodo() {
         String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.Hidden = False\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + this.taskID + "));";
-        DatabaseHandle.update(sql);
+        int rowsAffected = DatabaseHandle.update(sql);
 
-        this.category.taskTodo(this);
+        if (rowsAffected != 0) {
+            this.category.taskTodo(this);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Setters & Getters "> 

@@ -97,6 +97,8 @@ public class CustomRenderer extends DefaultTableCellRenderer {
 
             } catch (SQLException e) {
                 System.err.println(e);
+                cell.setBackground(Color.WHITE);
+                cell.setForeground(Color.RED);
             }
 
         } else {

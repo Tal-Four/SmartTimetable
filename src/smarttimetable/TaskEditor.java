@@ -80,15 +80,16 @@ public class TaskEditor extends javax.swing.JFrame {
                 + "WHERE (((user.UserID)=" + User.getUserID() + "))\n"
                 + "ORDER BY category.Name;";
         ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            while (rs.next()) {
-                categoryIDList.addNode(rs.getInt("CategoryID"));
-                categoryDropdown.addItem(rs.getString("Name"));
+        if (rs != null) {
+            try {
+                while (rs.next()) {
+                    categoryIDList.addNode(rs.getInt("CategoryID"));
+                    categoryDropdown.addItem(rs.getString("Name"));
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
         }
-
     }
 
     /**
@@ -443,14 +444,15 @@ public class TaskEditor extends javax.swing.JFrame {
                 + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + categoryIDList.getDataAt(categoryDropdown.getSelectedIndex()) + "));";
         ResultSet rs = DatabaseHandle.query(SQL);
-        try {
-            if (rs.next()) {
-                colourChooser.setColor(new Color(rs.getInt("Colour")));
+        if (rs != null) {
+            try {
+                if (rs.next()) {
+                    colourChooser.setColor(new Color(rs.getInt("Colour")));
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
         }
-
     }//GEN-LAST:event_categoryDropdownActionPerformed
 
     //<editor-fold defaultstate="collapsed" desc=" jFrame variables ">

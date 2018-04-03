@@ -263,29 +263,31 @@ public class ChangeSlot extends javax.swing.JFrame {
                 }
             }
 
-            DatabaseHandle.update(sql);
+            int rowsAffected = DatabaseHandle.update(sql);
 
-            //Returning to timetable
-            this.timetable.setVisible(true);
-            this.timetable.reloadTimetable();
-            this.dispose();
+            if (rowsAffected != 0) {
+                //Returning to timetable
+                this.timetable.setVisible(true);
+                this.timetable.reloadTimetable();
+                this.dispose();
+            }
 
             //Checking to see if the user wants to empty the slot
         } else if (this.emptyRadioButton.isSelected()) {
-
+            int rowsAffected = -1;
             //If already empty then no record exists so don't have to delete anything
             if (!this.previousContents.equals("")) {
                 String sql = "DELETE FROM timetableSlot\n"
                         + "WHERE (((UserID)=" + User.getUserID() + ") AND ((TimetableID)=" + this.timetableID + ") AND ((Day)=" + this.day + ") AND ((Time)= " + this.time + "));";
 
-                DatabaseHandle.update(sql);
+                rowsAffected = DatabaseHandle.update(sql);
             }
-
-            //Returning to timetable
-            this.timetable.setVisible(true);
-            this.timetable.reloadTimetable();
-            this.dispose();
-
+            if (rowsAffected != 0) {
+                //Returning to timetable
+                this.timetable.setVisible(true);
+                this.timetable.reloadTimetable();
+                this.dispose();
+            }
         } else {
             new Popup("Please select an item from the list.").setVisible(true);
         }

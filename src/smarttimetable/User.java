@@ -34,27 +34,29 @@ public class User {
         //Looping through existing IDs until a ID without an record is found
         String sql = "SELECT * FROM user ORDER BY UserID";
         ResultSet rs = DatabaseHandle.query(sql);
-        int newUserID = 0;
-        try {
-            do {
-                newUserID++;
-            } while (rs.next() && rs.getInt("UserID") == newUserID);
-        } catch (SQLException e) {
-            System.err.println(e);
+        if (rs != null) {
+            int newUserID = 0;
+            try {
+                do {
+                    newUserID++;
+                } while (rs.next() && rs.getInt("UserID") == newUserID);
+            } catch (SQLException e) {
+                System.err.println(e);
+            }
+
+            User.userID = newUserID;
+
+            if (User.password == null) {
+                sql = "INSERT INTO `user` (`UserID`, `Username`, `Question`, `Answer`) "
+                        + "VALUES(" + User.userID + ", '" + User.username + "', " + User.question + "', '" + User.answer + "')";
+            } else {
+                sql = "INSERT INTO `user` (`UserID`, `Username`,`Password`, `Question`, `Answer`) "
+                        + "VALUES(" + User.userID + ", '" + User.username + "', '" + User.password + "', '" + User.question + "', '" + User.answer + "')";
+            }
+
+            //Adding record to database
+            DatabaseHandle.update(sql);
         }
-
-        User.userID = newUserID;
-
-        if (User.password == null) {
-            sql = "INSERT INTO `user` (`UserID`, `Username`, `Question`, `Answer`) "
-                    + "VALUES(" + User.userID + ", '" + User.username + "', " + User.question + "', '" + User.answer + "')";
-        } else {
-            sql = "INSERT INTO `user` (`UserID`, `Username`,`Password`, `Question`, `Answer`) "
-                    + "VALUES(" + User.userID + ", '" + User.username + "', '" + User.password + "', '" + User.question + "', '" + User.answer + "')";
-        }
-
-        //Adding record to database
-        DatabaseHandle.update(sql);
     }
 
     /**

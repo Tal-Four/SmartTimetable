@@ -69,15 +69,16 @@ public class EventViewer extends javax.swing.JFrame {
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.Hidden)=False))\n"
                 + "ORDER BY event." + selectedSort + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
-        try {
-            while (rs.next()) {
-                //Adding IDs to a list
-                this.eventIDList.addNode(rs.getInt("EventID"));
+        if (rs != null) {
+            try {
+                while (rs.next()) {
+                    //Adding IDs to a list
+                    this.eventIDList.addNode(rs.getInt("EventID"));
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
             }
-        } catch (SQLException e) {
-            System.err.println(e);
         }
-
     }
 
     /**
@@ -93,15 +94,16 @@ public class EventViewer extends javax.swing.JFrame {
                     + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                     + "WHERE (((event.EventID)=" + this.eventIDList.getDataAt(count) + ") AND ((user.UserID)=" + User.getUserID() + "));";
             ResultSet rs = DatabaseHandle.query(sql);
-            try {
-                while (rs.next()) {
-                    //Adding events to the list
-                    dlm.addElement(rs.getString("EventName"));
+            if (rs != null) {
+                try {
+                    while (rs.next()) {
+                        //Adding events to the list
+                        dlm.addElement(rs.getString("EventName"));
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e);
                 }
-            } catch (SQLException e) {
-                System.err.println(e);
             }
-
         }
 
         this.eventList.setModel(dlm);
