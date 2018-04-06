@@ -18,8 +18,8 @@ public class DatabaseHandle {
 
     //Sets variables for connection
     private static Connection connection;
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
+    private static final String USERNAME = "timetableuser";
+    private static final String PASSWORD = "timetablepassword";
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb?useSSL=false";
 
     /**
