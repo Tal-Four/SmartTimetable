@@ -56,7 +56,7 @@ public class GenerateTimetable {
                         arraySize = rs.getInt("COUNT(*)");
                     }
                 } catch (SQLException e) {
-                    System.err.println(e);
+                    
                 }
             }
 
@@ -91,7 +91,7 @@ public class GenerateTimetable {
                             counter++;
                         }
                     } catch (SQLException e) {
-                        System.err.println(e);
+                        
                     }
                 }
 
@@ -173,7 +173,7 @@ public class GenerateTimetable {
                 slotsFilled[rs.getInt("Day") - 1][rs.getInt("Time")] = true;
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         int freeSlots = 0;
@@ -224,7 +224,7 @@ public class GenerateTimetable {
                 weekStart = rs.getDate("StartDay");
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         int counter = 0;
@@ -420,7 +420,7 @@ public class GenerateTimetable {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
     }
@@ -445,7 +445,7 @@ public class GenerateTimetable {
             rs.next();
             startDay = rs.getDate("StartDay");
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         calendar.setTime(startDay);
@@ -479,7 +479,7 @@ public class GenerateTimetable {
                     }
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
 
             calendar.add(GregorianCalendar.DAY_OF_YEAR, 1);
@@ -542,7 +542,7 @@ public class GenerateTimetable {
             }
 
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         return possible;
@@ -607,7 +607,7 @@ public class GenerateTimetable {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         //Selecting weeks worth of repeated tasks
@@ -634,7 +634,7 @@ public class GenerateTimetable {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         //Get slots used by single events third
@@ -666,7 +666,7 @@ public class GenerateTimetable {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         //Take away events already passed today
@@ -689,7 +689,7 @@ public class GenerateTimetable {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         if (currentTime > workStart) {
@@ -723,7 +723,7 @@ public class GenerateTimetable {
         try {
             calendar.setTime(df.parse(endDate));
         } catch (ParseException e) {
-            System.err.println(e);
+            
         }
         long after = calendar.getTimeInMillis();
         //Calculates the difference in milliseconds and converts to days.

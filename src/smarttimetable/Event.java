@@ -57,7 +57,7 @@ public class Event {
                     this.date = rs.getString("Date");
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
         }
     }
@@ -302,7 +302,7 @@ public class Event {
         try {
             dateToConvert = df.parse(dateText);
         } catch (ParseException e) {
-            System.err.println(e);
+            
         }
         return dateToSQLFormat(dateToConvert);
     }

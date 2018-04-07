@@ -47,7 +47,7 @@ public class Task {
                     this.highPriority = rs.getBoolean("HighPriority");
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
         }
     }
@@ -137,7 +137,7 @@ public class Task {
         try {
             date = df.parse(dateText);
         } catch (ParseException e) {
-            System.err.println(e);
+            
         }
         return dateToSQLFormat(date);
     }

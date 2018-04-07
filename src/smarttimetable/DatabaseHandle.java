@@ -41,7 +41,7 @@ public class DatabaseHandle {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
             connected = false;
         }
         return connected;
@@ -63,7 +63,7 @@ public class DatabaseHandle {
                 ResultSet rs = stmt.executeQuery(sql);
                 return rs;
             } catch (SQLException e) {
-                System.err.println("Query failed: " + e);
+                
             }
         } else {
             new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
@@ -87,7 +87,7 @@ public class DatabaseHandle {
                 int rows = stmt.executeUpdate(sql);
                 return rows;
             } catch (SQLException e) {
-                System.err.println("Update failed: " + e);
+                
             }
         } else {
             new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
@@ -114,7 +114,7 @@ public class DatabaseHandle {
                 newID++;
             } while (rs.next() && rs.getInt(idColumnName) == newID);
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
         return newID;
     }

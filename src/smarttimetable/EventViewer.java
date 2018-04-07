@@ -76,7 +76,7 @@ public class EventViewer extends javax.swing.JFrame {
                     this.eventIDList.addNode(rs.getInt("EventID"));
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
         }
     }
@@ -101,7 +101,7 @@ public class EventViewer extends javax.swing.JFrame {
                         dlm.addElement(rs.getString("EventName"));
                     }
                 } catch (SQLException e) {
-                    System.err.println(e);
+                    
                 }
             }
         }

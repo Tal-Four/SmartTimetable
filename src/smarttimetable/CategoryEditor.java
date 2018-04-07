@@ -53,7 +53,7 @@ public class CategoryEditor extends javax.swing.JFrame {
                     this.categoryNameField.setText(rs.getString("Name"));
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
         }
 

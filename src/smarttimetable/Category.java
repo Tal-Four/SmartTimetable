@@ -38,7 +38,7 @@ public class Category {
                     }
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
         }
     }

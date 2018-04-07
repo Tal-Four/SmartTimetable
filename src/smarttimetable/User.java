@@ -41,7 +41,7 @@ public class User {
                     newUserID++;
                 } while (rs.next() && rs.getInt("UserID") == newUserID);
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
 
             User.userID = newUserID;
@@ -78,7 +78,7 @@ public class User {
                 new Popup("User not found.").setVisible(true);
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
     }
@@ -102,7 +102,7 @@ public class User {
                 new Popup("User not found.").setVisible(true);
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
     }

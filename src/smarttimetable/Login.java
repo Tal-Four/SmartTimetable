@@ -292,7 +292,7 @@ public class Login extends javax.swing.JFrame {
             new Menu().setVisible(true);
             this.dispose();
         } else {
-            System.err.println("Incorrect password entered");
+            
             User.logoutUser();
             new Popup("Incorrect password entered").setVisible(true);
         }
@@ -325,7 +325,7 @@ public class Login extends javax.swing.JFrame {
                             UsernameCheck = rs.getString("Username").toLowerCase();
                         }
                     } catch (SQLException e) {
-                        System.err.println(e);
+                        
                     }
 
                     //Checking to see if username is available
@@ -336,18 +336,18 @@ public class Login extends javax.swing.JFrame {
 
                     } else {
                         //Username taken
-                        System.err.println("Username taken");
+                        
                         new Popup("Username taken").setVisible(true);
                     }
                 }
             } else {
                 //Passwords don't match or are too long
-                System.err.println("Passwords do not match or are too long");
+                
                 new Popup("Passwords do not match or are over 15 characters").setVisible(true);
             }
         } else {
             //No username entered or username too long
-            System.err.println("No username entered or username too long");
+            
             new Popup("Username must be 15 characters or less and not blank").setVisible(true);
         }
     }//GEN-LAST:event_createAccountButtonActionPerformed
@@ -389,7 +389,7 @@ public class Login extends javax.swing.JFrame {
                     new Popup("That user does not exist, please create a new user.").setVisible(true);
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
 
         } else {

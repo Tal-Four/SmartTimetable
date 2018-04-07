@@ -178,7 +178,7 @@ public class CompleteHours extends javax.swing.JFrame {
             input = Double.parseDouble(this.inputField.getText());
         } catch (NumberFormatException e) {
             accepted = false;
-            System.err.println(e);
+            
         }
 
         //Checking it's positive

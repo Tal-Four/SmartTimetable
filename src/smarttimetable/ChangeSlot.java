@@ -331,7 +331,7 @@ public class ChangeSlot extends javax.swing.JFrame {
                 idList.addNode(rs.getInt("ID"));
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         this.taskEventList.setModel(dlm);

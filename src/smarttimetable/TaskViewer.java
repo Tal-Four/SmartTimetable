@@ -90,7 +90,7 @@ public class TaskViewer extends javax.swing.JFrame {
                     this.taskIDList.addNode(rs.getInt("TaskID"));
                 }
             } catch (SQLException ex) {
-                System.err.println(ex);
+                
             }
         }
     }
@@ -114,7 +114,7 @@ public class TaskViewer extends javax.swing.JFrame {
                         dlm.addElement(rs.getString("Name"));
                     }
                 } catch (SQLException e) {
-                    System.err.println(e);
+                    
                 }
             }
         }

@@ -467,7 +467,7 @@ public class Timetable extends javax.swing.JFrame {
                                 }
                             }
                         } catch (SQLException e) {
-                            System.err.println(e);
+                            
                         }
                     }
                 } else if (taskeventID != 0) {
@@ -506,7 +506,7 @@ public class Timetable extends javax.swing.JFrame {
                                 categoryStartTimeContentsLabel.setText(task.getCategory().getName());
                             }
                         } catch (SQLException e) {
-                            System.err.println(e);
+                            
                         }
                     }
                 }
@@ -540,7 +540,7 @@ public class Timetable extends javax.swing.JFrame {
                 }
                 this.timetableList.setModel(dlm);
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
         }
 
@@ -587,7 +587,7 @@ public class Timetable extends javax.swing.JFrame {
                 timetableTable.getModel().setValueAt(rs.getString("event.EventName"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         //Retrieving the tasks
@@ -603,7 +603,7 @@ public class Timetable extends javax.swing.JFrame {
                 timetableTable.getModel().setValueAt(rs.getString("task.Name"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         render();
@@ -647,7 +647,7 @@ public class Timetable extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            
         }
 
         //Returns the ID and then whether it's an event or not in that order in an array

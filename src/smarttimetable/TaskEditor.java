@@ -87,7 +87,7 @@ public class TaskEditor extends javax.swing.JFrame {
                     categoryDropdown.addItem(rs.getString("Name"));
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
         }
     }
@@ -370,7 +370,7 @@ public class TaskEditor extends javax.swing.JFrame {
         try {
             timeSet = Double.parseDouble(timeField.getText());
         } catch (NumberFormatException ex) {
-            System.err.println(ex);
+            
             valid = false;
             new Popup("Invalid time set").setVisible(true);
         }
@@ -450,7 +450,7 @@ public class TaskEditor extends javax.swing.JFrame {
                     colourChooser.setColor(new Color(rs.getInt("Colour")));
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
         }
     }//GEN-LAST:event_categoryDropdownActionPerformed

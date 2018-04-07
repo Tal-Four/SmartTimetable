@@ -347,7 +347,7 @@ public class EventEditor extends javax.swing.JFrame {
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 df.parse(dateField.getText());
             } catch (ParseException e) {
-                System.err.println(e);
+                
                 valid = false;
                 new Popup("Invalid date format.").setVisible(true);
             }
@@ -382,7 +382,7 @@ public class EventEditor extends javax.swing.JFrame {
                         }
                     }
                 } catch (SQLException e) {
-                    System.err.println(e);
+                    
                 }
             }
         } else {
@@ -415,7 +415,7 @@ public class EventEditor extends javax.swing.JFrame {
                         }
                     }
                 } catch (SQLException e) {
-                    System.err.println(e);
+                    
                 }
             }
         }
@@ -478,7 +478,7 @@ public class EventEditor extends javax.swing.JFrame {
         try {
             numberDouble = Double.parseDouble(numberString) / 60;
         } catch (NumberFormatException e) {
-            System.err.println(e);
+            
         }
         return numberDouble;
     }

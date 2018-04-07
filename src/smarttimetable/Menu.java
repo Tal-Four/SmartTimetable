@@ -253,7 +253,7 @@ public class Menu extends javax.swing.JFrame {
                     timetableCount = rs.getInt("COUNT(*)");
                 }
             } catch (SQLException e) {
-                System.err.println(e);
+                
             }
 
             //Checks to see if the user has any timetables

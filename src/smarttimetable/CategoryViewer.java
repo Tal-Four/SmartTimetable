@@ -339,7 +339,7 @@ public class CategoryViewer extends javax.swing.JFrame {
                         colourPreview.setBackground(new Color(rs.getInt("Colour")));
                     }
                 } catch (SQLException e) {
-                    System.err.println(e);
+                    
                 }
             }
         }
@@ -472,7 +472,7 @@ public class CategoryViewer extends javax.swing.JFrame {
                     this.categoryIDList.addNode(rs.getInt("CategoryID"));
                 }
             } catch (SQLException ex) {
-                System.err.println(ex);
+                
             }
         }
     }
@@ -496,7 +496,7 @@ public class CategoryViewer extends javax.swing.JFrame {
                         dlm.addElement(rs.getString("Name"));
                     }
                 } catch (SQLException e) {
-                    System.err.println(e);
+                    
                 }
             }
         }
