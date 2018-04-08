@@ -393,8 +393,13 @@ public class CategoryViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.setVisible(false);
-        new Menu().setVisible(true);
+        //Getting user confirmation
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure?", "Back", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            //Showing the menu screen
+            this.setVisible(false);
+            new Menu().setVisible(true);
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**

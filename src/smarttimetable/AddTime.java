@@ -3,6 +3,7 @@ package smarttimetable;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * A form used to add time to a specific task that is passed into the class.
@@ -181,8 +182,13 @@ public class AddTime extends javax.swing.JFrame {
      * @param evt
      */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        this.lastFrame.setVisible(true);
-        this.dispose();
+        //Getting user confirmation
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure?", "Back", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            //Showing the last frame
+            this.lastFrame.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

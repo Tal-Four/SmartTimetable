@@ -317,10 +317,14 @@ public class Menu extends javax.swing.JFrame {
      * @param evt
      */
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        User.logoutUser();
-        this.setVisible(false);
-        //Returning to the login screen
-        new Login().setVisible(true);
+        //Getting user confirmation
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure?", "Logout", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            User.logoutUser();
+            this.setVisible(false);
+            //Returning to the login screen
+            new Login().setVisible(true);
+        }
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     /**

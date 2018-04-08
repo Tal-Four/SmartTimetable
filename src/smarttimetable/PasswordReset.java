@@ -2,6 +2,7 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /**
  * A form that allows the user to answer their security question and if they
@@ -155,9 +156,14 @@ public class PasswordReset extends javax.swing.JFrame {
      * @param evt
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        User.logoutUser();
-        new Login().setVisible(true);
-        this.dispose();
+        //Getting user confirmation
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure?", "Back", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            //Showing the login screen
+            User.logoutUser();
+            new Login().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**

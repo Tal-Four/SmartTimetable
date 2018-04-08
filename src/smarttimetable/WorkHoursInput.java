@@ -2,6 +2,7 @@ package smarttimetable;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /**
  * A form used to specify the hours between which the timetable will plot tasks
@@ -224,8 +225,13 @@ public class WorkHoursInput extends javax.swing.JFrame {
      * @param evt
      */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        this.dispose();
-        menu.setVisible(true);
+        //Getting user confirmation
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure?", "Back", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            //Showing the menu screen
+            this.dispose();
+            menu.setVisible(true);
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
 

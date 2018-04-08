@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * @author AdamPlatt
  */
 public class EventViewer extends javax.swing.JFrame {
- 
+
     //Stores the list of IDs of events displayed to the user
     private final LinkedList eventIDList = new LinkedList();
 
@@ -109,7 +109,7 @@ public class EventViewer extends javax.swing.JFrame {
                         dlm.addElement(rs.getString("EventName"));
                     }
                 } catch (SQLException e) {
-                    
+
                 }
             }
         }
@@ -389,8 +389,13 @@ public class EventViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.dispose();
-        new Menu().setVisible(true);
+        //Getting user confirmation
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure?", "Back", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            //Showing the menu screen
+            this.dispose();
+            new Menu().setVisible(true);
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**

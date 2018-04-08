@@ -217,7 +217,7 @@ public class CompleteHours extends javax.swing.JFrame {
                             //If chose to mark as complete
                             //Completes the task
                             task.complete();
-                            //Now runs default afterwards
+                        //Now runs default afterwards
                         default:
                             //Any other option
                             //Returns to the last frame
@@ -260,8 +260,13 @@ public class CompleteHours extends javax.swing.JFrame {
      * @param evt
      */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        lastFrame.setVisible(true);
-        this.dispose();
+        //Getting user confirmation
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure?", "Back", JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            //Showing the last frame
+            lastFrame.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
