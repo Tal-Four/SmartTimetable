@@ -16,14 +16,17 @@ import java.sql.Statement;
  */
 public class DatabaseHandle {
 
-    //Sets variables for connection
+    //The connection to the database
     private static Connection connection;
+    //The username the program uses to connect to the database
     private static final String USERNAME = "timetableuser";
+    //The password used to access the database
     private static final String PASSWORD = "timetablepassword";
+    //The address of the database the program attempts to connect to
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/smarttimetabledb?useSSL=false";
 
     /**
-     * Attempts to connect the program to the database
+     * Attempts to connect the program to the database if there is no connection
      *
      * @return
      */
@@ -41,7 +44,6 @@ public class DatabaseHandle {
                 }
             }
         } catch (SQLException e) {
-            
             connected = false;
         }
         return connected;
@@ -59,15 +61,18 @@ public class DatabaseHandle {
         //If connected to the database it runs the query, otherwise it creates an error window
         if (connected) {
             try {
+                //Executing the query
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
+                //Returning the results of the query
                 return rs;
             } catch (SQLException e) {
-                
+                new Popup("An error occured while interacting with the database, please try again.").setVisible(true);
             }
         } else {
             new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
         }
+        //A return of null indicates to the program that the database couldn't be connected to
         return null;
     }
 
@@ -83,15 +88,18 @@ public class DatabaseHandle {
         //If connected to the database it runs the query, otherwise it creates an error window
         if (connected) {
             try {
+                //Executing the update
                 Statement stmt = connection.createStatement();
                 int rows = stmt.executeUpdate(sql);
+                //Returning the number of rows affected by the SQL
                 return rows;
             } catch (SQLException e) {
-                
+                new Popup("An error occured while interacting with the database, please try again.").setVisible(true);
             }
         } else {
             new Popup("Couldn't connect to the database. Please try again.").setVisible(true);
         }
+        //A return of null indicates to the program that the database couldn't be connected to
         return 0;
     }
 
@@ -104,6 +112,7 @@ public class DatabaseHandle {
      */
     public static int createID(String table, String idColumnName) {
         int newID = 0;
+        //Selects all the IDs for the table
         String sql = "SELECT " + table + "." + idColumnName + "\n"
                 + "FROM user INNER JOIN " + table + " ON user.UserID = " + table + ".UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + "));";
@@ -114,8 +123,8 @@ public class DatabaseHandle {
                 newID++;
             } while (rs.next() && rs.getInt(idColumnName) == newID);
         } catch (SQLException e) {
-            
         }
+        //Returns the ID to the line that called the method
         return newID;
     }
 }

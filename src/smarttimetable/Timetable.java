@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionEvent;
  */
 public class Timetable extends javax.swing.JFrame {
 
+    //Stores the list of timetableIDs the user can pick from
     private final LinkedList timetableIDList = new LinkedList();
 
     /**
@@ -33,9 +34,11 @@ public class Timetable extends javax.swing.JFrame {
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
 
+        //Disabling the complete hours button and change slot button intially
         this.completeHoursButton.setEnabled(false);
         this.changeButton.setEnabled(false);
 
+        //Refreshing the list of timetables
         updateList();
 
     }
@@ -386,18 +389,23 @@ public class Timetable extends javax.swing.JFrame {
      * @param evt
      */
     private void timetableTableValueChanged(javax.swing.event.ListSelectionEvent evt) {
+
+        //Getting the column and row of the newly selected cell
         int selectedColumn = timetableTable.getSelectedColumn();
         int selectedRow = timetableTable.getSelectedRow();
         int timetableID = timetableIDList.getDataAt(timetableList.getSelectedIndex());
 
         //Checking the column isn't the time column and there is a timetable loaded
         if (selectedColumn == 0 || this.timetableList.isSelectionEmpty()) {
+            //Disables both the change button and the complete button
             this.changeButton.setEnabled(false);
             this.completeHoursButton.setEnabled(false);
         } else {
+            //Enables the change button
             this.changeButton.setEnabled(true);
         }
 
+        //Clearing the labels of the details section
         this.nameContentsLabel.setText("");
         this.categoryStartTimeContentsLabel.setText("");
         this.dateSetEndTimeContentsLabel.setText("");
@@ -406,17 +414,20 @@ public class Timetable extends javax.swing.JFrame {
         this.timeUsedContentsLabel.setText("");
         this.descriptionText.setText("");
 
+        //Checking the selected cell is within the bounds of the timetable
         if (selectedColumn >= 0 && selectedColumn <= 7 && selectedRow >= 0 && selectedRow < 48) {
+            //Checking the selected cel is not blank
             if (this.timetableTable.getModel().getValueAt(selectedRow, selectedColumn) != null) {
 
                 //Fetches the ID of the item in the cell contents and checks if it is an event
                 Object[] cellIDAndEventCheck = this.getCellIDAndCheckEvent();
-
                 boolean event = (boolean) cellIDAndEventCheck[1];
                 int taskeventID = (int) cellIDAndEventCheck[0];
 
+                //Checking if the selected cell is an event
                 if (event) {
 
+                    //Disables the complete button
                     this.completeHoursButton.setEnabled(false);
 
                     //Setting the labels to category detail labels
@@ -437,6 +448,7 @@ public class Timetable extends javax.swing.JFrame {
                             + "WHERE (((timetableslot.Day)=" + selectedColumn + ") AND ((timetableslot.Time)=" + selectedRow + ") AND ((timetable.TimetableID)=" + timetableID + ") AND ((user.UserID)=" + User.getUserID() + "));";
 
                     ResultSet rs = DatabaseHandle.query(sql);
+                    //Checking SQL executed successfully
                     if (rs != null) {
                         try {
                             if (rs.next()) {
@@ -444,6 +456,7 @@ public class Timetable extends javax.swing.JFrame {
                                 //Setting the details
                                 nameContentsLabel.setText(rs.getString("event.EventName"));
 
+                                //Converting float to text
                                 float startTime = rs.getFloat("event.StartTime");
                                 if ((startTime * 2) % 2 == 0) {
                                     categoryStartTimeContentsLabel.setText((int) startTime + ":00");
@@ -451,6 +464,7 @@ public class Timetable extends javax.swing.JFrame {
                                     categoryStartTimeContentsLabel.setText((int) startTime + ":30");
                                 }
 
+                                //Converting float to text
                                 float endTime = (float) (rs.getFloat("event.EndTime") + 0.5);
                                 if ((endTime * 2) % 2 == 0) {
                                     dateSetEndTimeContentsLabel.setText((int) endTime + ":00");
@@ -460,6 +474,7 @@ public class Timetable extends javax.swing.JFrame {
 
                                 descriptionText.setText(rs.getString("event.Description"));
 
+                                //Determining whether the event is recurring or not
                                 if (rs.getInt("Day") != 0) {
                                     dateDueEventTypeContentsLabel.setText("Weekly Event");
                                 } else {
@@ -467,10 +482,10 @@ public class Timetable extends javax.swing.JFrame {
                                 }
                             }
                         } catch (SQLException e) {
-                            
                         }
                     }
-                } else if (taskeventID != 0) {
+                } else if (taskeventID != 0) {//Checking there is a task by checking if the cell has an item ID as it is not an event
+                    //Enabling the complete button
                     this.completeHoursButton.setEnabled(true);
 
                     //Setting labels to task details labels
@@ -492,6 +507,7 @@ public class Timetable extends javax.swing.JFrame {
 
                     ResultSet rs = DatabaseHandle.query(sql);
 
+                    //Checking SQL executed correctly
                     if (rs != null) {
                         try {
                             if (rs.next()) {
@@ -506,7 +522,6 @@ public class Timetable extends javax.swing.JFrame {
                                 categoryStartTimeContentsLabel.setText(task.getCategory().getName());
                             }
                         } catch (SQLException e) {
-                            
                         }
                     }
                 }
@@ -518,29 +533,36 @@ public class Timetable extends javax.swing.JFrame {
      * Loads the list of timetables
      */
     private void updateList() {
+        //Clearing the timetable list displayed to the user
         this.timetableList.setModel(new DefaultListModel<>());
         String sort = "";
+        //Determining the order of the sort section of the SQL statement
         if (ascDescSortButton.getText().equals("Descending")) {
             sort = " DESC";
         }
+        //Fetching the timetables to load into the list
         String sql = "SELECT timetable.TimetableID, timetable.StartDay\n"
                 + "FROM user INNER JOIN timetable ON user.UserID = timetable.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.Hidden)=" + archivedRadioButton.isSelected() + "))\n"
                 + "ORDER BY timetable.StartDay" + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
+        //Checking the SQL executed correctly
         if (rs != null) {
+            //Clearing the ID list
             this.timetableIDList.clear();
             DefaultListModel dlm = new DefaultListModel();
 
             try {
                 while (rs.next()) {
+                    //Loading the timetables from the result set into the ID list
                     this.timetableIDList.addNode(rs.getInt("TimetableID"));
+                    //Converting the date into a string
                     String date = rs.getDate("StartDay").toString();
                     dlm.addElement(sqlDateToText(date));
                 }
                 this.timetableList.setModel(dlm);
             } catch (SQLException e) {
-                
+
             }
         }
 
@@ -571,7 +593,9 @@ public class Timetable extends javax.swing.JFrame {
      */
     private void loadTimetable(int timetableID) {
 
+        //Empties the table
         ((CustomTableModel) timetableTable.getModel()).clear();
+        //Sets the width of the first column of the table
         timetableTable.getColumnModel().getColumn(0).setPreferredWidth(35);
 
         //Retrieving the events
@@ -581,13 +605,12 @@ public class Timetable extends javax.swing.JFrame {
 
         ResultSet rs = DatabaseHandle.query(sql);
 
-        //Setting the contents of cells that are to be filled by events to display that event
         try {
             while (rs.next()) {
+                //Setting the contents of cells that are to be filled by events to display that event
                 timetableTable.getModel().setValueAt(rs.getString("event.EventName"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
             }
         } catch (SQLException e) {
-            
         }
 
         //Retrieving the tasks
@@ -597,15 +620,15 @@ public class Timetable extends javax.swing.JFrame {
 
         rs = DatabaseHandle.query(sql);
 
-        //Setting the contents of cells that are to be filled by tasks to display that task 
         try {
             while (rs.next()) {
+                //Setting the contents of cells that are to be filled by tasks to display that task 
                 timetableTable.getModel().setValueAt(rs.getString("task.Name"), rs.getInt("timetableslot.Time"), rs.getInt("timetableslot.Day"));
             }
         } catch (SQLException e) {
-            
         }
 
+        //Sets the render of the table
         render();
 
     }
@@ -617,8 +640,10 @@ public class Timetable extends javax.swing.JFrame {
      * @return
      */
     private Object[] getCellIDAndCheckEvent() {
+        //Gets the coordinates of the cell that is being checked
         int selectedColumn = timetableTable.getSelectedColumn();
         int selectedRow = timetableTable.getSelectedRow();
+        //Gets the timetableID of the currently viewed timetable
         int timetableID = timetableIDList.getDataAt(timetableList.getSelectedIndex());
         boolean event = false;
         int taskEventID = 0;
@@ -647,7 +672,6 @@ public class Timetable extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException e) {
-            
         }
 
         //Returns the ID and then whether it's an event or not in that order in an array
@@ -677,8 +701,10 @@ public class Timetable extends javax.swing.JFrame {
      * @param evt
      */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        //Confirming the user's decision
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
+            //Closing the program
             User.logoutUser();
             System.exit(0);
         }
@@ -700,16 +726,24 @@ public class Timetable extends javax.swing.JFrame {
      * @param evt
      */
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
+        //Getting the selected column
         int selectedColumn = this.timetableTable.getSelectedColumn();
+        //Checking the selected column is not the time column
         if (selectedColumn > 0) {
+            //Getting the selected row
             int selectedRow = this.timetableTable.getSelectedRow();
+            //Getting the contents of the selected cell
             Object cellContents = this.timetableTable.getValueAt(selectedRow, selectedColumn);
             String previousContents = "";
+            //Checking the cell contents are not empty
             if (cellContents != null) {
+                //Setting previous contents to the cell's contents
                 previousContents = cellContents.toString();
             }
+            //Retrieving the ID of the timetable currently displayed
             int timetableID = this.timetableIDList.getDataAt(this.timetableList.getSelectedIndex());
 
+            //Creates a change slot form passing in all the above varaibles
             new ChangeSlot(this, previousContents, selectedColumn, selectedRow, timetableID).setVisible(true);
             this.setVisible(false);
         }
@@ -721,16 +755,21 @@ public class Timetable extends javax.swing.JFrame {
      * @param evt
      */
     private void completeHoursButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeHoursButtonActionPerformed
+        //Getting the user's decision
         Object[] options = {"Mark As Complete", "Complete Hours", "Cancel"};
         int result = JOptionPane.showOptionDialog(this, "Mark as complete to finish the task.\nComplete hours to add how much time you've completed.", "Task Completion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
+        //Getting the task's ID
         int taskID = (int) this.getCellIDAndCheckEvent()[0];
         Task task = new Task(taskID);
         if (result == 1) {
+            //The user chose to complete hours so a complete hours form is created
             new CompleteHours(this, task).setVisible(true);
             this.setVisible(false);
         } else if (result == 0) {
+            //The user chose to complete the task so the task is completed
             task.complete();
+            //Timetable is reloaded
             this.reloadTimetable();
         }
     }//GEN-LAST:event_completeHoursButtonActionPerformed
@@ -759,11 +798,13 @@ public class Timetable extends javax.swing.JFrame {
      * @param evt
      */
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
+        //Switches text of sort order button to the other order
         if (ascDescSortButton.getText().equals("Ascending")) {
             ascDescSortButton.setText("Descending");
         } else {
             ascDescSortButton.setText("Ascending");
         }
+        //Refreshes list of tasks
         this.updateList();
     }//GEN-LAST:event_ascDescSortButtonActionPerformed
 

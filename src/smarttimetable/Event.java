@@ -15,8 +15,11 @@ import java.util.Date;
  */
 public class Event {
 
+    //Stores the name, description, and date of the event
     private String eventName, description, date;
+    //Stores the day, colour, and ID of the event
     private int day, colourCode, eventID;
+    //Stores the start and end times of the event
     private double startTime, endTime;
     /**
      * Recurring events in the database are given a number for the day they are
@@ -29,7 +32,6 @@ public class Event {
      * Creates a blank event
      */
     public Event() {
-
     }
 
     /**
@@ -40,10 +42,12 @@ public class Event {
     public Event(int eventID) {
         this.eventID = eventID;
 
+        //Fetching the details of the event with this ID
         String sql = "SELECT event.*\n"
                 + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
+        //Checking to see that there was no database connection errors
         if (rs != null) {
             try {
                 //Filling out the attributes of the object
@@ -57,7 +61,6 @@ public class Event {
                     this.date = rs.getString("Date");
                 }
             } catch (SQLException e) {
-                
             }
         }
     }
@@ -81,10 +84,12 @@ public class Event {
         this.endTime = endTime;
         this.eventID = DatabaseHandle.createID("event", "EventID");
 
+        //Inserting the values of the event into a new record
         String sql = "INSERT INTO event (`EventID`, `UserID`, `EventName`, `Description`, `Day`, `Colour`, `StartTime`, `EndTime`) "
                 + "VALUES (" + this.eventID + ", " + User.getUserID() + ", '" + this.eventName + "', '" + this.description + "', " + this.day + ", " + this.colourCode + ", " + this.startTime + ", " + this.endTime + ")";
         int rowsAffected = DatabaseHandle.update(sql);
 
+        //Checking to see the SQL was executed successfully
         if (rowsAffected != 0) {
             new Popup("Event " + this.eventName + " created.").setVisible(true);
         }
@@ -109,10 +114,12 @@ public class Event {
         this.endTime = endTime;
         this.eventID = DatabaseHandle.createID("event", "EventID");
 
+        //Inserting the values of the event into a new record
         String sql = "INSERT INTO event (`EventID`, `UserID`, `EventName`, `Description`, `Date`, `Colour`, `StartTime`, `EndTime`) "
                 + "VALUES (" + this.eventID + ", " + User.getUserID() + ", '" + this.eventName + "', '" + this.description + "', " + this.date + ", " + this.colourCode + ", " + this.startTime + ", " + this.endTime + ")";
         int rowsAffected = DatabaseHandle.update(sql);
 
+        //Checking to see the SQL was executed successfully
         if (rowsAffected != 0) {
             new Popup("Event " + this.eventName + " created.").setVisible(true);
         }
@@ -137,10 +144,12 @@ public class Event {
         this.endTime = endTime;
         this.date = null;
 
+        //Updates the event record with new details
         String sql = "UPDATE user INNER JOIN event ON user.UserID = event.UserID SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = " + this.day + ", Date = NULL , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + "\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
         int rowsAffected = DatabaseHandle.update(sql);
 
+        //Checking to see the SQL was executed successfully
         if (rowsAffected != 0) {
             new Popup("Event " + this.eventName + " edited.").setVisible(true);
         }
@@ -165,18 +174,20 @@ public class Event {
         this.startTime = startTime;
         this.endTime = endTime;
 
+        //Updates the event record with new details
         String sql = "UPDATE user INNER JOIN event ON user.UserID = event.UserID SET EventName = '" + this.eventName + "', Description = '" + this.description + "', Colour = " + this.colourCode + ", Day = NULL, Date = " + this.date + " , StartTime = " + this.startTime + ", EndTime  = " + this.endTime + "\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.EventID)=" + this.eventID + "));";
         int rowsAffected = DatabaseHandle.update(sql);
 
+        //Checking to see the SQL was executed successfully
         if (rowsAffected != 0) {
             new Popup("Event " + this.eventName + " edited.").setVisible(true);
         }
     }
 
     /**
-     * Converts the String of a day, eg. Monday, into a representive number, eg.
-     * Monday --> 1
+     * Converts the String of a day, eg. Monday, into a representative number,
+     * eg. Monday --> 1
      *
      * @param dayString
      * @return
@@ -210,8 +221,8 @@ public class Event {
     }
 
     /**
-     * Converts the int of a day, eg. 1, into the represented String, eg. 1 -->
-     * Monday
+     * Converts the integer of a day, eg. 1, into the represented String, eg. 1
+     * --> Monday
      *
      * @param dayInt
      * @return
@@ -249,8 +260,10 @@ public class Event {
      *
      */
     public void deleteEvent() {
+        //Removing any timetableSlot records with this event in them
         String sql = "DELETE FROM timetableSlot WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
         DatabaseHandle.update(sql);
+        //Removing the event record
         sql = "DELETE FROM event WHERE UserID = " + User.getUserID() + " AND EventID = " + this.eventID;
         DatabaseHandle.update(sql);
     }
@@ -265,16 +278,22 @@ public class Event {
      */
     public String[] timeToString(int mode) {
         double time;
+        //Retrieving either the start time or end time depending on mode
         if (mode == 0) {
             time = this.startTime;
         } else {
             time = this.endTime;
         }
+        //First item stores the hours, second item stores the minutes
         String[] timeString = new String[2];
+        //Getting the hours by removing decimal
         timeString[0] = (int) time + "";
+        //Using integer division to determine between 0.0 and 0.5
         if ((time * 2) % 2 == 0.0) {
+            //Time has a 0.0 so must be on the hour
             timeString[1] = "00";
         } else {
+            //Time has a 0.5 so must be on the half hour
             timeString[1] = "30";
         }
         return timeString;
@@ -299,11 +318,12 @@ public class Event {
     public final String dateTextToSQLFormat(String dateText) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date dateToConvert = null;
+        //Parsing the text to a date
         try {
             dateToConvert = df.parse(dateText);
         } catch (ParseException e) {
-            
         }
+        //Converting date to SQL format
         return dateToSQLFormat(dateToConvert);
     }
 

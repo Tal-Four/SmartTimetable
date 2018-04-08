@@ -3,8 +3,6 @@ package smarttimetable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -38,24 +36,13 @@ public class CategoryEditor extends javax.swing.JFrame {
      */
     public CategoryEditor(int categoryID, JFrame lastPanel) {
         this.edit = true;
+        //Retrieving the category that is being edited
         this.editedCategory = new Category(categoryID);
         frameSetup(lastPanel);
 
-        String sql = "SELECT category.Name, category.Colour\n"
-                + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
-                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + categoryID + "));";
-        ResultSet rs = DatabaseHandle.query(sql);
-        if (rs != null) {
-            try {
-                if (rs.next()) {
-                    //Setting the fields to the category's details
-                    this.colourChooser.setColor(new Color(rs.getInt("Colour")));
-                    this.categoryNameField.setText(rs.getString("Name"));
-                }
-            } catch (SQLException e) {
-                
-            }
-        }
+        //Setting the values of fields to those of the task being edited
+        this.colourChooser.setColor(new Color(editedCategory.getColourCode()));
+        this.categoryNameField.setText(editedCategory.getName());
 
         nameCharCount();
     }
@@ -208,6 +195,7 @@ public class CategoryEditor extends javax.swing.JFrame {
      * @param evt
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        //Asking the user to confirm their choice
         int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
             this.setVisible(false);
@@ -221,20 +209,25 @@ public class CategoryEditor extends javax.swing.JFrame {
      * @param evt
      */
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        //Getting the values of colourCode and name from the form fields
         int colourCode = this.colourChooser.getColor().getRGB();
         String name = this.categoryNameField.getText();
 
         //Checking the name is not blank or too long
         if (name.length() != 0 && name.length() <= 15) {
             if (edit) {
+                //Editing an existing category record
                 editedCategory.editCategory(name, colourCode);
                 ((CategoryViewer) lastPanel).update();
             } else {
+                //Creating a new category record
                 new Category(name, colourCode);
             }
+            //Returning to the last screen
             this.setVisible(false);
             this.lastPanel.setVisible(true);
         } else {
+            //Error message
             new Popup("Cannot create a category without a name.").setVisible(true);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -255,9 +248,12 @@ public class CategoryEditor extends javax.swing.JFrame {
      * than 15 characters it sets the name to be the first 15 characters
      */
     private void nameCharCount() {
+        //Getting the number of characters in the name field
         int length = categoryNameField.getText().length();
         if (length > 15) {
+            //Trimming down to first 15 characters
             categoryNameField.setText(categoryNameField.getText().substring(0, 15));
+            //Re-retrieving the number of characters being used (this will always be 15)
             length = categoryNameField.getText().length();
         }
         categoryNameCharsUsed.setText(length + " out of 15 characters used");

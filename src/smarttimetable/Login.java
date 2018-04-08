@@ -79,7 +79,7 @@ public class Login extends javax.swing.JFrame {
             existingUsernameLabel.setText("Username");
 
             existingUsernameField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-            existingUsernameField.setToolTipText("Enter the username of an existing account.");
+            existingUsernameField.setToolTipText("Enter the username of an existing account. Usernames are not case sensitive.");
 
             exisitingPasswordLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
             exisitingPasswordLabel.setLabelFor(existingPasswordField);
@@ -151,7 +151,7 @@ public class Login extends javax.swing.JFrame {
                 newPasswordField.setToolTipText("Enter a password.");
 
                 newUsernameField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-                newUsernameField.setToolTipText("Enter a new username.");
+                newUsernameField.setToolTipText("Enter a new username. Usernames aren't case sensitive.");
 
                 newUsernameLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
                 newUsernameLabel.setLabelFor(newUsernameField);
@@ -266,8 +266,10 @@ public class Login extends javax.swing.JFrame {
      * @param evt
      */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        //Confirming user decision to close the program
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
+            //Logging out the user and closing the program
             User.logoutUser();
             System.exit(0);
         }
@@ -282,19 +284,25 @@ public class Login extends javax.swing.JFrame {
 
         String username, password;
 
+        //Retrieving the entered details from the form fields
         username = existingUsernameField.getText().toLowerCase();
         password = existingPasswordField.getText();
 
+        //Attempting to load the details of the user with the given username
         User.loadUser(username);
 
-        //Checking to see if correct password entered
-        if (password.equals(User.getPassword())) {
-            new Menu().setVisible(true);
-            this.dispose();
-        } else {
-            
-            User.logoutUser();
-            new Popup("Incorrect password entered").setVisible(true);
+        //Checking to see if user logged in or not (IE was an account with username found)
+        if (User.getUsername() != null) {
+            //Checking to see if correct password entered
+            if (password.equals(User.getPassword())) {
+                //correct password entered, user directed to main menu
+                new Menu().setVisible(true);
+                this.dispose();
+            } else {
+                //Unloading user details as incorrect password was provided
+                User.logoutUser();
+                new Popup("Incorrect password entered").setVisible(true);
+            }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -307,47 +315,48 @@ public class Login extends javax.swing.JFrame {
 
         String username, password, passwordConfirm;
 
+        //Retrieving the details entered into form's fields
         username = newUsernameField.getText().toLowerCase();
         password = newPasswordField.getText();
         passwordConfirm = newConfirmPasswordField.getText();
 
+        //Checking the username is between 1-15 characters
         if (!username.equals("") && username.length() <= 15) {
-
+            //Checking entered passwords are the same and the right length
             if (password.equals(passwordConfirm) && password.length() <= 15) {
 
-                //Checking to see if record in database has the same username
+                //Checking to see if a record in database has the same username
                 String sql = "SELECT Username FROM user WHERE Username = '" + username + "'";
                 ResultSet rs = DatabaseHandle.query(sql);
                 String UsernameCheck = null;
+                //Checking that SQL executed without error
                 if (rs != null) {
                     try {
                         if (rs.next()) {
+                            //Retrieving username from result set
                             UsernameCheck = rs.getString("Username").toLowerCase();
                         }
                     } catch (SQLException e) {
-                        
                     }
 
-                    //Checking to see if username is available
+                    //Checking to see if username is available (IE there is no record with the same username)
                     if (!username.equals(UsernameCheck)) {
 
+                        //Username not takesn so directing user to create a security question and answer
                         new SecurityQuestionCreate(username, password).setVisible(true);
                         this.dispose();
 
                     } else {
                         //Username taken
-                        
                         new Popup("Username taken").setVisible(true);
                     }
                 }
             } else {
                 //Passwords don't match or are too long
-                
                 new Popup("Passwords do not match or are over 15 characters").setVisible(true);
             }
         } else {
             //No username entered or username too long
-            
             new Popup("Username must be 15 characters or less and not blank").setVisible(true);
         }
     }//GEN-LAST:event_createAccountButtonActionPerformed
@@ -376,23 +385,29 @@ public class Login extends javax.swing.JFrame {
      * @param evt
      */
     private void changePasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePasswordButtonActionPerformed
+        //Checking to see if a username has been entered
         if (!this.existingUsernameField.getText().equals("")) {
+            //Retrieving the user's ID
             String sql = "SELECT user.UserID\n"
                     + "FROM user\n"
                     + "WHERE (((user.Username)=\"" + this.existingUsernameField.getText() + "\"));";
             ResultSet rs = DatabaseHandle.query(sql);
-            try {
-                if (rs.next()) {
-                    new PasswordReset(rs.getInt("UserID")).setVisible(true);
-                    this.dispose();
-                } else {
-                    new Popup("That user does not exist, please create a new user.").setVisible(true);
+            //Checking to see that SQL executed properly
+            if (rs != null) {
+                try {
+                    if (rs.next()) {
+                        //Creating a password reset screen
+                        new PasswordReset(rs.getInt("UserID")).setVisible(true);
+                        this.dispose();
+                    } else {
+                        //Couldn't find the user record with a name the user provided
+                        new Popup("That user does not exist, please create a new user.").setVisible(true);
+                    }
+                } catch (SQLException e) {
                 }
-            } catch (SQLException e) {
-                
             }
-
         } else {
+            //No username entered
             new Popup("Please enter a username.").setVisible(true);
         }
     }//GEN-LAST:event_changePasswordButtonActionPerformed
@@ -403,6 +418,7 @@ public class Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        //Creates a login screen
         new Login().setVisible(true);
     }
 

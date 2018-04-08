@@ -218,10 +218,11 @@ public class Menu extends javax.swing.JFrame {
      * @param evt
      */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        //Stops the program
+        //Getting user confirmation
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
             User.logoutUser();
+            //Closing the program
             System.exit(0);
         }
     }//GEN-LAST:event_exitButtonActionPerformed
@@ -232,6 +233,7 @@ public class Menu extends javax.swing.JFrame {
      * @param evt
      */
     private void generateTimetableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTimetableButtonActionPerformed
+        //Creates a work hours input form and closes this one
         new WorkHoursInput(this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_generateTimetableButtonActionPerformed
@@ -242,22 +244,25 @@ public class Menu extends javax.swing.JFrame {
      * @param evt
      */
     private void viewEditTimetableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewEditTimetableActionPerformed
+        //Checking to see if the user has any timetables
         String sql = "SELECT COUNT(*)\n"
                 + "FROM user INNER JOIN timetable ON user.UserID = timetable.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + "));";
         ResultSet rs = DatabaseHandle.query(sql);
         int timetableCount = 0;
+        //Checking to see if SQL executed properly
         if (rs != null) {
             try {
                 if (rs.next()) {
+                    //Getting the number of timetables the user has
                     timetableCount = rs.getInt("COUNT(*)");
                 }
             } catch (SQLException e) {
-                
             }
 
             //Checks to see if the user has any timetables
             if (timetableCount > 0) {
+                //The user has timetables so they are shown the timetable screen
                 new Timetable().setVisible(true);
                 this.setVisible(false);
             } else {
@@ -314,6 +319,7 @@ public class Menu extends javax.swing.JFrame {
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         User.logoutUser();
         this.setVisible(false);
+        //Returning to the login screen
         new Login().setVisible(true);
     }//GEN-LAST:event_logoutButtonActionPerformed
 

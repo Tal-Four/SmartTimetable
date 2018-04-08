@@ -12,6 +12,7 @@ import java.awt.Toolkit;
  */
 public class SecurityQuestionCreate extends javax.swing.JFrame {
 
+    //The user's username and password
     private final String username, password;
 
     /**
@@ -146,9 +147,12 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
      * @param evt
      */
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        //Creates a new user with the provided details and the details passed into the form
         User.createNewUser(this.username, this.password, this.questionTextArea.getText(), this.answerField.getText());
         new Popup("User " + this.username + " created.").setVisible(true);
+        //Loads the new user
         User.loadUser(this.username);
+        //Moves to the menu screen
         new Menu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_confirmButtonActionPerformed
@@ -160,7 +164,6 @@ public class SecurityQuestionCreate extends javax.swing.JFrame {
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
-        User.logoutUser();
         new Login().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 

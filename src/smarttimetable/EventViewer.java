@@ -14,7 +14,8 @@ import javax.swing.JOptionPane;
  * @author AdamPlatt
  */
 public class EventViewer extends javax.swing.JFrame {
-
+ 
+    //Stores the list of IDs of events displayed to the user
     private final LinkedList eventIDList = new LinkedList();
 
     /**
@@ -36,12 +37,14 @@ public class EventViewer extends javax.swing.JFrame {
      * Retrieves the list of IDs and stores them in eventIDList
      */
     private void updateIDList() {
+        //Empties the ID list
         this.eventIDList.clear();
 
+        //Retrieving the selected sort
         String selectedSort = sortDropdown.getSelectedItem().toString();
         String sql;
         String sort = "";
-        //Determining the order of the sort
+        //Determining the order of the sort section of the SQL statement
         if (ascDescSortButton.getText().equals("Descending")) {
             sort = " DESC";
         }
@@ -64,11 +67,13 @@ public class EventViewer extends javax.swing.JFrame {
                 selectedSort = "EventName";
                 break;
         }
+        //Combining SQL statement with the sort and order determined above
         sql = "SELECT event.EventID\n"
                 + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((event.Hidden)=False))\n"
                 + "ORDER BY event." + selectedSort + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
+        //Checking there were no errors with the SQL
         if (rs != null) {
             try {
                 while (rs.next()) {
@@ -76,7 +81,6 @@ public class EventViewer extends javax.swing.JFrame {
                     this.eventIDList.addNode(rs.getInt("EventID"));
                 }
             } catch (SQLException e) {
-                
             }
         }
     }
@@ -86,18 +90,22 @@ public class EventViewer extends javax.swing.JFrame {
      *
      */
     private void setUpList() {
+        //Refreshing the list of IDs
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
+        //Looping through each node of the ID list
         for (int count = 0; count < this.eventIDList.length(); count++) {
+            //Retrieving the name of the event referenced by the ID stored in the node
             String sql = "SELECT event.EventName\n"
                     + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                     + "WHERE (((event.EventID)=" + this.eventIDList.getDataAt(count) + ") AND ((user.UserID)=" + User.getUserID() + "));";
             ResultSet rs = DatabaseHandle.query(sql);
+            //Checking the SQL executed without errors
             if (rs != null) {
                 try {
                     while (rs.next()) {
-                        //Adding events to the list
+                        //Adding events to the list displayed to the user
                         dlm.addElement(rs.getString("EventName"));
                     }
                 } catch (SQLException e) {
@@ -105,7 +113,7 @@ public class EventViewer extends javax.swing.JFrame {
                 }
             }
         }
-
+        //Setting the list of the eventList to be the list of events created above
         this.eventList.setModel(dlm);
     }
 
@@ -381,7 +389,7 @@ public class EventViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.setVisible(false);
+        this.dispose();
         new Menu().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
@@ -391,8 +399,10 @@ public class EventViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        //Confirming user's decision
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
+            //Closing the program
             System.exit(0);
         }
     }//GEN-LAST:event_exitButtonActionPerformed
@@ -412,8 +422,11 @@ public class EventViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        //Making sure an event has been selected
         if (eventList.getSelectedValue() != null) {
+            //Creating a new event editor form
             new EventEditor(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()), this).setVisible(true);
+            //Hiding this form
             this.setVisible(false);
         } else {
             new Popup("Please select an event before attempting to edit.").setVisible(true);
@@ -426,11 +439,15 @@ public class EventViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        //Making sure an event has been selected
         if (eventList.getSelectedValue() != null) {
+            //Confriming user's decision to delete the event
             int yesNo = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + eventList.getSelectedValue(), "Delete event", JOptionPane.YES_NO_OPTION);
             if (yesNo == 0) {
                 Event event = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
+                //Deleting the event
                 event.deleteEvent();
+                //Refreshing the event lists
                 setUpList();
             }
         } else {
@@ -451,16 +468,20 @@ public class EventViewer extends javax.swing.JFrame {
      * Sets the values of the details section to those of the selected task.
      */
     private void updateDetails() {
+        //Creates an event object of the event selected in the list
         Event selectedEvent = new Event(this.eventIDList.getDataAt(this.eventList.getSelectedIndex()));
 
         //Changing the text of dayDateLabel depending on whether the event is a one off event (has a date) or a repeated event (has a day)
         if (selectedEvent.getDate() == null) {
+            //Event is a repeating event
             dayDateLabel.setText("Day:");
             dayDateContentsLabel.setText(selectedEvent.dayIntToString(selectedEvent.getDay()));
         } else {
+            //Event is a one-off event
             dayDateLabel.setText("Date:");
             dayDateContentsLabel.setText(selectedEvent.sqlDateToTextFormat(selectedEvent.getDate()));
         }
+        //Setting the rest of the detail fields to display the event's details
         descriptionBox.setText(selectedEvent.getDescription());
         startTimeContentsLabel.setText(selectedEvent.timeToString(0)[0] + ":" + selectedEvent.timeToString(0)[1]);
         endTimeContentsLabel.setText(selectedEvent.timeToString(1)[0] + ":" + selectedEvent.timeToString(1)[1]);
@@ -471,7 +492,9 @@ public class EventViewer extends javax.swing.JFrame {
      * Reloads the details of the event and the list of events shown to the user
      */
     public void update() {
+        //Reloading selected event's details
         this.updateDetails();
+        //Reloading event list
         this.setUpList();
     }
 
@@ -482,10 +505,13 @@ public class EventViewer extends javax.swing.JFrame {
      */
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
         if (ascDescSortButton.getText().equals("Ascending")) {
+            //Sort was ascending so now it is descending
             ascDescSortButton.setText("Descending");
         } else {
+            //Sort was descending and now it is ascending
             ascDescSortButton.setText("Ascending");
         }
+        //Refreshes the list of events
         this.setUpList();
     }//GEN-LAST:event_ascDescSortButtonActionPerformed
 

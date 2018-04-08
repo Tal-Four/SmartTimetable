@@ -18,9 +18,13 @@ import javax.swing.JOptionPane;
  */
 public class TaskEditor extends javax.swing.JFrame {
 
+    //Whether or not the task editor was created with the intent to edit a task or create one
     private final boolean edit;
+    //The task being edited
     private Task oldTask;
+    //The list of IDs of tasks displayed to the user
     private final LinkedList categoryIDList = new LinkedList();
+    //The frame that created this one
     private JFrame lastPanel;
 
     /**
@@ -51,6 +55,7 @@ public class TaskEditor extends javax.swing.JFrame {
         descriptionBox.setText(this.oldTask.getDescription());
         timeField.setText(this.oldTask.getTimeSet() + "");
         colourChooser.setColor(new Color(this.oldTask.getColourCode()));
+        //If it is high priority it sets the high priority button to be active intially
         if (this.oldTask.getHighPriority()) {
             this.highRadioButton.setSelected(true);
             this.standardRadioButton.setSelected(false);
@@ -74,20 +79,21 @@ public class TaskEditor extends javax.swing.JFrame {
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
 
-        //Setting the combo box up
+        //Retrieving the list of categories that the user has
         String sql = "SELECT category.CategoryID, category.Name\n"
                 + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + "))\n"
                 + "ORDER BY category.Name;";
         ResultSet rs = DatabaseHandle.query(sql);
+        //Checking SQL executed properly
         if (rs != null) {
             try {
                 while (rs.next()) {
+                    //Adding categories to both the list displayed to the user and the ID list
                     categoryIDList.addNode(rs.getInt("CategoryID"));
                     categoryDropdown.addItem(rs.getString("Name"));
                 }
             } catch (SQLException e) {
-                
             }
         }
     }
@@ -366,11 +372,10 @@ public class TaskEditor extends javax.swing.JFrame {
             new Popup("No task name entered").setVisible(true);
         }
 
-        //Attemps to read the double. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
+        //Attemps to parse the timeField text. If it fails (eg. a letter entered) it doesn't create a task and creates a popup
         try {
             timeSet = Double.parseDouble(timeField.getText());
-        } catch (NumberFormatException ex) {
-            
+        } catch (NumberFormatException e) {
             valid = false;
             new Popup("Invalid time set").setVisible(true);
         }
@@ -381,7 +386,7 @@ public class TaskEditor extends javax.swing.JFrame {
             valid = false;
         }
 
-        //Checks to see if date entered is in the correct format (DD/MM/YYYY)
+        //Checks to see if date entered is in the correct format (DD/MM/YYYY) by attempting to parse it
         try {
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             df.parse(dateDueText);
@@ -393,13 +398,16 @@ public class TaskEditor extends javax.swing.JFrame {
 
         //Creates the task and changes screen back to the menu if the variables are valid
         if (valid) {
-
+            //Checks whether the operation is an edit or not
             if (edit) {
+                //Edits the task with new details and reloads the details in the task viewer
                 oldTask.editTask(taskName, description, categoryID, dateDueText, colourCode, timeSet, highPriority);
                 ((TaskViewer) lastPanel).update();
             } else {
+                //Creates a new task
                 new Task(taskName, description, categoryID, dateDueText, colourCode, timeSet, highPriority);
             }
+            //Displays the last frame and clsoes this one
             this.setVisible(false);
             this.lastPanel.setVisible(true);
         }
@@ -411,8 +419,10 @@ public class TaskEditor extends javax.swing.JFrame {
      * @param evt
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        //Getting user confirmation
         int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
+            //Returning user to last frame
             this.setVisible(false);
             this.lastPanel.setVisible(true);
         }
@@ -425,11 +435,16 @@ public class TaskEditor extends javax.swing.JFrame {
      * @param evt
      */
     private void nameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyReleased
+        //Getting number of characters in the name field
         int length = nameField.getText().length();
+        //Checks if the number of characters is more than 20
         if (length > 20) {
+            //Trims name to first 20 characters
             nameField.setText(nameField.getText().substring(0, 20));
+            //Gets number of characters again (Will be 20)
             length = nameField.getText().length();
         }
+        //Displays the number of characters used
         nameCharsUsed.setText(length + " out of 20 characters used");
     }//GEN-LAST:event_nameFieldKeyReleased
 
@@ -440,17 +455,19 @@ public class TaskEditor extends javax.swing.JFrame {
      * @param evt
      */
     private void categoryDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryDropdownActionPerformed
+        //Retrieving the colour of the category
         String SQL = "SELECT category.Colour\n"
                 + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + categoryIDList.getDataAt(categoryDropdown.getSelectedIndex()) + "));";
         ResultSet rs = DatabaseHandle.query(SQL);
+        //Checking SQL executed properly
         if (rs != null) {
             try {
                 if (rs.next()) {
+                    //Setting colour of colour chooser to category's colour
                     colourChooser.setColor(new Color(rs.getInt("Colour")));
                 }
             } catch (SQLException e) {
-                
             }
         }
     }//GEN-LAST:event_categoryDropdownActionPerformed

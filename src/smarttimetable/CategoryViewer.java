@@ -16,11 +16,12 @@ import javax.swing.JOptionPane;
  */
 public class CategoryViewer extends javax.swing.JFrame {
 
+    //Used to store the list of IDs of categories shown to the user
+    private final LinkedList categoryIDList = new LinkedList();
+
     /**
      * Creates new form CategoryViewer
      */
-    private final LinkedList categoryIDList = new LinkedList();
-
     public CategoryViewer() {
         frameSetup();
     }
@@ -323,14 +324,17 @@ public class CategoryViewer extends javax.swing.JFrame {
      * Loads the details of the category into the correct fields
      */
     private void categoryListIndexSelected() {
+        //Checking an index is selected
         if (categoryList.getSelectedIndex() != -1) {
+            //Setting the name field to the text of the selected item
             nameVariableLabel.setText(categoryList.getSelectedValue());
 
-            //Fetching the details
+            //Fetching the colour and modifer of the category
             String sql = "SELECT category.Modifier, category.Colour\n"
                     + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryIDList.getDataAt(categoryList.getSelectedIndex()) + "));";
             ResultSet rs = DatabaseHandle.query(sql);
+            //Checking to see that a result was returned
             if (rs != null) {
                 try {
                     if (rs.next()) {
@@ -339,7 +343,6 @@ public class CategoryViewer extends javax.swing.JFrame {
                         colourPreview.setBackground(new Color(rs.getInt("Colour")));
                     }
                 } catch (SQLException e) {
-                    
                 }
             }
         }
@@ -351,10 +354,14 @@ public class CategoryViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        //Checking to see an item has been selected
         if (categoryList.getSelectedValue() != null) {
+            //Confirming the choice to delete a category
             int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + categoryList.getSelectedValue(), "Delete category", JOptionPane.YES_NO_OPTION);
             if (result == 0) {
+                //Retrieving the category
                 Category category = new Category(categoryIDList.getDataAt(categoryList.getSelectedIndex()));
+                //Marking the category as hidden
                 String sql = "UPDATE category INNER JOIN user ON category.UserID = user.UserID SET category.Hidden = True\n"
                         + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + category.getCategoryID() + "));";
                 DatabaseHandle.update(sql);
@@ -370,7 +377,9 @@ public class CategoryViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        //Checking to see if an item has been selected
         if (categoryList.getSelectedValue() != null) {
+            //Closing this form and creating a CategoryEditor
             this.setVisible(false);
             new CategoryEditor(categoryIDList.getDataAt(categoryList.getSelectedIndex()), this).setVisible(true);
         } else {
@@ -394,8 +403,10 @@ public class CategoryViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        //Confirming decision to close program.
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to close the program?", "Close Program", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
+            //Closing program
             System.exit(0);
         }
     }//GEN-LAST:event_exitButtonActionPerformed
@@ -434,6 +445,7 @@ public class CategoryViewer extends javax.swing.JFrame {
      * @param evt
      */
     private void ascDescSortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ascDescSortButtonActionPerformed
+        //Changes text of button to the other order. Asc -> desc and vice versa
         if (ascDescSortButton.getText().equals("Ascending")) {
             ascDescSortButton.setText("Descending");
         } else {
@@ -443,12 +455,13 @@ public class CategoryViewer extends javax.swing.JFrame {
     }//GEN-LAST:event_ascDescSortButtonActionPerformed
 
     /**
-     * Fills the categoryIDList with the fetched categories's IDs
+     * Fills the categoryIDList with the fetched category's IDs
      */
     private void updateIDList() {
+        //Clearing the linked list
         this.categoryIDList.clear();
 
-        //Determining the sort
+        //Creating the sort section of the SQL statement
         String sort = "";
         if (nameSortButton.isSelected()) {
             sort = "Name";
@@ -459,20 +472,21 @@ public class CategoryViewer extends javax.swing.JFrame {
             sort = sort + " DESC";
         }
 
-        //Fetching IDs
+        //Constructing the SQL statement
         String sql = "SELECT category.CategoryID\n"
                 + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.Hidden)=False))\n"
                 + "ORDER BY category." + sort + ";";
         ResultSet rs = DatabaseHandle.query(sql);
+        //Checking a result set was returned
         if (rs != null) {
             try {
                 while (rs.next()) {
                     //Filling list
                     this.categoryIDList.addNode(rs.getInt("CategoryID"));
                 }
-            } catch (SQLException ex) {
-                
+            } catch (SQLException e) {
+
             }
         }
     }
@@ -482,24 +496,29 @@ public class CategoryViewer extends javax.swing.JFrame {
      * names that is displayed to the user
      */
     private void setUpList() {
+        //Updating the ID list
         updateIDList();
         DefaultListModel dlm = new DefaultListModel();
 
+        //Looping through each node of the ID list
         for (int count = 0; count < this.categoryIDList.length(); count++) {
+            //Selecting the name of the category record with the ID stored in the node in the position indexed by the loop counter
             String sql = "SELECT category.Name\n"
                     + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryIDList.getDataAt(count) + "));";
             ResultSet rs = DatabaseHandle.query(sql);
+            //Checking a result was returned
             if (rs != null) {
                 try {
-                    while (rs.next()) {
+                    if (rs.next()) {
+                        //Adding categories to the list displayed to the user
                         dlm.addElement(rs.getString("Name"));
                     }
                 } catch (SQLException e) {
-                    
                 }
             }
         }
+        //Loading the created list into categoryList
         categoryList.setModel(dlm);
     }
 

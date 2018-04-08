@@ -11,6 +11,7 @@ import java.awt.Toolkit;
  */
 public class WorkHoursInput extends javax.swing.JFrame {
 
+    //The Menu that created this frame
     private final Menu menu;
 
     /**
@@ -190,11 +191,16 @@ public class WorkHoursInput extends javax.swing.JFrame {
      * @param evt
      */
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
+        //workStart and workEnd are both in terms of the slot the time represents        
+        //Getting the hours work is to start at
         int workStart = (Integer.parseInt((String) this.fromHourDropdown.getSelectedItem())) * 2;
+        //Checks whether work starts on the hour or on the half hour
         if (this.fromMinuteDropdown.getSelectedItem().equals("30")) {
             workStart++;
         }
+        //Getting the hours work is to end at
         int workEnd = (Integer.parseInt((String) this.untilHourDropdown.getSelectedItem())) * 2;
+        //Checks whether work ends on the hour or on the half hour
         if (this.untilMinuteDropdown.getSelectedItem().equals("30")) {
             workEnd++;
         }
@@ -202,7 +208,9 @@ public class WorkHoursInput extends javax.swing.JFrame {
         //Checks to see that the start time preceeds end time and then creates a set of timetables in those time constraints
         if (workStart < workEnd) {
             this.setVisible(false);
+            //Generates a set of timetable within the work hours
             new GenerateTimetable(workEnd, workStart);
+            //Displays the menu screen
             menu.setVisible(true);
             this.dispose();
         } else {

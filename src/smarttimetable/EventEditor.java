@@ -19,8 +19,11 @@ import javax.swing.JOptionPane;
  */
 public class EventEditor extends javax.swing.JFrame {
 
+    //Whether or not this form was created to edit an event or create a new one
     private final boolean edit;
+    //The ID of the event being edited
     private int oldEventID;
+    //The frame that created this one
     private JFrame lastPanel;
 
     /**
@@ -31,6 +34,9 @@ public class EventEditor extends javax.swing.JFrame {
     public EventEditor(JFrame lastPanel) {
         initialise(lastPanel);
         this.edit = false;
+
+        //Setting the event to be recurring by default by disabling dateField
+        this.dateField.setEnabled(false);
     }
 
     /**
@@ -48,12 +54,24 @@ public class EventEditor extends javax.swing.JFrame {
         Event event = new Event(this.oldEventID);
         eventNameField.setText(event.getEventName());
         descriptionText.setText(event.getDescription());
-        daySelection.setSelectedItem(event.dayIntToString(event.getDay()));
         colourChooser.setColor(new Color(event.getColourCode()));
         startHourDropdown.setSelectedItem(event.timeToString(0)[0]);
         startMinuteDropdown.setSelectedItem(event.timeToString(0)[1]);
         endHourDropdown.setSelectedItem(event.timeToString(1)[0]);
         endMinuteDropdown.setSelectedItem(event.timeToString(1)[1]);
+        //Determining whether to load the form with recurring details loaded or one-off details loaded
+        if (event.getDay() != 0) {
+            //Event is a recurring event so load in recurring details and disable dateField initially
+            this.dayRadioButton.setSelected(true);
+            daySelection.setSelectedItem(event.dayIntToString(event.getDay()));
+            this.dateField.setEnabled(false);
+        } else {
+            //Event is a one-off event so load in recurring details and disable daySelection initially
+            this.dateRadioButton.setSelected(true);
+            dateField.setText(event.sqlDateToTextFormat(event.getDate()));
+            this.daySelection.setEnabled(false);
+        }
+        
     }
 
     /**
@@ -65,8 +83,6 @@ public class EventEditor extends javax.swing.JFrame {
         initComponents();
 
         this.lastPanel = lastPanel;
-
-        this.dateField.setEnabled(false);
 
         //Centers the frame to the centre of the monitor 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -342,35 +358,37 @@ public class EventEditor extends javax.swing.JFrame {
             new Popup("Name over 20 characters or blank").setVisible(true);
             valid = false;
         } else if (this.dateRadioButton.isSelected()) {
-            //Checking to see if date entered is valid.
+            //Checking to see if date entered is valid by attempting to parse it.
             try {
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 df.parse(dateField.getText());
             } catch (ParseException e) {
-                
                 valid = false;
                 new Popup("Invalid date format.").setVisible(true);
             }
 
             //Checking to see if overlaps.
             double endTime, startTime;
+            //Converting dropdown times to decimal times
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
             String date = dateField.getText();
             date = event.dateTextToSQLFormat(date);
 
             String editCondition = "";
-            //If it is an edit the SQL musn't detect the event's already existing slots for overlap
+            //If it is an edit the SQL mustn't detect the event's already existing slots for overlap
             if (edit) {
                 editCondition = "((event.EventID)!=" + this.oldEventID + ") AND ";
             }
 
+            //Checking to see if any records overlap
             String sql = "SELECT COUNT(*)\n"
                     + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                     + "WHERE (" + editCondition + "((event.Day) Is Null) AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date)='" + date + "') "
                     + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
 
             ResultSet rs = DatabaseHandle.query(sql);
+            //Checking to see if any results were returned
             if (rs != null) {
                 try {
                     if (rs.next()) {
@@ -381,13 +399,13 @@ public class EventEditor extends javax.swing.JFrame {
                             new Popup("Event overlaps with another event.").setVisible(true);
                         }
                     }
-                } catch (SQLException e) {
-                    
+                } catch (SQLException e) {                    
                 }
             }
         } else {
             //Checking to see if overlaps.
             double endTime, startTime;
+            //Converting dropdown times to decimal times
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
             int day = event.dayStringToInt(daySelection.getSelectedItem().toString());
@@ -398,12 +416,14 @@ public class EventEditor extends javax.swing.JFrame {
                 editCondition = "((event.EventID)!=" + this.oldEventID + ") AND ";
             }
 
+            //Checking to see if any records overlap
             String sql = "SELECT COUNT(*)\n"
                     + "FROM user INNER JOIN event ON user.UserID = event.UserID\n"
                     + "WHERE (" + editCondition + "((event.Day)=" + day + ") AND ((user.UserID)=" + User.getUserID() + ") AND ((event.Date) Is Null) "
                     + "AND ((((event.StartTime)>" + startTime + ") AND ((event.StartTime)<" + endTime + ")) OR (((event.EndTime)>" + startTime + ") AND ((event.EndTime)<" + endTime + "))));";
 
             ResultSet rs = DatabaseHandle.query(sql);
+            //Checking to see if any results were returned
             if (rs != null) {
                 try {
                     if (rs.next()) {
@@ -414,12 +434,12 @@ public class EventEditor extends javax.swing.JFrame {
                             new Popup("Event overlaps with another event.").setVisible(true);
                         }
                     }
-                } catch (SQLException e) {
-                    
+                } catch (SQLException e) {                    
                 }
             }
         }
 
+        //Checking to see if event passed all tests
         if (valid) {
 
             //Assigning the value of day based on the dropdown
@@ -430,32 +450,38 @@ public class EventEditor extends javax.swing.JFrame {
             startTime = dropdownsToDecimal(startHourDropdown, startMinuteDropdown);
             endTime = dropdownsToDecimal(endHourDropdown, endMinuteDropdown);
 
+            //Checking to see if an edit or not
             if (edit) {
                 //Edits an existing record
                 event = new Event(this.oldEventID);
                 if (this.dateRadioButton.isSelected()) {
+                    //Edits an one-off event
                     event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), date, endTime, startTime);
                 } else {
+                    //Edits a recurring event
                     event.editEvent(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
                 }
+                //Reloading the details of the selected event in the EventViewer
                 ((EventViewer) lastPanel).update();
             } else {
                 //Entering the event into the database
                 if (this.dateRadioButton.isSelected()) {
+                    //Creating an one-off record
                     new Event(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), date, endTime, startTime);
                 } else {
+                    //Creating a recurring record
                     new Event(eventNameField.getText(), descriptionText.getText(), colourChooser.getColor().getRGB(), day, endTime, startTime);
                 }
             }
 
             //Returning to previous screen
-            this.setVisible(false);
+            this.dispose();
             this.lastPanel.setVisible(true);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     /**
-     * Converts the dropdown options to a time
+     * Converts the drop-down options to a time
      *
      * @param hour
      * @param minute
@@ -478,7 +504,6 @@ public class EventEditor extends javax.swing.JFrame {
         try {
             numberDouble = Double.parseDouble(numberString) / 60;
         } catch (NumberFormatException e) {
-            
         }
         return numberDouble;
     }
@@ -489,9 +514,11 @@ public class EventEditor extends javax.swing.JFrame {
      * @param evt
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        //Confriming the user's decision
         int result = JOptionPane.showConfirmDialog(this, "Are you sure? Unsaved changes will be lost.", "Return to Menu", JOptionPane.YES_NO_OPTION);
         if (result == 0) {
-            this.setVisible(false);
+            //Returning to the last screen
+            this.dispose();
             this.lastPanel.setVisible(true);
         }
 
@@ -504,8 +531,11 @@ public class EventEditor extends javax.swing.JFrame {
      * @param evt
      */
     private void eventNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eventNameFieldKeyReleased
+        //Getting the number of characters used in the name
         int length = eventNameField.getText().length();
+        //Checking to see if the number of characters is more than 20
         if (length > 20) {
+            //Trims name down to first 20 characters
             eventNameField.setText(eventNameField.getText().substring(0, 20));
             length = eventNameField.getText().length();
         }

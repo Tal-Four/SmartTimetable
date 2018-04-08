@@ -19,6 +19,7 @@ public class PasswordReset extends javax.swing.JFrame {
     public PasswordReset(int userID) {
         initComponents();
 
+        //Loading the user's details
         User.loadUser(userID);
 
         //Setting the question
@@ -166,7 +167,9 @@ public class PasswordReset extends javax.swing.JFrame {
      * @param evt
      */
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        //Checking the answer provided is the answer in the user's record
         if (answerField.getText().equals(User.getAnswer())) {
+            //Creating a new password form
             new NewPassword().setVisible(true);
             this.dispose();
         } else {

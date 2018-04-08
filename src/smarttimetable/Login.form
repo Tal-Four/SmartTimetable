@@ -167,7 +167,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="0"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Enter the username of an existing account."/>
+            <Property name="toolTipText" type="java.lang.String" value="Enter the username of an existing account. Usernames are not case sensitive."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="exisitingPasswordLabel">
@@ -285,7 +285,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="0"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Enter a new username."/>
+            <Property name="toolTipText" type="java.lang.String" value="Enter a new username. Usernames aren&apos;t case sensitive."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="newUsernameLabel">

@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class CustomRenderer extends DefaultTableCellRenderer {
 
+    //The timetable this renderer is fetching slots from
     private final int timetableID;
 
     /**
@@ -41,7 +42,7 @@ public class CustomRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
 
-        //Cells are by default rendered as a JLabel.
+        //Fetching the cell to be rendered using parent class's function
         JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
         //Checking that the cell is not empty or belongs to the time column and that a timetable has been selected
         if (value != null && col != 0 && timetableID != 0) {
@@ -62,8 +63,10 @@ public class CustomRenderer extends DefaultTableCellRenderer {
 
                     //Setting the colour of the text depending on the brightness
                     if (brightness < 0.5) {
+                        //Brightness less than half so text is white
                         cell.setForeground(Color.WHITE);
                     } else {
+                        //Brightness more than or equal to half so text is black
                         cell.setForeground(Color.BLACK);
                     }
                 } else {
@@ -83,8 +86,10 @@ public class CustomRenderer extends DefaultTableCellRenderer {
 
                         //Setting the colour of the text depending on the brightness
                         if (brightness < 0.5) {
+                            //Brightness less than half so text is white
                             cell.setForeground(Color.WHITE);
                         } else {
+                            //Brightness more than or equal to half so text is black
                             cell.setForeground(Color.BLACK);
                         }
 
@@ -96,7 +101,7 @@ public class CustomRenderer extends DefaultTableCellRenderer {
                 }
 
             } catch (SQLException e) {
-                
+                //Either SQL statement caused an error, rendering as default
                 cell.setBackground(Color.WHITE);
                 cell.setForeground(Color.RED);
             }

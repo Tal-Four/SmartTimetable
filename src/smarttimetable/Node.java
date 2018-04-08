@@ -8,7 +8,9 @@ package smarttimetable;
  */
 public class Node {
 
+    //The data stored in the node (IE an ID)
     private int data;
+    //The next node in the linked list
     private Node nextNode;
 
     /**

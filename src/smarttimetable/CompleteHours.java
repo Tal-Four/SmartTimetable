@@ -13,12 +13,15 @@ import javax.swing.JOptionPane;
  */
 public class CompleteHours extends javax.swing.JFrame {
 
+    //The previous frame
     private JFrame lastFrame;
+    //The task hours are being compelted for
     private Task task;
+    //Whether or not the last frame was a Timetable
     private final boolean timetable;
 
     /**
-     * Creates new form CompleteHours
+     * Creates new form CompleteHours from a TaskViewer
      *
      * @param lastFrame
      * @param task
@@ -29,7 +32,7 @@ public class CompleteHours extends javax.swing.JFrame {
     }
 
     /**
-     * Creates new form CompleteHours
+     * Creates new form CompleteHours from a Timetable
      *
      * @param lastFrame
      * @param task
@@ -173,19 +176,19 @@ public class CompleteHours extends javax.swing.JFrame {
         double input = 0;
         boolean accepted = true;
 
-        //Checking it's a number
+        //Checking input is a number by attempting to parse it as a double
         try {
             input = Double.parseDouble(this.inputField.getText());
         } catch (NumberFormatException e) {
             accepted = false;
-            
         }
 
-        //Checking it's positive
+        //Checking input is positive
         if (input < 0) {
             accepted = false;
         }
 
+        //Checking to see if input passed both tests
         if (accepted) {
             //Adding the hours to the task and its record
             task.setTimeUsed(task.getTimeUsed() + input);
@@ -194,49 +197,55 @@ public class CompleteHours extends javax.swing.JFrame {
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + task.getTaskID() + "));";
             int rowsAffected = DatabaseHandle.update(sql);
 
+            //Checking to see if any errors occured in the SQL
             if (rowsAffected != 0) {
 
                 //Checking to see if task has completed more hours than it was set
                 if (task.getTimeModified() <= task.getTimeUsed()) {
                     //More hours completed than was set for the task, creates a window for the user to resolve the issue
                     Object[] options = {"Mark as Complete", "Add Time", "Do Nothing"};
+                    //Retrieving the user's decision
                     int result = JOptionPane.showOptionDialog(this, "The time spent on the task exceeds the allotted time.\nWould you like to mark the task as complete or add more time?\nTime exceeded by: " + (task.getTimeUsed() - task.getTimeModified()) + " hours", "Exceeded Time Set", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
                     switch (result) {
-                        case (0):
-                            //Completes the task and returns to the last frame
-                            task.complete();
-                            this.lastFrame.setVisible(true);
-                            if (timetable) {
-                                ((Timetable) (this.lastFrame)).reloadTimetable();
-                            } else {
-                                ((TaskViewer) (this.lastFrame)).update();
-                            }
-                            this.dispose();
-                            break;
                         case (1):
+                            //If chose to add time
                             //Creates a AddTime frame
                             new AddTime(this.lastFrame, this.task).setVisible(true);
                             this.dispose();
                             break;
+                        case (0):
+                            //If chose to mark as complete
+                            //Completes the task
+                            task.complete();
+                            //Now runs default afterwards
                         default:
+                            //Any other option
                             //Returns to the last frame
                             this.lastFrame.setVisible(true);
+                            //Checks to see if last frame was a timetable
                             if (timetable) {
+                                //Reloads the timetable as last frame was a timetable
                                 ((Timetable) (this.lastFrame)).reloadTimetable();
                             } else {
+                                //Reloads the details of the task viewer as last frame wasn't a timetable so must be a TaskViewer
                                 ((TaskViewer) (this.lastFrame)).update();
                             }
+                            //Closing this frame
                             this.dispose();
                             break;
                     }
                 } else {
                     //Returns to the last frame
                     this.lastFrame.setVisible(true);
+                    //Checks to see if last frame was a timetable
                     if (timetable) {
+                        //Reloads the timetable as last frame was a timetable
                         ((Timetable) (this.lastFrame)).reloadTimetable();
                     } else {
+                        //Reloads the details of the task viewer as last frame wasn't a timetable so must be a TaskViewer
                         ((TaskViewer) (this.lastFrame)).update();
                     }
+                    //Closing this frame
                     this.dispose();
                 }
             }

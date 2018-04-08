@@ -11,7 +11,9 @@ import javax.swing.JFrame;
  */
 public class AddTime extends javax.swing.JFrame {
 
+    //The frame that created this one
     private final JFrame lastFrame;
+    //The task time is being added to
     private final Task task;
 
     /**
@@ -142,7 +144,7 @@ public class AddTime extends javax.swing.JFrame {
         double input = 0;
         boolean accepted = true;
 
-        //Checking to see if the data entered is a number.
+        //Checking to see if the data entered is a number by attempting to parse it as a double.
         try {
             input = Double.parseDouble(this.inputField.getText());
         } catch (NumberFormatException e) {
@@ -156,11 +158,15 @@ public class AddTime extends javax.swing.JFrame {
 
         //Updating the database record
         if (accepted) {
+            //Calculating the time to add
             double time = task.getTimeModified() + input;
+            //Constructing the SQL statement
             String sql = "UPDATE user INNER JOIN task ON user.UserID = task.UserID SET task.TimeModified = " + time + "\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((task.TaskID)=" + task.getTaskID() + "));";
             int rowsAffected = DatabaseHandle.update(sql);
+            //Checking to see if SQL statement had an affect.
             if (rowsAffected != 0) {
+                //Returning to the last screen.
                 this.lastFrame.setVisible(true);
                 this.dispose();
             }

@@ -11,9 +11,13 @@ import java.sql.SQLException;
  */
 public class Category {
 
+    //The name of the category
     private String name;
+    //The ID of the category and the number of tasks completed in this category
     private int categoryID, taskCount;
+    //The modifier for the category
     private double modifier;
+    //The colour of the category
     private int colourCode;
 
     /**
@@ -23,22 +27,21 @@ public class Category {
      */
     public Category(int categoryID) {
         this.categoryID = categoryID;
+        //Constructing the SQL statement
         String sql = "SELECT category.*\n"
                 + "FROM user INNER JOIN category ON user.UserID = category.UserID\n"
-                + "WHERE (((user.UserID)=" + User.getUserID() + "));";
+                + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
         ResultSet rs = DatabaseHandle.query(sql);
         if (rs != null) {
             try {
-                while (rs.next()) {
-                    if (this.categoryID == (rs.getInt("CategoryID"))) {
-                        this.name = rs.getString("Name");
-                        this.modifier = rs.getFloat("Modifier");
-                        this.taskCount = rs.getInt("TasksCompleted");
-                        this.colourCode = rs.getInt("Colour");
-                    }
+                //Retrieving the details of the category
+                if (rs.next()) {
+                    this.name = rs.getString("Name");
+                    this.modifier = rs.getFloat("Modifier");
+                    this.taskCount = rs.getInt("TasksCompleted");
+                    this.colourCode = rs.getInt("Colour");
                 }
             } catch (SQLException e) {
-                
             }
         }
     }
@@ -56,8 +59,10 @@ public class Category {
         this.name = name;
         this.colourCode = colourCode;
 
+        //Inserting the record into the database
         String sql = "INSERT INTO `category` (`CategoryID`, `UserID`, `Name`, `Colour`) VALUES(" + this.categoryID + ", " + User.getUserID() + ", '" + this.name + "', " + this.colourCode + ")";
         int rowsAffected = DatabaseHandle.update(sql);
+        //Checking to see if any rows were affected
         if (rowsAffected != 0) {
             new Popup("Category " + this.name + " created").setVisible(true);
         }
@@ -73,9 +78,11 @@ public class Category {
     public int editCategory(String name, int colourCode) {
         this.colourCode = colourCode;
         this.name = name;
+        //Constructing the SQL statement
         String sql = "UPDATE user INNER JOIN category ON user.UserID = category.UserID SET category.Name = \"" + this.name + "\", category.Colour = " + this.colourCode + "\n"
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
         int linesChanged = DatabaseHandle.update(sql);
+        //Checking the SQL actually changed a line.
         if (linesChanged != 0) {
             new Popup(this.name + " edited.").setVisible(true);
         }
@@ -90,11 +97,14 @@ public class Category {
      */
     public void taskComplete(Task task) {
         this.taskCount++;
+        //Recalculating the category's modifier
         calculateModifier(task);
+        //Constructing the SQL
         String sql = "UPDATE user INNER JOIN category ON user.UserID = category.UserID SET category.TasksCompleted =" + this.taskCount + ", category.Modifier =" + this.modifier
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
 
         int rowsAffected = DatabaseHandle.update(sql);
+        //Checking to see that SQL worked
         if (rowsAffected != 0) {
             if (this.modifier >= 4) {
                 //Suggests the user should seek aid with the category as they seem to be struggling
@@ -111,11 +121,13 @@ public class Category {
      * @param task
      */
     public void taskTodo(Task task) {
+        //Reverting the modifier to what it would be without the task being marked as todo
         this.taskCount--;
         Double timeMultiplier = task.getTimeUsed() / task.getTimeSet();
         Double oldMeanTotal = this.modifier * (this.taskCount + 1);
         this.modifier = (oldMeanTotal - timeMultiplier) / this.taskCount;
 
+        //Constructing and running SQL
         String sql = "UPDATE user INNER JOIN category ON user.UserID = category.UserID SET category.TasksCompleted =" + this.taskCount + ", category.Modifier =" + this.modifier
                 + "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((category.CategoryID)=" + this.categoryID + "));";
         DatabaseHandle.update(sql);
@@ -128,8 +140,11 @@ public class Category {
      * @param task
      */
     private void calculateModifier(Task task) {
+        //Calculating modifier for the single task
         double timeMultiplier = task.getTimeUsed() / task.getTimeSet();
+        //Calculating the total of modifiers for previously completed tasks in this category
         double oldMeanTotal = this.modifier * (this.taskCount - 1);
+        //Averaging the single modifier with the old modifiers
         this.modifier = (oldMeanTotal + timeMultiplier) / this.taskCount;
     }
 
@@ -150,6 +165,10 @@ public class Category {
         return this.taskCount;
     }
 
+    public int getColourCode() {
+        return colourCode;
+    }
+    
     public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
     }
@@ -165,6 +184,9 @@ public class Category {
     public void setTaskCount(int taskCount) {
         this.taskCount = taskCount;
     }
+    
+    public void setColourCode(int colourCode) {
+        this.colourCode = colourCode;
+    }
     // </editor-fold>
-
 }

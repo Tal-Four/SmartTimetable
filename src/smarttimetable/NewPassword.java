@@ -141,11 +141,15 @@ public class NewPassword extends javax.swing.JFrame {
      * @param evt
      */
     private void changePasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePasswordButtonActionPerformed
+        //Checks passwords are the right length and that they match
         if (passwordField.getText().equals(confirmPasswordField.getText()) && passwordField.getText().length() <= 15) {
+            //Updating the user's record with new password
             String sql = "UPDATE user SET user.Password = \"" + passwordField.getText() + "\"\n"
                     + "WHERE (((user.UserID)=" + User.getUserID() + "));";
             int rowsAffected = DatabaseHandle.update(sql);
+            //Checking SQL executed correctly
             if (rowsAffected != 0) {
+                //Returning to login screen
                 new Popup("Password changed.").setVisible(true);
                 new Login().setVisible(true);
                 this.dispose();

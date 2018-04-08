@@ -14,9 +14,13 @@ import javax.swing.DefaultListModel;
  */
 public class ChangeSlot extends javax.swing.JFrame {
 
+    //The timetable that is returned to when this frame closes
     private final Timetable timetable;
+    //The ID list of items, either task or event, the user can pick from
     private final LinkedList idList = new LinkedList();
+    //The timetable the slot belongs to and the position of the slot
     private final int day, time, timetableID;
+    //The previous contents of the slot
     private final String previousContents;
 
     /**
@@ -44,11 +48,14 @@ public class ChangeSlot extends javax.swing.JFrame {
         //Displays the user logged in
         userLabel.setText("Logged in as: " + User.getUsername());
 
+        //Setting the text of the field that displays the previous contents to the right value
         if (previousContents.equals("")) {
             this.slotContainsResultText.setText("Empty");
         } else {
             this.slotContainsResultText.setText(previousContents);
         }
+
+        //Selecting the frame to display a list of tasks by default
         this.taskButton.setSelected(true);
         this.taskButtonPressed();
         this.setAlwaysOnTop(true);
@@ -237,27 +244,35 @@ public class ChangeSlot extends javax.swing.JFrame {
      * @param evt
      */
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
+        //Making sure there is an item from the list selected
         if (!this.taskEventList.isSelectionEmpty()) {
 
+            //Retrieving whether or not the item selected is a event or not
             boolean event = this.eventButton.isSelected();
+            //Retrieving the ID of the item selected from the list
             int id = this.idList.getDataAt(this.taskEventList.getSelectedIndex());
 
             String sql;
 
             //Checking if slot record already exists (I.E. not blank)
             if (!this.previousContents.equals("")) {
+                //Constructing the start and end clauses to the SQL as they are the same independant of whether it is an event or task
                 String sqlStart = "UPDATE (timetable INNER JOIN timetableslot ON (timetableslot.TimetableID = timetable.TimetableID) AND (timetable.UserID = timetableslot.UserID)) INNER JOIN user ON timetable.UserID = user.UserID ";
                 String sqlEnd = "WHERE (((user.UserID)=" + User.getUserID() + ") AND ((timetable.TimetableID)= " + this.timetableID + ") AND ((timetableslot.Day)=" + this.day + ") AND ((timetableslot.Time)=" + this.time + "));";
                 if (event) {
+                    //Constructing the central clause of the SQL for an event
                     sql = sqlStart + "SET timetableslot.EventID = " + id + ", timetableslot.TaskID = Null\n" + sqlEnd;
                 } else {
+                    //Constructing the central clause of the SQL for a task
                     sql = sqlStart + "SET timetableslot.EventID = Null, timetableslot.TaskID = " + id + "\n" + sqlEnd;
                 }
             } else {
                 if (event) {
+                    //Inserting a new record with an event ID
                     sql = "INSERT INTO timetableslot (UserID, EventID, TimetableID, Day, Time)\n"
                             + "VALUES(" + User.getUserID() + ", " + id + ", " + this.timetableID + ", " + this.day + ", " + this.time + ");";
                 } else {
+                    //Inserting a new record with a task ID
                     sql = "INSERT INTO timetableslot (UserID, TaskID, TimetableID, Day, Time)\n"
                             + "VALUES(" + User.getUserID() + ", " + id + ", " + this.timetableID + ", " + this.day + ", " + this.time + ");";
                 }
@@ -265,6 +280,7 @@ public class ChangeSlot extends javax.swing.JFrame {
 
             int rowsAffected = DatabaseHandle.update(sql);
 
+            //Checking there were no errors in the SQL
             if (rowsAffected != 0) {
                 //Returning to timetable
                 this.timetable.setVisible(true);
@@ -282,6 +298,7 @@ public class ChangeSlot extends javax.swing.JFrame {
 
                 rowsAffected = DatabaseHandle.update(sql);
             }
+            //Checking to see there was no error with the SQL
             if (rowsAffected != 0) {
                 //Returning to timetable
                 this.timetable.setVisible(true);
@@ -320,21 +337,28 @@ public class ChangeSlot extends javax.swing.JFrame {
      * @param sql
      */
     private void updateList(String sql) {
+        //Running the SQL passed into this method
         ResultSet rs = DatabaseHandle.query(sql);
 
-        DefaultListModel dlm = new DefaultListModel();
+        //Checking that a result set was returned
+        if (rs != null) {
+            DefaultListModel dlm = new DefaultListModel();
 
-        idList.clear();
-        try {
-            while (rs.next()) {
-                dlm.addElement(rs.getString("Name"));
-                idList.addNode(rs.getInt("ID"));
+            //Clearing the ID list
+            idList.clear();
+            try {
+                while (rs.next()) {
+                    //Loading names into dlm
+                    dlm.addElement(rs.getString("Name"));
+                    //Loading IDs into linked list
+                    idList.addNode(rs.getInt("ID"));
+                }
+            } catch (SQLException e) {
             }
-        } catch (SQLException e) {
-            
-        }
 
-        this.taskEventList.setModel(dlm);
+            //Setting the list of items shown to the user to be dlm
+            this.taskEventList.setModel(dlm);
+        }
     }
 
     /**

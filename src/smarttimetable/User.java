@@ -13,7 +13,9 @@ import java.sql.SQLException;
  */
 public class User {
 
+    //The ID of the user's accout
     private static int userID;
+    //The username, password, security question, and security answer of the user's account
     private static String username, password, question, answer;
 
     /**
@@ -31,25 +33,28 @@ public class User {
         User.question = question;
         User.answer = answer;
 
-        //Looping through existing IDs until a ID without an record is found
         String sql = "SELECT * FROM user ORDER BY UserID";
         ResultSet rs = DatabaseHandle.query(sql);
+        //Checking the SQL executed correctly
         if (rs != null) {
             int newUserID = 0;
             try {
+                //Looping through existing IDs until a ID without an record is found
                 do {
                     newUserID++;
                 } while (rs.next() && rs.getInt("UserID") == newUserID);
             } catch (SQLException e) {
-                
             }
 
             User.userID = newUserID;
 
+            //Checking if the user has no password
             if (User.password == null) {
+                //Inserting a user record with no password
                 sql = "INSERT INTO `user` (`UserID`, `Username`, `Question`, `Answer`) "
                         + "VALUES(" + User.userID + ", '" + User.username + "', " + User.question + "', '" + User.answer + "')";
             } else {
+                //Inserting a user record with a password
                 sql = "INSERT INTO `user` (`UserID`, `Username`,`Password`, `Question`, `Answer`) "
                         + "VALUES(" + User.userID + ", '" + User.username + "', '" + User.password + "', '" + User.question + "', '" + User.answer + "')";
             }
@@ -65,11 +70,13 @@ public class User {
      * @param username
      */
     public static void loadUser(String username) {
+        //Selecting the user's details
         String sql = "SELECT * FROM user WHERE Username = '" + username + "';";
         User.username = username;
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
+                //Loading the variables from the result set
                 User.answer = rs.getString("Answer");
                 User.question = rs.getString("Question");
                 User.userID = rs.getInt("UserID");
@@ -78,9 +85,7 @@ public class User {
                 new Popup("User not found.").setVisible(true);
             }
         } catch (SQLException e) {
-            
         }
-
     }
 
     /**
@@ -89,11 +94,13 @@ public class User {
      * @param userID
      */
     public static void loadUser(int userID) {
+        //Selecting the user's details
         String sql = "SELECT * FROM user WHERE UserID = " + userID;
         User.userID = userID;
         ResultSet rs = DatabaseHandle.query(sql);
         try {
             if (rs.next()) {
+                //Loading the variables from the result set
                 User.answer = rs.getString("Answer");
                 User.question = rs.getString("Question");
                 User.username = rs.getString("Username");
@@ -102,9 +109,7 @@ public class User {
                 new Popup("User not found.").setVisible(true);
             }
         } catch (SQLException e) {
-            
         }
-
     }
 
     /**

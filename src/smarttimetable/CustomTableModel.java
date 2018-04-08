@@ -10,16 +10,20 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CustomTableModel extends DefaultTableModel {
 
+    //The data to be displayed in the table
     private Object[][] data;
+    //The headers of the table
     private String[] headers;
 
     /**
      * Sets up a blank table
      */
     public CustomTableModel() {
+        //Setting the headers
         this.headers = new String[]{
             "Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
         };
+        //Initialising an empty table
         this.clear();
     }
 
@@ -27,6 +31,7 @@ public class CustomTableModel extends DefaultTableModel {
      * Empties the data from the table except first column
      */
     public final void clear() {
+        //Setting the data array to only contain time values
         this.data = new Object[][]{
             {"00:00", null, null, null, null, null, null, null},
             {"00:30", null, null, null, null, null, null, null},
@@ -77,11 +82,12 @@ public class CustomTableModel extends DefaultTableModel {
             {"23:00", null, null, null, null, null, null, null},
             {"23:30", null, null, null, null, null, null, null}
         };
+        //Loading the data and headers into the table
         setDataVector(this.data, this.headers);
     }
 
     /**
-     * Sets the table to uneditable
+     * Sets the table to be uneditable
      *
      * @param row
      * @param column
@@ -92,6 +98,7 @@ public class CustomTableModel extends DefaultTableModel {
         return false;
     }
 
+    //Getters and setters
     public void setData(Object[][] data) {
         this.data = data;
     }
